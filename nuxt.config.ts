@@ -50,25 +50,25 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      blockExplorerBaseUrl: "https://mumbai.polygonscan.com",
-      favicon: "/img/favicon.jpg",
+      blockExplorerBaseUrl: "https://songbird-explorer.flare.network",
+      favicon: "/img/favicon.png",
       iggyPostAddress: "0x9f48c192561f3A6f0efeeE5Fce00Fd9788675eF8",
       iggyPostMinterAddress: "0xD48e9b2D25CEe123be1d01c09645A0a355174db0",
-      orbisContext: "kjzl6cwe1jw14bmb4kgw6gbu6umo8jz9vxjsunueihadbpr9977tj93s2diycb1", // production context
+      orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
       orbisTest: true, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context
       previewImage: "/img/cover.png",
-      projectName: "Iggy Social Demo",
-      projectDescription: "Chat for .testnet domain holdes.",
-      projectUrl: "https://iggy-social-frontend.vercel.app/",
-      punkMinterAddress: "", // punk domain minter contract address
-      punkNumberOfPrices: 1, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
-      punkTldAddress: "0x2582EC420195Fefb091B098da6FAdEE49f490740", // punk domain TLD address
-      supportedChainId: 80001,
-      tldName: ".testnet",
+      projectName: "sgb.chat",
+      projectDescription: "Chat for .sgb domain holders.",
+      projectUrl: "https://sgb.chat/",
+      punkMinterAddress: "0xA33dCbE04278706248891931537Dd56B795c3663", // punk domain minter contract address
+      punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
+      punkTldAddress: "0xBDACF94dDCAB51c39c2dD50BffEe60Bb8021949a", // punk domain TLD address
+      supportedChainId: 19,
+      tldName: ".sgb",
       tokenAddress: null, // leave null if it's a native token of the chain
       tokenDecimals: 18,
-      tokenSymbol: "MATIC",
+      tokenSymbol: "SGB",
     }
   },
   vite: {

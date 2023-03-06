@@ -1,7 +1,10 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-bg-custom">
     <div class="container-fluid mx-3">
-      <NuxtLink class="navbar-brand" to="/">{{$config.projectName}}</NuxtLink>
+      <NuxtLink class="navbar-brand" to="/">
+        <!--<img src="/img/sgb-chat-logo-2.png" alt="sgb.chat logo" height="24">-->
+        {{$config.projectName}}
+      </NuxtLink>
 
       <ul class="navbar-nav justify-content-end flex-grow-1">
         <li v-if="!isActivated" class="nav-item">

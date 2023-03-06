@@ -65,8 +65,8 @@ export default defineNuxtPlugin(() => {
       } else if (networkId === 19) {
         // Songbird
         urls = [
-          "https://songbird.towolabs.com/rpc",
-          //"https://songbird-api.flare.network/ext/C/rpc"
+          "https://songbird-api.flare.network/ext/C/rpc",
+          "https://sgb.ftso.com.au/ext/bc/C/rpc"
         ]; 
       } else if (networkId === 56) {
         // BSC mainnet
@@ -257,7 +257,7 @@ export default defineNuxtPlugin(() => {
         chainId: "0x13",
         chainName: "Songbird",
         nativeCurrency: { decimals: 18, name: "SGB", symbol: "SGB" }, 
-        rpcUrls: ["https://songbird.towolabs.com/rpc", "https://songbird-api.flare.network/ext/C/rpc"]
+        rpcUrls: ["https://songbird-api.flare.network/ext/C/rpc"]
       }] 
     }
 

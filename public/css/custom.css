@@ -1,8 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 @import "./dark.css";
 @import "./light.css";
 
 :root {
+  --bs-primary: #D27F97 !important;
+  --bs-btn-disabled-border-color: #D27F97;
+  --bs-link-color: #D27F97;
+  --bs-nav-pills-link-active-bg: #D27F97 !important;
+  --bs-link-color: #D27F97;
+  --bs-link-hover-color: #c86e88;
+  --bs-link-color-rgb: 210, 127, 151;
+  --bs-link-hover-color-rgb: 200, 110, 136;
   --bs-blue: #1d3b53;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
@@ -237,7 +245,8 @@
 */
 
 .navbar-brand, .navbar-brand:hover, .navbar-brand:active, .navbar-brand:focus {
-  color: var(--bs-heading-color);
+  color: var(--bs-primary);
+  font-family: "Fredoka One", Arial, sans-serif;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover {

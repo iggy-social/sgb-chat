@@ -168,7 +168,7 @@ export default {
     getNamePrice() {
       if (this.$config.punkNumberOfPrices === 1) {
         return this.price;
-      } else {
+      } else if (this.domainName) {
         if (this.domainName.match(/./gu).length === 1) {
           return this.price1char;
         } else if (this.domainName.match(/./gu).length === 2) {
@@ -182,6 +182,8 @@ export default {
         } else {
           return this.price5char;
         }
+      } else {
+        return this.price5char;
       }
     }
   },
