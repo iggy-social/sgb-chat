@@ -7,7 +7,14 @@
 
       <Meta property="og:title" :content="$config.projectName" />
       <Meta property="og:description" :content="$config.projectDescription" />
-      <Meta property="og:image" :content="$config.previewImage" />
+      <Meta property="og:image" :content="$config.projectUrl+$config.previewImage" />
+
+      <Meta name="twitter:card" content="summary_large_image" />
+      <Meta name="twitter:site" :content="$config.projectTwitter" />
+      <Meta name="twitter:creator" :content="$config.projectTwitter" />
+      <Meta name="twitter:title" :content="$config.projectName" />
+      <Meta name="twitter:description" :content="$config.projectDescription" />
+      <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImage" />
     </Head>
 
     <NavbarDesktop v-if="!isMobile" />
