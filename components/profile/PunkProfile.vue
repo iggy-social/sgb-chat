@@ -109,12 +109,6 @@ export default {
     this.checkConnectionToOrbis();
   },
 
-  mounted() {
-    if (this.userStore.getOrbisImage) {
-      this.orbisImage = this.userStore.getOrbisImage;
-    }
-  },
-
   computed: {
     balanceEth() {
       const bal = ethers.utils.formatEther(this.uBalance);
