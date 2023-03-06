@@ -58,8 +58,8 @@ export default defineNuxtConfig({
       orbisTest: false, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context
       previewImage: "/img/cover.png",
-      projectName: "sgb.chat",
-      projectDescription: "Chat for .sgb domain holders.",
+      projectName: "sgb.chat (beta)",
+      projectDescription: "Sgb.chat is the first decentralized social network on Songbird. Brought to you by Songbird Domains.",
       projectUrl: "https://sgb.chat/",
       punkMinterAddress: "0xA33dCbE04278706248891931537Dd56B795c3663", // punk domain minter contract address
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
