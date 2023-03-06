@@ -55,7 +55,7 @@ export default defineNuxtConfig({
       iggyPostAddress: "0x99Dbf11aCd46baFBCE82506FaeB4F13E6Ea1726A",
       iggyPostMinterAddress: "0xabf9960132818049340253C3Ca0551F92Db856d7",
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
-      orbisTest: true, // if true, test context will be used instead of the production one
+      orbisTest: false, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context
       previewImage: "/img/cover.png",
       projectName: "sgb.chat",

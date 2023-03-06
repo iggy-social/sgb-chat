@@ -150,12 +150,12 @@
   border-radius: var(--bs-card-border-radius);
 }
 
-.card-header {
-  font-size: 1.1em;
+.sidebar-card-body {
+  padding-top: 0;
 }
 
-.hover-color:hover {
-  color: var(--bs-primary);
+.card-header {
+  font-size: 1.1em;
 }
 
 .card-img-wallet:hover {
@@ -171,7 +171,7 @@
 }
 
 .form-control, .input-group-text {
-  font-size: 0.875rem;
+  font-size: 1rem;
   padding: 0.5rem 1rem;
 }
 
@@ -199,6 +199,10 @@
   transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.hover-color:hover {
+  color: var(--bs-primary);
 }
 
 .hover-underline:hover {

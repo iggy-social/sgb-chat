@@ -1,7 +1,7 @@
 <template>
   <Head>
-    <Title>About Iggy Social</Title>
-    <Meta property="og:title" content="About Iggy Social" />
+    <Title>About sgb.chat</Title>
+    <Meta property="og:title" content="About sgb.chat" />
   </Head>
 
   <div class="card border">
@@ -13,12 +13,12 @@
       <h3 class="mb-3 mt-3">Web3 Social is here.</h3>
 
       <p class="text-break mt-3">
-        Iggy Social helps DAOs and other web3 communities launch their own web3 social platform. Let's leave the old world of 
-        corporation-controled social media behind us and move towards a decentralized future. We promise, it's going to be a lot of fun!
+        Sgb.chat is the first decentralized social network on Songbird, brought to you by the Songbird Domains team.
       </p>
 
       <p class="text-break mt-3">
-        Built on top of Orbis, Ceramic Network, and the Punk Domains protocol.
+        Let's leave the old world of corporation-controled social media behind us and move towards a decentralized future. 
+        We promise, it's going to be a lot of fun!
       </p>
     </div>
   </div>

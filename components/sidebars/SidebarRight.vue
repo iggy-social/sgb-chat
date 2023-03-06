@@ -5,7 +5,7 @@
 
       <NameMintWidget />
 
-      <!-- Swap Widget -->
+      <!-- Swap Widget 
       <div class="card m-2 bg-light">
         <div class="card-header bg-light">Swap</div>
         <div class="card-body">
@@ -25,6 +25,7 @@
           <button class="btn btn-outline-primary mt-2 mb-2" disabled>Swap</button>
         </div>
       </div>
+      -->
       
     </div>
   </div>

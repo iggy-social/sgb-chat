@@ -1,14 +1,8 @@
-# Iggy Social
+# Sgb.chat
 
-> Work-in-progress (WIP), not production ready yet.
+Sgb.chat is a Web3 Social frontend website based on the Iggy Social template. It uses [Orbis SDK](https://github.com/OrbisWeb3/orbis-sdk) and Ceramic Network in the background.
 
-Iggy Social is a Web3 Social frontend website. It uses [Orbis SDK](https://github.com/OrbisWeb3/orbis-sdk) and Ceramic Network in the background.
-
-Development preview: https://iggy-social-frontend.vercel.app/
-
-Landing page: https://iggy.social
-
-If your web3 community has its own Punk Domains extension, it can be used as for usernames instead of addresses.
+Link: https://sgb.chat
 
 What's included:
 
