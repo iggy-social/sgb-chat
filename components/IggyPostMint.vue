@@ -10,7 +10,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="mintPostModalLabel">Mint this post as NFT</h1>
-        <button type="button" id="closeMintPostModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" :id="'closeMintPostModal'+post.stream_id" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <p>Mint this post as NFT and show appreciation to the author.</p>
@@ -21,6 +21,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" @click="mintPost" :disabled="!isActivated">
+          <span v-if="waitingMint" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
           Mint post for {{ postPrice }} {{ $config.tokenSymbol }}
         </button>
       </div>
@@ -44,7 +45,8 @@ export default {
   data() {
     return {
       postPrice: null,
-      textPreview: null
+      textPreview: null,
+      waitingMint: false
     }
   },
 
@@ -86,6 +88,8 @@ export default {
 
     async mintPost() {
       if (this.isActivated) {
+        this.waitingMint = true;
+
         const iggyPostMinterInterface = new ethers.utils.Interface([
           "function mint(string memory _postId, address _author, address _nftReceiver, address _referrer, string memory _textPreview, uint256 _quantity) external payable returns(uint256 tokenId)"
         ]);
@@ -106,8 +110,6 @@ export default {
             }
           );
 
-          document.getElementById('mintPostModal'+this.post.stream_id).click();
-
           const toastWait = this.toast(
             {
               component: WaitingToast,
@@ -124,13 +126,15 @@ export default {
           const receipt = await tx.wait();
 
           if (receipt.status === 1) {
+            this.waitingMint = false;
             this.toast.dismiss(toastWait);
             this.toast("You have successfully minted this post as NFT!", {
               type: "success",
               onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
             });
-            document.getElementById('closeMintPostModal').click();
+            document.getElementById('closeMintPostModal'+this.post.stream_id).click();
           } else {
+            this.waitingMint = false;
             this.toast.dismiss(toastWait);
             this.toast("Transaction has failed.", {
               type: "error",
@@ -140,6 +144,7 @@ export default {
           }
 
         } catch (e) {
+          this.waitingMint = false;
           console.log(e);
           this.toast(e.message, {type: "error"});
         }
