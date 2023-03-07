@@ -11,9 +11,11 @@
 
       <div class="mt-2">
         <button 
-          v-if="isCurrentUser" 
+          v-if="isCurrentUser"
+          :disabled="waitingDataLoad" 
           class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#changeImageModal"
         >
+          <span v-if="waitingDataLoad" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
           Change image
         </button>
 
@@ -93,6 +95,7 @@ export default {
       orbisProfile: null,
       uAddress: this.pAddress,
       uBalance: 0,
+      waitingDataLoad: false,
       waitingImageUpdate: false
     }
   },
@@ -193,6 +196,8 @@ export default {
     },
 
     async fetchAddressAndDomain() {
+      this.waitingDataLoad = true;
+
       // see if id is in the URL query and figure out whether it is a domain or uAddress
       if (this.$route.query.id) {
         const id = this.$route.query.id;
@@ -248,8 +253,8 @@ export default {
         window.sessionStorage.setItem(String(this.uAddress).toLowerCase(), this.domain);
       }
 
-      this.fetchOrbisProfile();
-      this.fetchBalance();
+      await this.fetchOrbisProfile();
+      await this.fetchBalance();
     },
 
     async fetchBalance() {
@@ -287,8 +292,12 @@ export default {
               this.following = profile.data.count_following;
               this.lastActivityTimestamp = profile.data.last_activity_timestamp;
             }
+
+            this.waitingDataLoad = false;
           }
         }
+
+        this.waitingDataLoad = false;
       }
     }
 
