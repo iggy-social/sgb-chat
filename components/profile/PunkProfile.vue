@@ -131,8 +131,12 @@ export default {
 
   methods: {
     async changeImage() {
-      if (this.isUserConnectedOrbis && this.isCurrentUser && this.orbisProfile) {
+      if (this.isUserConnectedOrbis) {
         this.waitingImageUpdate = true;
+
+        if (!this.orbisProfile) {
+          await this.fetchOrbisProfile();
+        }
 
         this.orbisProfile.pfp = this.newImageLink;
 
