@@ -309,6 +309,26 @@
   width: 100vw;
 }
 
+.Vue-Toastification__toast--info.custom-toast-bg {
+  background-color: #D27F97;
+}
+
+.Vue-Toastification__toast--warning.custom-toast-bg {
+  background-color: #F7C04A;
+}
+
+/*
+
+.Vue-Toastification__toast--error.custom-toast-bg {
+  background-color: #9F0047;
+}
+
+.Vue-Toastification__toast--success.custom-toast-bg {
+  background-color: #82A24A;
+}
+
+*/
+
 .w-30 {
   width: 30%;
 }

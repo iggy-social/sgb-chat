@@ -5,7 +5,7 @@
   </Head>
 
   <!-- TODO: show component based on the chat type selection (Alien, Forum, smth else) -->
-  <AlienChatPost v-if="post" :post="post" :isUserConnectedOrbis="isUserConnectedOrbis" />
+  <AlienChatPost v-if="post" :post="post" :isConnectedOrbis="isUserConnectedOrbis" />
 
   <AlienChat v-if="post" :id="post.stream_id" />
 </template>

@@ -65,19 +65,26 @@
           <button type="button" class="btn-close" :id="'closeReplyModal'+post.stream_id" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="form-group mt-2 mb-2">
+
+          <div v-if="!isUserConnectedOrbis">
+            <p>First connect to Ceramic before you can reply:</p>
+
+            <button class="btn btn-primary" @click="connectToOrbis">Connect to Ceramic</button>
+          </div>
+
+          <div class="form-group mt-2 mb-2" v-if="isUserConnectedOrbis">
             <textarea 
-              v-model="replyText" 
-              :disabled="!isUserConnectedOrbis" 
+              v-model="replyText"  
               class="form-control" 
               rows="3" 
               placeholder="Enter your reply"
             ></textarea>
           </div>
         </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="replyPost">Submit reply</button>
+          <button :disabled="!isUserConnectedOrbis" type="button" class="btn btn-primary" @click="replyPost">Submit reply</button>
         </div>
       </div>
     </div>
@@ -121,7 +128,7 @@ import IggyPostMint from "~~/components/IggyPostMint.vue";
 export default {
   name: "AlienChatPost",
   emits: ["insertReply", "removePost"],
-  props: ["post", "isUserConnectedOrbis"],
+  props: ["post", "isConnectedOrbis"],
 
   components: {
     ProfileImage,
@@ -133,12 +140,15 @@ export default {
       alreadyLiked: false,
       authorAddress: null,
       authorDomain: null,
+      isUserConnectedOrbis: false,
       parsedText: null,
       replyText: null
     }
   },
 
   created() {
+    this.isUserConnectedOrbis = this.isConnectedOrbis;
+
     if (this.post.creator_details.metadata) {
       this.fetchAuthorDomain();
     }
@@ -214,6 +224,26 @@ export default {
       }
     },
 
+    async connectToOrbis() {
+      let res = await this.$orbis.connect_v2({
+        provider: this.signer.provider.provider, 
+        lit: false
+      });
+
+      /** Check if connection is successful or not */
+      if(res.status == 200) {
+        this.isUserConnectedOrbis = true;
+
+        if (this.$orbis.session) {
+          this.userStore.setDid(this.$orbis.session.did._id);
+          this.userStore.setDidParent(this.$orbis.session.did._parentId);
+        }
+      } else {
+        console.log("Error connecting to Ceramic: ", res);
+        this.toast(res.result, {type: "error"});
+      }
+    },
+
     async deletePost() {
       if (this.isUserConnectedOrbis) {
         let res = await this.$orbis.deletePost(
@@ -230,7 +260,7 @@ export default {
           console.log("Error posting via Orbis to Ceramic: ", res);
         }
       } else {
-        this.toast("Please sign into chat to be able to delete your post.", {type: "warning"});
+        this.toast("Please sign into chat to be able to delete your post.", {type: "error"});
       }
     },
 
@@ -319,7 +349,7 @@ export default {
           this.toast(res.result, {type: "error"});
         }
       } else {
-        this.toast("Please sign into chat to be able to react on a post.", {type: "warning"});
+        this.toast("Please sign into chat to be able to react on a post.", {type: "error"});
 
         // @todo: open a modal to sign into chat instead
       }
@@ -352,7 +382,7 @@ export default {
       }
 
       } else {
-        this.toast("Please sign into chat to be able to reply to a post.", {type: "warning"});
+        this.toast("Please sign into chat to be able to reply to a post.", {type: "error"});
       }
     },
 

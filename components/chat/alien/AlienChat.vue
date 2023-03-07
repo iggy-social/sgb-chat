@@ -22,7 +22,7 @@
         </div>
 
         <div v-if="orbisPosts">
-          <AlienChatPost @insertReply="insertReply" @removePost="removePost" v-for="post in orbisPosts" :key="post.stream_id" :post="post" :isUserConnectedOrbis="isUserConnectedOrbis" />
+          <AlienChatPost @insertReply="insertReply" @removePost="removePost" v-for="post in orbisPosts" :key="post.stream_id" :post="post" :isConnectedOrbis="isUserConnectedOrbis" />
         </div>
 
         <div class="d-grid gap-2 col-6 mx-auto mb-5" v-if="showLoadMore">
