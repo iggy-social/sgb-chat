@@ -1,6 +1,6 @@
-# Sgb.chat
+# SGB Chat
 
-Sgb.chat is a Web3 Social frontend website based on the Iggy Social template. It uses [Orbis SDK](https://github.com/OrbisWeb3/orbis-sdk) and Ceramic Network in the background.
+SGB Chat is a Web3 Social frontend website based on the Iggy Social template. It uses [Orbis SDK](https://github.com/OrbisWeb3/orbis-sdk) and Ceramic Network in the background.
 
 Link: https://sgb.chat
 

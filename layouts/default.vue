@@ -140,11 +140,6 @@ export default {
     SidebarRight
   },
 
-  created() {
-		// if user already connected before, connect them automatically on the next visit
-		
-	},
-
   mounted() {
     if (!this.isActivated) {
 			if (localStorage.getItem("connected") == "metamask") {
