@@ -11,7 +11,7 @@
 
       <div class="mt-2">
         <button 
-          v-if="uAddress === address" 
+          v-if="isCurrentUser" 
           class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#changeImageModal"
         >
           Change image
@@ -90,6 +90,7 @@ export default {
       lastActivityTimestamp: null,
       newImageLink: null,
       orbisImage: null,
+      orbisProfile: null,
       uAddress: this.pAddress,
       uBalance: 0,
       waitingImageUpdate: false
@@ -118,17 +119,25 @@ export default {
       } else {
         return Number(bal).toFixed(4)
       }
-    }
+    },
+
+    isCurrentUser() {
+      return String(this.uAddress).toLowerCase() === String(this.address).toLowerCase();
+    },
   },
 
   methods: {
     async changeImage() {
-      if (this.isUserConnectedOrbis) {
+      if (this.isUserConnectedOrbis && this.isCurrentUser && this.orbisProfile) {
         this.waitingImageUpdate = true;
 
-        const res = await this.$orbis.updateProfile({
-          pfp: this.newImageLink
-        });
+        this.orbisProfile.pfp = this.newImageLink;
+
+        if (!this.orbisProfile.username && this.domain) {
+          this.orbisProfile.username = this.domain;
+        }
+
+        const res = await this.$orbis.updateProfile(this.orbisProfile);
 
         /** Check if request is successful or not */
         if (res.status !== 200) { // unsuccessful
@@ -266,14 +275,18 @@ export default {
         if (data[0].did) {
           const profile = await this.$orbis.getProfile(data[0].did);
 
-          if (profile && profile.data.details.profile) {
-            this.orbisImage = profile.data.details.profile.pfp;
-          }
+          if (profile.status === 200) {
+            this.orbisProfile = profile.data.details.profile;
+    
+            if (profile && profile.data.details.profile) {
+              this.orbisImage = profile.data.details.profile.pfp;
+            }
 
-          if (profile) {
-            this.followers = profile.data.count_followers;
-            this.following = profile.data.count_following;
-            this.lastActivityTimestamp = profile.data.last_activity_timestamp;
+            if (profile) {
+              this.followers = profile.data.count_followers;
+              this.following = profile.data.count_following;
+              this.lastActivityTimestamp = profile.data.last_activity_timestamp;
+            }
           }
         }
       }
