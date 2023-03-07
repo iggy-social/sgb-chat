@@ -13,6 +13,8 @@
     </div>
 
     <div class="col-10 col-md-11">
+      
+      <!-- post author and timestamp -->
       <p class="card-subtitle mb-1 text-muted">
         <NuxtLink v-if="authorDomain" class="link-without-color hover-color" :to="'/profile/?id='+authorDomain">{{showDomainOrAddressOrAnon}}</NuxtLink>
         <span v-if="!authorDomain">{{showDomainOrAddressOrAnon}}</span>
@@ -20,16 +22,17 @@
         <span v-if="post.timestamp && post.master"> · {{timeSince}}</span>
       </p>
 
-      <p v-if="post.master && post.master !== post.reply_to" class="card-text">
-        <blockquote class="quote-reply-to">
-          &gt; 
-          {{ getDomainFromStorage(post.reply_to_creator_details.metadata.address) }}:
-          {{ post.reply_to_details.body }}
-        </blockquote>
-      </p>
+      <!-- replied text -->
+      <blockquote v-if="post.master && post.master !== post.reply_to" class="card-text quote-reply-to">
+        &gt; 
+        {{ getDomainFromStorage(post.reply_to_creator_details.metadata.address) }}:
+        {{ post.reply_to_details.body }}
+      </blockquote>
 
+      <!-- post text -->
       <p class="card-text" v-html="parsedText"></p>
 
+      <!-- post actions -->
       <p class="card-subtitle mt-1 text-muted">
         
         <span>
