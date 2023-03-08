@@ -100,37 +100,6 @@
   border: 1px solid var(--bs-border-color);
 }
 
-[data-bs-theme=dark] .btn-primary {
-  --bs-btn-bg: var(--bs-primary);
-  --bs-btn-border-color: var(--bs-primary);
-  --bs-btn-hover-bg: var(--bs-link-hover-color);
-  --bs-btn-hover-border-color: var(--bs-link-hover-color);
-  --bs-btn-active-bg: var(--bs-link-hover-color);
-  --bs-btn-active-border-color: var(--bs-link-hover-color);
-  --bs-btn-disabled-bg: var(--bs-primary);
-}
-
-[data-bs-theme=dark] .btn:disabled {
-  --bs-btn-border-color: var(--bs-primary);
-  --bs-btn-disabled-border-color: var(--bs-primary);
-}
-
-[data-bs-theme=dark] .btn-link {
-  --bs-link-color: var(--bs-primary);
-  --bs-btn-hover-color: var(--bs-link-hover-color);
-  --bs-btn-active-color: var(--bs-link-hover-color);
-}
-
-[data-bs-theme=dark] .btn-outline-primary {
-  --bs-btn-color: var(--bs-primary);
-  --bs-btn-border-color: var(--bs-primary);
-  --bs-btn-hover-bg: var(--bs-primary);
-  --bs-btn-hover-border-color: var(--bs-primary);
-  --bs-btn-active-bg: var(--bs-primary);
-  --bs-btn-active-border-color: var(--bs-primary);
-  --bs-btn-disabled-color: var(--bs-primary);
-  --bs-btn-disabled-border-color: var(--bs-primary);
-}
 
 [data-bs-theme=dark] .modal {
   --bs-modal-bg: var(--bs-body-bg);
@@ -145,21 +114,6 @@
 
 [data-bs-theme=dark] .offcanvas, .offcanvas-xxl, .offcanvas-xl, .offcanvas-lg, .offcanvas-md, .offcanvas-sm {
   --bs-offcanvas-bg: var(--bs-body-bg);
-}
-
-[data-bs-theme=dark] .nav-pills {
-  --bs-nav-pills-link-active-bg: var(--bs-primary);
-}
-
-[data-bs-theme=dark] .btn-primary-soft{
-  color: var(--bs-primary);
-  background-color: rgba(var(--bs-primary-rgb), 0.1);
-}
-
-[data-bs-theme=dark] .btn-primary-soft:hover, .btn-primary-soft:focus{
-  color: white;
-  background-color: var(--bs-primary);
-  border-color: var(--bs-primary);
 }
 
 [data-bs-theme=dark] .fill-primary{
@@ -178,7 +132,7 @@
   background-color: var(--bs-body-bg) !important;
 }
 
-[data-bs-theme=dark] .shadow, .shadow-lg, .shadow-sm{
+[data-bs-theme=dark] .shadow, .shadow-lg, .shadow-sm {
   box-shadow: none !important;
 }
 
