@@ -10,6 +10,7 @@ export const useUserStore = defineStore({
       didParent: null,
       followers: 0,
       following: 0,
+      isConnectedToOrbis: false,
       lastActivityTimestamp: null,
       orbisImage: null
     }
@@ -34,6 +35,10 @@ export const useUserStore = defineStore({
 
     getFollowing(state) {
       return state.following;
+    },
+
+    getIsConnectedToOrbis(state) {
+      return state.isConnectedToOrbis;
     },
 
     getLastActivityTimestamp(state) {
@@ -64,6 +69,10 @@ export const useUserStore = defineStore({
 
     setFollowing(following: any) {
       this.following = following;
+    },
+
+    setIsConnectedToOrbis(isConnected: any) {
+      this.isConnectedToOrbis = isConnected;
     },
 
     setLastActivityTimestamp(timestamp: any) {

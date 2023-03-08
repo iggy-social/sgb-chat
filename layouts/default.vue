@@ -126,7 +126,6 @@ export default {
   data() {
     return {
       breakpoint: 1000,
-      isUserConnectedOrbis: false,
       lSidebar: null,
       rSidebar: null,
       width: null
@@ -207,7 +206,8 @@ export default {
     },
 
     async getOrbisDids() {
-      this.isUserConnectedOrbis = await this.$orbis.isConnected();
+      const isConn = await this.$orbis.isConnected();
+      this.userStore.setIsConnectedToOrbis(isConn);
 
       if (this.$orbis.session) {
         this.userStore.setDid(this.$orbis.session.did._id);

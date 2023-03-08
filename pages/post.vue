@@ -5,7 +5,7 @@
   </Head>
 
   <!-- TODO: show component based on the chat type selection (Alien, Forum, smth else) -->
-  <AlienChatPost v-if="post" :post="post" :isConnectedOrbis="isUserConnectedOrbis" />
+  <AlienChatPost v-if="post" :post="post" />
 
   <AlienChat v-if="post" :id="post.stream_id" />
 </template>
@@ -13,14 +13,12 @@
 <script>
 import AlienChatPost from "~~/components/chat/alien/AlienChatPost.vue";
 import AlienChat from "~~/components/chat/alien/AlienChat.vue";
-import { useUserStore } from '~/store/user';
 import { useToast } from "vue-toastification/dist/index.mjs";
 
 export default {
   data() {
     return {
-      post: null,
-      isUserConnectedOrbis: null
+      post: null
     }
   },
 
@@ -30,7 +28,6 @@ export default {
   },
 
   created() {
-    this.checkConnectionToOrbis();
     this.getPostObject();
   },
 
@@ -45,15 +42,6 @@ export default {
   },
 
   methods: {
-    async checkConnectionToOrbis() {
-      this.isUserConnectedOrbis = await this.$orbis.isConnected();
-
-      if (this.$orbis.session) {
-        this.userStore.setDid(this.$orbis.session.did._id);
-        this.userStore.setDidParent(this.$orbis.session.did._parentId);
-      }
-    },
-
     async getPostObject() {
       let { data, error } = await this.$orbis.getPost(this.route.query.id);
 
@@ -74,12 +62,10 @@ export default {
   setup() {
     const route = useRoute();
     const toast = useToast();
-    const userStore = useUserStore();
 
     return {
       route,
-      toast, 
-      userStore 
+      toast
     }
   },
 }

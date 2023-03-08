@@ -42,13 +42,13 @@
           </div>
           <div class="modal-body">
 
-            <div v-if="!isUserConnectedOrbis">
+            <div v-if="!userStore.getIsConnectedToOrbis">
               <p>First connect to Ceramic to change the profile picture:</p>
 
               <button class="btn btn-primary" @click="connectToOrbis">Connect to Ceramic</button>
             </div>
             
-            <div class="mt-3" v-if="isUserConnectedOrbis">
+            <div class="mt-3" v-if="userStore.getIsConnectedToOrbis">
             Enter the new image URL:
 
             <input v-model="newImageLink" type="text" class="form-control mt-2" placeholder="Enter image link" />
@@ -57,7 +57,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" @click="changeImage" :disabled="!isUserConnectedOrbis">
+            <button type="button" class="btn btn-primary" @click="changeImage" :disabled="!userStore.getIsConnectedToOrbis">
               <span v-if="waitingImageUpdate" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
               Submit changes
             </button>
@@ -88,7 +88,6 @@ export default {
       domain: this.pDomain,
       followers: 0,
       following: 0,
-      isUserConnectedOrbis: null,
       lastActivityTimestamp: null,
       newImageLink: null,
       orbisImage: null,
@@ -131,7 +130,7 @@ export default {
 
   methods: {
     async changeImage() {
-      if (this.isUserConnectedOrbis) {
+      if (this.userStore.getIsConnectedToOrbis) {
         this.waitingImageUpdate = true;
 
         if (!this.orbisProfile) {
@@ -168,14 +167,14 @@ export default {
       let res = await this.$orbis.isConnected();
 
       if (res) {
-        this.isUserConnectedOrbis = true;
+        this.userStore.setIsConnectedToOrbis(true);
 
         if (this.$orbis.session && !this.userStore.getDid) {
           this.userStore.setDid(this.$orbis.session.did._id);
           this.userStore.setDidParent(this.$orbis.session.did._parentId);
         }
       } else {
-        this.isUserConnectedOrbis = false;
+        this.userStore.setIsConnectedToOrbis(false);
       }
     },
 
@@ -187,7 +186,7 @@ export default {
 
       /** Check if connection is successful or not */
       if(res.status == 200) {
-        this.isUserConnectedOrbis = true;
+        this.userStore.setIsConnectedToOrbis(true);
 
         if (this.$orbis.session) {
           this.userStore.setDid(this.$orbis.session.did._id);

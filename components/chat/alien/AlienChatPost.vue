@@ -69,13 +69,13 @@
         </div>
         <div class="modal-body">
 
-          <div v-if="!isUserConnectedOrbis">
+          <div v-if="!userStore.getIsConnectedToOrbis">
             <p>First connect to Ceramic before you can reply:</p>
 
             <button class="btn btn-primary" @click="connectToOrbis">Connect to Ceramic</button>
           </div>
 
-          <div class="form-group mt-2 mb-2" v-if="isUserConnectedOrbis">
+          <div class="form-group mt-2 mb-2" v-if="userStore.getIsConnectedToOrbis">
             <textarea 
               v-model="replyText"  
               class="form-control" 
@@ -87,7 +87,7 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button :disabled="!isUserConnectedOrbis" type="button" class="btn btn-primary" @click="replyPost">Submit reply</button>
+          <button :disabled="!userStore.getIsConnectedToOrbis" type="button" class="btn btn-primary" @click="replyPost">Submit reply</button>
         </div>
       </div>
     </div>
@@ -131,7 +131,7 @@ import IggyPostMint from "~~/components/IggyPostMint.vue";
 export default {
   name: "AlienChatPost",
   emits: ["insertReply", "removePost"],
-  props: ["post", "isConnectedOrbis"],
+  props: ["post"],
 
   components: {
     ProfileImage,
@@ -143,15 +143,12 @@ export default {
       alreadyLiked: false,
       authorAddress: null,
       authorDomain: null,
-      isUserConnectedOrbis: false,
       parsedText: null,
       replyText: null
     }
   },
 
   created() {
-    this.isUserConnectedOrbis = this.isConnectedOrbis;
-
     if (this.post.creator_details.metadata) {
       this.fetchAuthorDomain();
     }
@@ -178,6 +175,10 @@ export default {
 
     isCurrentUserAuthor() {
       return String(this.authorAddress).toLowerCase() === String(this.address).toLowerCase();
+    },
+
+    isUserConnectedOrbis() {
+      return this.userStore.getIsConnectedToOrbis;
     },
 
     showDomainOrAddressOrAnon() {
@@ -212,7 +213,7 @@ export default {
 
     async checkIfAlreadyLiked() {
       // check if user has already liked this post
-      if (this.isUserConnectedOrbis) {
+      if (this.userStore.getIsConnectedToOrbis) {
         let res = await this.$orbis.getReaction(
           String(this.post.stream_id), 
           String(this.userStore.getDidParent) // current user's did
@@ -235,7 +236,7 @@ export default {
 
       /** Check if connection is successful or not */
       if(res.status == 200) {
-        this.isUserConnectedOrbis = true;
+        this.userStore.setIsConnectedToOrbis(true);
 
         if (this.$orbis.session) {
           this.userStore.setDid(this.$orbis.session.did._id);
@@ -248,7 +249,7 @@ export default {
     },
 
     async deletePost() {
-      if (this.isUserConnectedOrbis) {
+      if (this.userStore.getIsConnectedToOrbis) {
         let res = await this.$orbis.deletePost(
           String(this.post.stream_id)
         );
@@ -313,7 +314,7 @@ export default {
     },
 
     async likePost() {
-      if (this.isUserConnectedOrbis && !this.alreadyLiked) {
+      if (this.userStore.getIsConnectedToOrbis && !this.alreadyLiked) {
         // mark as liked
         this.alreadyLiked = true;
         this.post.count_likes++;
@@ -332,7 +333,7 @@ export default {
           console.log("Error liking the post: ", res);
           this.toast(res.result, {type: "error"});
         }
-      } else if (this.isUserConnectedOrbis && this.alreadyLiked) {
+      } else if (this.userStore.getIsConnectedToOrbis && this.alreadyLiked) {
         // un-mark as liked
         this.alreadyLiked = false;
         this.post.count_likes--;
@@ -352,16 +353,17 @@ export default {
           this.toast(res.result, {type: "error"});
         }
       } else {
-        this.toast("Please sign into chat to be able to react on a post.", {type: "error"});
-
         // @todo: open a modal to sign into chat instead
+        await this.connectToOrbis();
+
+        this.toast("Signed into chat, now please try to like the post again.", {type: "success"});
       }
     },
 
     async replyPost() {
       // @todo
 
-      if (this.isUserConnectedOrbis) {
+      if (this.userStore.getIsConnectedToOrbis) {
         const options = {
           master: this.post.master, // the main post in the thread
           reply_to: this.post.stream_id, // important: reply_to needs to be filled out even if the reply is directly to the master post

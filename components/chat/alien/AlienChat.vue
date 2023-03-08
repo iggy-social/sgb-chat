@@ -8,21 +8,21 @@
             <div class="form-group mt-2 mb-2">
               <textarea 
                 v-model="postText" 
-                :disabled="!isUserConnectedOrbis || !isSupportedChain" 
+                :disabled="!userStore.getIsConnectedToOrbis || !isSupportedChain" 
                 class="form-control" id="exampleTextarea" rows="3" 
                 :placeholder="createPostPlaceholder"
               ></textarea>
             </div>
 
-            <button v-if="isActivated && isUserConnectedOrbis && isSupportedChain" :disabled="!postText" class="btn btn-primary" @click="createPost">Submit</button>
-            <button v-if="isActivated && !isUserConnectedOrbis && isSupportedChain" class="btn btn-primary" @click="connectToOrbis">Sign into chat</button>
+            <button v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain" :disabled="!postText" class="btn btn-primary" @click="createPost">Submit</button>
+            <button v-if="isActivated && !userStore.getIsConnectedToOrbis && isSupportedChain" class="btn btn-primary" @click="connectToOrbis">Sign into chat</button>
             <ConnectWalletButton v-if="!isActivated" class="btn btn-primary" btnText="Connect wallet" />
             <SwitchChainButton v-if="isActivated && !isSupportedChain" :navbar="false" :dropdown="false" />
           </div>
         </div>
 
         <div v-if="orbisPosts">
-          <AlienChatPost @insertReply="insertReply" @removePost="removePost" v-for="post in orbisPosts" :key="post.stream_id" :post="post" :isConnectedOrbis="isUserConnectedOrbis" />
+          <AlienChatPost @insertReply="insertReply" @removePost="removePost" v-for="post in orbisPosts" :key="post.stream_id" :post="post" />
         </div>
 
         <div class="d-grid gap-2 col-6 mx-auto mb-5" v-if="showLoadMore">
@@ -55,7 +55,6 @@ export default {
 
   data() {
     return {
-      isUserConnectedOrbis: false,
       orbisPosts: [],
       pageCounter: 0,
       postText: null,
@@ -65,13 +64,13 @@ export default {
   },
 
   created() {
-    this.getOrbisPosts();
     this.checkConnectionToOrbis();
+    this.getOrbisPosts();
   },
 
   computed: {
     createPostPlaceholder() {
-      if (this.isUserConnectedOrbis) {
+      if (this.userStore.getIsConnectedToOrbis) {
         if (this.id) {
           return "Post your reply"
         }
@@ -102,7 +101,8 @@ export default {
 
   methods: {
     async checkConnectionToOrbis() {
-      this.isUserConnectedOrbis = await this.$orbis.isConnected();
+      const isConn = await this.$orbis.isConnected();
+      this.userStore.setIsConnectedToOrbis(isConn);
 
       if (this.$orbis.session) {
         this.userStore.setDid(this.$orbis.session.did._id);
@@ -118,7 +118,7 @@ export default {
 
       /** Check if connection is successful or not */
       if(res.status == 200) {
-        this.isUserConnectedOrbis = true;
+        this.userStore.setIsConnectedToOrbis(true);
 
         if (this.$orbis.session) {
           this.userStore.setDid(this.$orbis.session.did._id);
@@ -201,8 +201,9 @@ export default {
       );
 
       if (error) {
-        this.toast("Orbis error", {type: "error"});
-        this.toast(error, {type: "error"});
+        this.toast("Error fetching posts from the Orbis/Ceramic node.", {type: "error"});
+        console.log(error);
+        //this.toast(error, {type: "error"});
       }
 
       //console.log("data:");
