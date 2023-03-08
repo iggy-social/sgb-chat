@@ -51,6 +51,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       blockExplorerBaseUrl: "https://songbird-explorer.flare.network",
+      domainRequiredToPost: true,
       favicon: "/img/favicon.png",
       iggyPostAddress: "0x99Dbf11aCd46baFBCE82506FaeB4F13E6Ea1726A",
       iggyPostMinterAddress: "0xabf9960132818049340253C3Ca0551F92Db856d7",

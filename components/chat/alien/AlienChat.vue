@@ -8,15 +8,36 @@
             <div class="form-group mt-2 mb-2">
               <textarea 
                 v-model="postText" 
-                :disabled="!userStore.getIsConnectedToOrbis || !isSupportedChain" 
+                :disabled="!userStore.getIsConnectedToOrbis || !isSupportedChain || !hasDomainOrNotRequired" 
                 class="form-control" id="exampleTextarea" rows="3" 
                 :placeholder="createPostPlaceholder"
               ></textarea>
             </div>
 
-            <button v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain" :disabled="!postText" class="btn btn-primary" @click="createPost">Submit</button>
-            <button v-if="isActivated && !userStore.getIsConnectedToOrbis && isSupportedChain" class="btn btn-primary" @click="connectToOrbis">Sign into chat</button>
+            <!-- Create Post button -->
+            <button 
+              v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
+              :disabled="!postText" 
+              class="btn btn-primary" 
+              @click="createPost"
+            >Submit</button>
+
+            <!-- Sign Into Chat button -->
+            <button 
+              v-if="isActivated && !userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
+              class="btn btn-primary" @click="connectToOrbis"
+            >Sign into chat</button>
+
+            <!-- Sign Into Chat button -->
+            <button 
+              v-if="isActivated && isSupportedChain && !hasDomainOrNotRequired" 
+              class="btn btn-primary disabled"
+            >Get yourself a {{ $config.tldName }} name to post <i class="bi bi-arrow-right"></i></button>
+            
+            <!-- Connect Wallet button -->
             <ConnectWalletButton v-if="!isActivated" class="btn btn-primary" btnText="Connect wallet" />
+
+            <!-- Switch Chain button -->
             <SwitchChainButton v-if="isActivated && !isSupportedChain" :navbar="false" :dropdown="false" />
           </div>
         </div>
@@ -87,6 +108,18 @@ export default {
         return this.$config.orbisTestContext;
       } else {
         return this.$config.orbisContext;
+      }
+    },
+
+    hasDomainOrNotRequired() {
+      if (this.$config.domainRequiredToPost) {
+        if (this.userStore.getDefaultDomain) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
       }
     },
 
