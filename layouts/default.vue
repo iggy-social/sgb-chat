@@ -286,9 +286,25 @@ export default {
 
   watch: {
     address(newVal, oldVal) {
+      
+      /*
+      // @todo: if address changes, clear local & session storage (needs further testing)
+      if (
+        newVal.startsWith("0x") &&
+        oldVal.startsWith("0x") &&
+        String(newVal).toLowerCase() !== String(oldVal).toLowerCase()
+      ) {
+        console.log("address changed");
+        localStorage.clear();
+				sessionStorage.clear();
+      }
+      */
+
       if (newVal) {
         this.fetchUserDomain();
-      }
+      } 
+
+      //console.log("address changed: " + newVal + ", " + oldVal);
     },
 
     chainId(newVal, oldVal) {
