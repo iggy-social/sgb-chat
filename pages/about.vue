@@ -46,6 +46,14 @@
         <a target="_blank" href="https://discord.gg/8dSrwrAQeu">our Discord</a> 
         and share your thoughts there.
       </p>
+
+      <div class="d-flex justify-content-around flex-wrap">
+        <img class="img-fluid tech-stack mt-3" src="/img/tech/orbis.png" />
+
+        <img class="img-fluid tech-stack mt-3" src="/img/tech/ceramic.png" />
+
+        <img class="img-fluid tech-stack mt-3" src="/img/tech/punk.png" />
+      </div>
     </div>
   </div>
 </template>

@@ -309,6 +309,10 @@
   width: 100vw;
 }
 
+.tech-stack {
+  max-height: 30px;
+}
+
 .Vue-Toastification__toast--info.custom-toast-bg {
   background-color: #D27F97;
 }
