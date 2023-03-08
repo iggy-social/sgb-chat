@@ -26,7 +26,7 @@
       <blockquote v-if="post.master && post.master !== post.reply_to" class="card-text quote-reply-to">
         &gt; 
         {{ getDomainFromStorage(post.reply_to_creator_details.metadata.address) }}:
-        {{ post.reply_to_details.body }}
+        {{ getQuotedText }}
       </blockquote>
 
       <!-- post text -->
@@ -144,6 +144,7 @@ export default {
       authorAddress: null,
       authorDomain: null,
       parsedText: null,
+      quoteLimit: 200,
       replyText: null
     }
   },
@@ -168,6 +169,20 @@ export default {
     getOrbisImage() {
       if (this.post.creator_details.profile) {
         return this.post.creator_details.profile.pfp;
+      }
+
+      return null;
+    },
+
+    getQuotedText() {
+      if (this.post.reply_to_details.body) {
+        let qText = this.post.reply_to_details.body.substring(0, 200);
+
+        if (this.post.reply_to_details.body.length > this.quoteLimit) {
+          qText += "...";
+        }
+
+        return qText;
       }
 
       return null;
