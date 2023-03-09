@@ -1,18 +1,18 @@
 <template>
   <div>
     <Head>
-      <Title>{{ $config.projectName }}</Title>
+      <Title>{{ $config.projectMetadataTitle }}</Title>
       <Meta name="description" :content="$config.projectDescription" />
       <Link rel="icon" type="image/x-icon" :href="$config.favicon" />
 
-      <Meta property="og:title" :content="$config.projectName" />
+      <Meta property="og:title" :content="$config.projectMetadataTitle" />
       <Meta property="og:description" :content="$config.projectDescription" />
       <Meta property="og:image" :content="$config.projectUrl+$config.previewImage" />
 
       <Meta name="twitter:card" content="summary_large_image" />
       <Meta name="twitter:site" :content="$config.projectTwitter" />
       <Meta name="twitter:creator" :content="$config.projectTwitter" />
-      <Meta name="twitter:title" :content="$config.projectName" />
+      <Meta name="twitter:title" :content="$config.projectMetadataTitle" />
       <Meta name="twitter:description" :content="$config.projectDescription" />
       <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImage" />
     </Head>

@@ -1,7 +1,8 @@
 <template>
   <Head>
-    <Title>Chat Post</Title>
-    <Meta name="description" content="Chat general description" />
+    <Meta name="description" :content="'Check out this chat post on ' + $config.projectName + '!'" />
+    <Meta property="og:image" :content="$config.projectUrl+$config.previewImagePost" />
+    <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImagePost" />
   </Head>
 
   <!-- TODO: show component based on the chat type selection (Alien, Forum, smth else) -->

@@ -1,7 +1,8 @@
 <template>
   <Head>
-    <Title>Profile</Title>
-    <Meta name="description" content="Profile page" />
+    <Meta name="description" :content="'Check out this profile on ' + $config.projectName + '!'" />
+    <Meta property="og:image" :content="$config.projectUrl+$config.previewImageProfile" />
+    <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImageProfile" />
   </Head>
 
   <PunkProfile class="mt-1" />
