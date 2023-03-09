@@ -134,7 +134,10 @@ export default {
         this.waitingImageUpdate = true;
 
         if (!this.orbisProfile) {
-          await this.fetchOrbisProfile();
+          this.orbisProfile = {
+            pfp: "",
+            username: ""
+          };
         }
 
         this.orbisProfile.pfp = this.newImageLink;
@@ -277,6 +280,11 @@ export default {
     },
 
     async fetchOrbisProfile() {
+      this.orbisProfile = {
+        pfp: "",
+        username: ""
+      };
+
       if (this.uAddress) {
         let { data, error } = await this.$orbis.getDids(this.uAddress);
 
@@ -286,7 +294,7 @@ export default {
           if (profile.status === 200) {
             this.orbisProfile = profile.data.details.profile;
     
-            if (profile && profile.data.details.profile) {
+            if (profile && profile.data.details.profile && profile.data.details.profile.pfp) {
               this.orbisImage = profile.data.details.profile.pfp;
             }
 
