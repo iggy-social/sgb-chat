@@ -49,7 +49,7 @@
             </div>
             
             <div class="mt-3" v-if="userStore.getIsConnectedToOrbis">
-            Enter the new image URL:
+            Enter the new image URL (use a square image):
 
             <input v-model="newImageLink" type="text" class="form-control mt-2" placeholder="Enter image link" />
             </div>
