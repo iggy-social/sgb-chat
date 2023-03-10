@@ -30,7 +30,18 @@
       </blockquote>
 
       <!-- post text -->
-      <p class="card-text" v-html="parsedText"></p>
+      <p
+        v-if="parsedText.length > postLengthLimit && !showFullText"
+      >
+        <span 
+           
+          class="card-text" 
+          v-html="parsedText.substring(0, postLengthLimit) + ' ... '">
+        </span>
+        <span class="cursor-pointer hover-color" @click="showFullText = true">Read more</span>
+      </p>
+
+      <p v-if="parsedText.length < postLengthLimit || showFullText" class="card-text" v-html="parsedText"></p>
 
       <!-- post actions -->
       <p class="card-subtitle mt-1 text-muted">
@@ -144,8 +155,10 @@ export default {
       authorAddress: null,
       authorDomain: null,
       parsedText: null,
+      postLengthLimit: 500,
       quoteLimit: 200,
-      replyText: null
+      replyText: null,
+      showFullText: false
     }
   },
 
