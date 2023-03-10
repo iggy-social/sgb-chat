@@ -1,7 +1,7 @@
 <template>
   <div class="container-md">
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-lg-12 scroll-500">
 
         <div class="card mb-3 border">
           <div class="card-body">
