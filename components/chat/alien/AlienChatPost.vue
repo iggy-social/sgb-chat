@@ -155,7 +155,7 @@ export default {
       authorAddress: null,
       authorDomain: null,
       parsedText: null,
-      postLengthLimit: 500,
+      postLengthLimit: 550,
       quoteLimit: 200,
       replyText: null,
       showFullText: false
