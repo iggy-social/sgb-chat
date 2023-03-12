@@ -12,6 +12,8 @@
         </div>
       </div>
 
+      <MintedPostsWidget />
+
       <!-- Swap Widget 
       <div class="card m-2 bg-light">
         <div class="card-header bg-light">Swap</div>
@@ -41,12 +43,14 @@
 
 <script>
 import { useSidebarStore } from '~/store/sidebars';
+import MintedPostsWidget from '~/components/MintedPostsWidget.vue';
 import NameMintWidget from '~/components/names/NameMintWidget.vue';
 
 export default {
     name: "SidebarRight",
 
     components: { 
+      MintedPostsWidget,
       NameMintWidget 
     },
 

@@ -71,8 +71,6 @@ export default {
     },
 
     async fetchMintData() {
-      console.log("fetchMintData");
-
       if (this.isActivated) {
         const iggyPostInterface = new ethers.utils.Interface([
           "function getPostPrice(string memory _postId, address _author) external view returns (uint256)"
