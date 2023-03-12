@@ -1,5 +1,5 @@
 <template>
-<div class="card m-2 bg-light">
+<div v-if="posts.length > 0" class="card m-2 bg-light">
   <div class="card-header bg-light">
     <span v-if="posts.length < numberOfPosts" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
     Random Minted Posts
@@ -40,9 +40,11 @@ export default {
       // fetch provider from hardcoded RPCs
       let provider = this.$getFallbackProvider(this.$config.supportedChainId);
 
-      if (this.isActivated && this.chainId === this.$config.supportedChainId) {
-        // fetch provider from user's MetaMask
-        provider = this.signer;
+      if (this.isActivated) {
+        if (this.chainId === this.$config.supportedChainId) {
+          // fetch provider from user's MetaMask
+          provider = this.signer;
+        }
       }
 
       const iggyPostInterface = new ethers.utils.Interface([
