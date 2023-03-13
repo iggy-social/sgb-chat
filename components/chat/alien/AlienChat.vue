@@ -66,7 +66,7 @@ import SwitchChainButton from "~/components/SwitchChainButton.vue";
 
 export default {
   name: "AlienChat",
-  props: ["id"],
+  props: ["id", "master"],
 
   components: {
     AlienChatPost,
@@ -167,8 +167,16 @@ export default {
       let options;
 
       if (this.id) {
+        let masterId;
+
+        if (this.master) {
+          masterId = this.master;
+        } else {
+          masterId = this.id;
+        }
+
         options = {
-          master: this.id, // the main post in the thread
+          master: masterId, // the main post in the thread
           reply_to: this.id, // important: reply_to needs to be filled out even if the reply is directly to the master post
           body: this.postText, 
           context: this.getOrbisContext

@@ -8,7 +8,7 @@
   <!-- TODO: show component based on the chat type selection (Alien, Forum, smth else) -->
   <AlienChatPost v-if="post" :post="post" />
 
-  <AlienChat v-if="post" :id="post.stream_id" />
+  <AlienChat v-if="post" :id="post.stream_id" :master="post.master" />
 </template>
 
 <script>
@@ -45,9 +45,6 @@ export default {
   methods: {
     async getPostObject() {
       let { data, error } = await this.$orbis.getPost(this.route.query.id);
-
-      //console.log("data:")
-      //console.log(data)
 
       this.post = data;
 
