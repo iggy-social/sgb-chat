@@ -9,7 +9,7 @@
               <textarea 
                 v-model="postText" 
                 :disabled="!userStore.getIsConnectedToOrbis || !isSupportedChain || !hasDomainOrNotRequired" 
-                class="form-control" id="exampleTextarea" rows="3" 
+                class="form-control" id="exampleTextarea" rows="5" 
                 :placeholder="createPostPlaceholder"
               ></textarea>
             </div>
@@ -21,6 +21,12 @@
               class="btn btn-primary" 
               @click="createPost"
             >Submit</button>
+
+            <!-- GIF button -->
+            <TenorGifSearch 
+              v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
+              @insertGif="insertGif"
+              />
 
             <!-- Sign Into Chat button -->
             <button 
@@ -63,6 +69,7 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import { useUserStore } from '~/store/user';
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import SwitchChainButton from "~/components/SwitchChainButton.vue";
+import TenorGifSearch from "~/components/TenorGifSearch.vue";
 
 export default {
   name: "AlienChat",
@@ -71,7 +78,8 @@ export default {
   components: {
     AlienChatPost,
     ConnectWalletButton,
-    SwitchChainButton
+    SwitchChainButton,
+    TenorGifSearch
   },
 
   data() {
@@ -259,6 +267,15 @@ export default {
       this.orbisPosts.push(...data);
 
       this.pageCounter++;
+    },
+
+    async insertGif(gifImage) {
+      // add gifImage string to postText
+      if (!this.postText) {
+        this.postText = gifImage + " ";
+      } else {
+        this.postText = this.postText + " " + gifImage + " ";
+      }
     },
 
     async insertReply(streamId, replyToId, replyText, repliedText, repliedAddress) {

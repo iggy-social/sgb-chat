@@ -13,9 +13,17 @@ What's included:
 - [Pinia](https://pinia.vuejs.org/)
 - [Vue Toastification](https://github.com/Maronato/vue-toastification/tree/next)
 
+## .env
+
+Create a `.env` file from `.env.example`.
+
 ## Hosting
 
 This template does not work properly on GitHub Pages. Use Netlify or Vercel instead (make sure to use the `npm run generate` command instead of `npm run build` there).
+
+## GIFs
+
+If you want to have GIF search implemented, create your own Tenor API Key on Google Cloud Console. Follow the instructions here: https://developers.google.com/tenor/guides/quickstart. 
 
 ## Customize
 
