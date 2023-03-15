@@ -49,15 +49,19 @@
             </div>
             
             <div class="mt-3" v-if="userStore.getIsConnectedToOrbis">
-            Enter the new image URL (use a square image):
+              Enter the new image URL (use a square image):
 
-            <input v-model="newImageLink" type="text" class="form-control mt-2" placeholder="Enter image link" />
+              <input v-model="newImageLink" type="text" class="form-control mt-2" placeholder="Enter image link" />
+
+              <small v-if="newImageLink && !isImage" class="text-danger">
+                Error: The entered link is not an image (it does not end with .jpg, .jpeg, .png, or similar image extension).
+              </small>
             </div>
 
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" @click="changeImage" :disabled="!userStore.getIsConnectedToOrbis">
+            <button type="button" class="btn btn-primary" @click="changeImage" :disabled="!userStore.getIsConnectedToOrbis || !isImage">
               <span v-if="waitingImageUpdate" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
               Submit changes
             </button>
@@ -126,6 +130,23 @@ export default {
     isCurrentUser() {
       return String(this.uAddress).toLowerCase() === String(this.address).toLowerCase();
     },
+
+    isImage() {
+      // check if orbisImage includes a valid image extension
+      if (this.newImageLink) {
+        if (
+          this.newImageLink.includes(".jpg") || 
+          this.newImageLink.includes(".jpeg") ||
+          this.newImageLink.includes(".png") ||
+          this.newImageLink.includes(".gif") ||
+          this.newImageLink.includes(".webp")
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    }
   },
 
   methods: {
