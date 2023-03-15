@@ -1,23 +1,29 @@
 <template>
-<button data-bs-toggle="modal" data-bs-target="#gifModal" class="btn btn-primary ms-2">GIF</button>
+<button data-bs-toggle="modal" data-bs-target="#gifModal" class="btn btn-primary ms-2">
+  <i class="bi bi-file-earmark-image-fill"></i> 
+  GIF
+</button>
 
 <!-- Modal -->
 <div class="modal fade" id="gifModal" tabindex="-1" aria-labelledby="gifModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="gifModalLabel">Find a GIF image</h1>
+        <h1 class="modal-title fs-5" id="gifModalLabel">Insert a GIF image</h1>
         <button id="closeGifModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body">
 
         <div class="input-group mb-3">
-          <input v-model="searchTerm" type="text" class="form-control" placeholder="Enter search term">
+          <input 
+            v-model="searchTerm" 
+            v-on:keyup.enter="findGifs" 
+            type="text" class="form-control" placeholder="Enter search term">
           <button :disabled="!searchTerm" class="btn btn-primary" type="button" @click="findGifs">Find GIFs</button>
         </div>
 
-        <div class="row row-cols-2 row-cols-md-4">
+        <div class="row row-cols-2 row-cols-md-2">
           <div v-for="gif in gifArray" :key="gif" class="col">
             <img @click="chooseGif(gif)" :src="gif" class="img-thumbnail rounded" alt="...">
           </div>
@@ -38,7 +44,7 @@ export default {
     return {
       clientKey: "iggy_social_app",
       gifArray: [],
-      limit: 8,
+      limit: 10,
       searchTerm: null
     }
   },
