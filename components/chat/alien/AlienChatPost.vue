@@ -18,8 +18,7 @@
       <p class="card-subtitle mb-1 text-muted">
         <NuxtLink v-if="authorDomain" class="link-without-color hover-color" :to="'/profile/?id='+authorDomain">{{showDomainOrAddressOrAnon}}</NuxtLink>
         <span v-if="!authorDomain">{{showDomainOrAddressOrAnon}}</span>
-        <span v-if="post.timestamp && !post.master"> · <NuxtLink class="link-without-color hover-color" :to="'/post/?id='+post.stream_id">{{timeSince}}</NuxtLink></span>
-        <span v-if="post.timestamp && post.master"> · {{timeSince}}</span>
+        <span v-if="post.timestamp"> · <NuxtLink class="link-without-color hover-color" :to="'/post/?id='+post.stream_id">{{timeSince}}</NuxtLink></span>
       </p>
 
       <!-- replied text -->
