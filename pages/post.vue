@@ -64,8 +64,6 @@ export default {
 
       this.post = data;
 
-      console.log("post", this.post);
-
       if (error) {
         console.log("Orbis error");
         console.log(error)
@@ -84,8 +82,6 @@ export default {
 
           this.masterPost = data;
 
-          console.log("masterPost", this.masterPost);
-
           if (error) {
             console.log("Orbis error");
             console.log(error)
@@ -100,8 +96,6 @@ export default {
   setup() {
     const route = useRoute();
     const toast = useToast();
-
-    //watch(() => route.query, () => console.log("LOOOOL LOL id"))
 
     return {
       route,

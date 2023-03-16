@@ -30,7 +30,7 @@
           <slot></slot>
         </main>
 
-        <SidebarRight />
+        <SidebarRight :rSidebar="rSidebar" :isMobile="isMobile" />
         
       </div>
     </div>

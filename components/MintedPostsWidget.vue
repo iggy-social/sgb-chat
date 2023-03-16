@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-12 mb-4" v-for="post in posts" :key="post.id">
         <NuxtLink :to="'/post/?id=' + post.streamId">
-          <img class="img-fluid rounded" :src="post.image" />
+          <img class="img-fluid rounded" :src="post.image" @click="$emit('closeRightSidebar')" />
         </NuxtLink>
       </div>
     </div>
@@ -23,6 +23,7 @@ import { useEthers } from 'vue-dapp';
 
 export default {
   name: "MintedPostsWidget",
+  emits: ["closeRightSidebar"],
 
   data() {
     return {

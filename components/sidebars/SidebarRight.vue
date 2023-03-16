@@ -12,7 +12,7 @@
         </div>
       </div>
 
-      <MintedPostsWidget />
+      <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
 
       <!-- Swap Widget 
       <div class="card m-2 bg-light">
@@ -48,10 +48,21 @@ import NameMintWidget from '~/components/names/NameMintWidget.vue';
 
 export default {
     name: "SidebarRight",
+    props: ["rSidebar", "isMobile"],
 
     components: { 
       MintedPostsWidget,
       NameMintWidget 
+    },
+
+    methods: {
+      closeRightSidebar() {
+        if (this.isMobile) {
+          //this.rSidebar.hide();
+          this.sidebarStore.setRightSidebar(false);
+          this.sidebarStore.setMainContent(true);
+        }
+      }
     },
 
     setup() {
