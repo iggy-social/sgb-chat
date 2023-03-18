@@ -62,6 +62,7 @@ export default defineNuxtConfig({
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context
       previewImage: "/img/cover.png",
       previewImagePost: "/img/cover-post.png",
+      previewImagePostNft: "/img/cover-post-nft.png",
       previewImageProfile: "/img/cover-profile.png",
       projectMetadataTitle: "SGB Chat - Web3 Social on Songbird",
       projectName: "SGB Chat (beta)",

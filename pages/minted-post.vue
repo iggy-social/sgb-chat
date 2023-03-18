@@ -2,8 +2,8 @@
   <div>
     <Head>
       <Meta name="description" :content="'Check out this minted post NFT on ' + $config.projectName + '!'" />
-      <Meta property="og:image" :content="$config.projectUrl+$config.previewImagePost" />
-      <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImagePost" />
+      <Meta property="og:image" :content="$config.projectUrl+$config.previewImagePostNft" />
+      <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImagePostNft" />
     </Head>
 
     <!-- Minted Post Image -->
@@ -71,7 +71,7 @@ export default {
     AlienChatPost
   },
 
-  created() {
+  mounted() {
     this.getPostObject();
   },
 
