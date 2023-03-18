@@ -1,8 +1,12 @@
 <template>
   <Head>
     <Meta name="description" :content="'Check out this profile on ' + $config.projectName + '!'" />
+
     <Meta property="og:image" :content="$config.projectUrl+$config.previewImageProfile" />
+    <Meta property="og:description" :content="'Check out this profile on ' + $config.projectName + '!'" />
+
     <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImageProfile" />
+    <Meta name="twitter:description" :content="'Check out this profile on ' + $config.projectName + '!'" />
   </Head>
 
   <PunkProfile class="mt-1" />

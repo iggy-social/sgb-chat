@@ -2,8 +2,12 @@
 <div>
   <Head>
     <Meta name="description" :content="'Check out this chat post on ' + $config.projectName + '!'" />
+
     <Meta property="og:image" :content="$config.projectUrl+$config.previewImagePost" />
+    <Meta property="og:description" :content="'Check out this chat post on ' + $config.projectName + '!'" />
+
     <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImagePost" />
+    <Meta name="twitter:description" :content="'Check out this chat post on ' + $config.projectName + '!'" />
   </Head>
 
   <AlienChatPost class="m-4" v-if="masterPost" :post="masterPost" />

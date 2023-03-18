@@ -2,8 +2,12 @@
   <div>
     <Head>
       <Meta name="description" :content="'Check out this minted post NFT on ' + $config.projectName + '!'" />
+
       <Meta property="og:image" :content="$config.projectUrl+$config.previewImagePostNft" />
+      <Meta property="og:description" :content="'Check out this minted post NFT on ' + $config.projectName + '!'" />
+
       <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImagePostNft" />
+      <Meta name="twitter:description" :content="'Check out this minted post NFT on ' + $config.projectName + '!'" />
     </Head>
 
     <!-- Minted Post Image -->
