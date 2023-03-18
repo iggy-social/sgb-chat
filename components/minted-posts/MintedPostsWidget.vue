@@ -2,7 +2,7 @@
 <div v-if="posts.length > 0" class="card m-2 bg-light">
   <div class="card-header bg-light">
     <span v-if="posts.length < numberOfPosts" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
-    Random Minted Posts
+    {{ getWidgetTitle }}
   </div>
 
   <div class="card-body sidebar-card-body">
@@ -27,13 +27,23 @@ export default {
 
   data() {
     return {
-      numberOfPosts: 3,
+      numberOfPosts: this.$config.randomPostsNumber,
       posts: []
     };
   },
 
   mounted() {
     this.fetchRandomMintedPosts();
+  },
+
+  computed: {
+    getWidgetTitle() {
+      if (this.$config.randomPostsNumber === 1) {
+        return "Random Minted Post"
+      } else {
+        return "Random Minted Posts"
+      }
+    },
   },
 
   methods: {
