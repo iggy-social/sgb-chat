@@ -43,7 +43,7 @@
 
 <script>
 import { useSidebarStore } from '~/store/sidebars';
-import MintedPostsWidget from '~/components/MintedPostsWidget.vue';
+import MintedPostsWidget from '~/components/minted-posts/MintedPostsWidget.vue';
 import NameMintWidget from '~/components/names/NameMintWidget.vue';
 
 export default {

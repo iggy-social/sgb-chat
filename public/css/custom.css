@@ -3,7 +3,8 @@
 @import "./light.css";
 
 :root {
-  --bs-primary: #D27F97 !important;
+  --bs-primary: #d27f97 !important;
+  --bs-primary-rgb: 210, 127, 151;
   --bs-btn-disabled-border-color: #D27F97;
   --bs-link-color: #D27F97;
   --bs-nav-pills-link-active-bg: #D27F97 !important;

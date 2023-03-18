@@ -136,7 +136,7 @@ import resolvers from "~/assets/data/resolvers.json";
 import { useToast } from "vue-toastification/dist/index.mjs";
 import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
-import IggyPostMint from "~~/components/IggyPostMint.vue";
+import IggyPostMint from "~~/components/minted-posts/IggyPostMint.vue";
 
 export default {
   name: "AlienChatPost",

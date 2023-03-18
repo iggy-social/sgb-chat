@@ -8,7 +8,7 @@
   <div class="card-body sidebar-card-body">
     <div class="row">
       <div class="col-12 mb-4" v-for="post in posts" :key="post.id">
-        <NuxtLink :to="'/post/?id=' + post.streamId">
+        <NuxtLink :to="'/minted-post/?id=' + post.id">
           <img class="img-fluid rounded" :src="post.image" @click="$emit('closeRightSidebar')" />
         </NuxtLink>
       </div>
@@ -67,7 +67,12 @@ export default {
       }
 
       for (let i = 0; i < randomNumbers.length; i++) {
-        const post = await iggyContract.uri(randomNumbers[i]);
+        let post = localStorage.getItem("minted-post-" + randomNumbers[i]);
+
+        if (!post) {
+          post = await iggyContract.uri(randomNumbers[i]);
+          localStorage.setItem("minted-post-" + randomNumbers[i], post);
+        }
 
         const json = atob(post.substring(29));
         const result = JSON.parse(json);
