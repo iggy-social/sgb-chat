@@ -17,7 +17,7 @@
             <!-- Create Post button -->
             <button 
               v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
-              :disabled="!postText" 
+              :disabled="!postText || waitingCreatePost" 
               class="btn btn-primary" 
               @click="createPost"
             >Submit</button>
@@ -88,7 +88,8 @@ export default {
       pageCounter: 0,
       postText: null,
       reply_to: null, 
-      showLoadMore: true
+      showLoadMore: true,
+      waitingCreatePost: false
     }
   },
 
@@ -172,6 +173,8 @@ export default {
     },
 
     async createPost() {
+      this.waitingCreatePost = true;
+
       let options;
 
       if (this.id) {
@@ -222,9 +225,11 @@ export default {
         });
 
         this.postText = null;
+        this.waitingCreatePost = false;
       } else {
         console.log("Error posting via Orbis to Ceramic: ", res);
         this.toast(res.result, {type: "error"});
+        this.waitingCreatePost = false;
       }
     },
 
