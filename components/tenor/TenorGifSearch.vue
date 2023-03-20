@@ -59,7 +59,8 @@ export default {
       this.gifArray = [];
 
       const searchUrl = "https://tenor.googleapis.com/v2/search?q=" + this.searchTerm + "&key=" +
-            this.$config.tenorApiKey +"&client_key=" + this.clientKey +  "&limit=" + this.limit;
+            this.$config.tenorApiKey +"&client_key=" + this.clientKey +  "&limit=" + this.limit + 
+            "&contentfilter=high&random=true&media_filter=gif";
 
       const response = await fetch(searchUrl);
       const data = await response.json();

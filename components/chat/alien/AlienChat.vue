@@ -25,8 +25,14 @@
             <!-- GIF button -->
             <TenorGifSearch 
               v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
-              @insertGif="insertGif"
-              />
+              @insertGif="insertImage"
+            />
+
+            <!-- IMG button -->
+            <TenorStickerSearch 
+              v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
+              @insertSticker="insertImage"
+            />
 
             <!-- Sign Into Chat button -->
             <button 
@@ -69,7 +75,8 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import { useUserStore } from '~/store/user';
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import SwitchChainButton from "~/components/SwitchChainButton.vue";
-import TenorGifSearch from "~/components/TenorGifSearch.vue";
+import TenorGifSearch from "~/components/tenor/TenorGifSearch.vue";
+import TenorStickerSearch from "~/components/tenor/TenorStickerSearch.vue";
 
 export default {
   name: "AlienChat",
@@ -79,7 +86,8 @@ export default {
     AlienChatPost,
     ConnectWalletButton,
     SwitchChainButton,
-    TenorGifSearch
+    TenorGifSearch,
+    TenorStickerSearch
   },
 
   data() {
@@ -274,12 +282,12 @@ export default {
       this.pageCounter++;
     },
 
-    async insertGif(gifImage) {
-      // add gifImage string to postText
+    async insertImage(imageUrl) {
+      // add image url to postText
       if (!this.postText) {
-        this.postText = gifImage + " ";
+        this.postText = imageUrl + " ";
       } else {
-        this.postText = this.postText + " " + gifImage + " ";
+        this.postText = this.postText + " " + imageUrl + " ";
       }
     },
 
