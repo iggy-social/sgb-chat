@@ -1,5 +1,5 @@
 <template>
-<button data-bs-toggle="modal" data-bs-target="#gifModal" class="btn btn-primary ms-2">
+<button data-bs-toggle="modal" data-bs-target="#gifModal" class="btn btn-primary me-2 mt-2">
   <i class="bi bi-file-earmark-image-fill"></i> 
   GIF
 </button>

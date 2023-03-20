@@ -18,7 +18,7 @@
             <button 
               v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
               :disabled="!postText || waitingCreatePost" 
-              class="btn btn-primary" 
+              class="btn btn-primary me-2 mt-2" 
               @click="createPost"
             >Submit</button>
 
