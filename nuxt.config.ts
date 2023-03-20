@@ -73,6 +73,7 @@ export default defineNuxtConfig({
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
       punkTldAddress: "0xBDACF94dDCAB51c39c2dD50BffEe60Bb8021949a", // punk domain TLD address
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
+      showRepliesOnHomepage: true, // show replies on the homepage
       supportedChainId: 19,
       tenorApiKey: process.env.TENOR_KEY || "",
       tldName: ".sgb",

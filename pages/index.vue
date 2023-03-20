@@ -1,5 +1,5 @@
 <template>
-  <AlienChat class="mt-1" />
+  <AlienChat class="mt-1" :showQuotedPost="$config.showRepliesOnHomepage" />
 </template>
 
 <script>

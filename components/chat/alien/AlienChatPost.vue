@@ -38,7 +38,7 @@
       </div>
 
       <!-- quoted post (replied) -->
-      <AlienChatQuote class="mt-3" :post="quotePost" v-if="post.master && post.master !== post.reply_to" />
+      <AlienChatQuote class="mt-3" :post="quotePost" v-if="showQuote" />
 
       <!-- post actions -->
       <p class="card-subtitle mt-1 text-muted">
@@ -140,7 +140,7 @@ import AlienChatQuote from "~/components/chat/alien/AlienChatQuote.vue";
 export default {
   name: "AlienChatPost",
   emits: ["insertReply", "removePost"],
-  props: ["post"],
+  props: ["post", "showQuotedPost"],
 
   components: {
     AlienChatQuote,
@@ -176,8 +176,6 @@ export default {
       this.showFullText = true;
     }
 
-    console.log("Post: ", this.post);
-
     // create quote post object
     if (this.post.reply_to_details) {
       this.quotePost = {
@@ -196,9 +194,6 @@ export default {
       if (this.post.reply_to_creator_details.metadata && this.post.reply_to_creator_details.metadata.address) {
         this.quotePost["address"] = this.post.reply_to_creator_details.metadata.address;
       }
-
-      console.log("this.quotePost");
-      console.log(this.quotePost);
     }
   },
 
@@ -235,6 +230,18 @@ export default {
       } else {
         return "Anon";
       }
+    },
+
+    showQuote() {
+      if (this.post.master && this.post.master !== this.post.reply_to) {
+        return true;
+      }
+
+      if (this.post.master && this.showQuotedPost) {
+        return true;
+      }
+
+      return false;
     },
 
     timeSince() {

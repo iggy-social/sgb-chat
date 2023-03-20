@@ -55,7 +55,13 @@
         </div>
 
         <div v-if="orbisPosts">
-          <AlienChatPost @insertReply="insertReply" @removePost="removePost" v-for="post in orbisPosts" :key="post.stream_id" :post="post" />
+          <AlienChatPost 
+            @insertReply="insertReply" 
+            @removePost="removePost" 
+            v-for="post in orbisPosts" 
+            :key="post.stream_id"
+            :showQuotedPost="showQuotedPost" 
+            :post="post" />
         </div>
 
         <div class="d-grid gap-2 col-6 mx-auto mb-5" v-if="showLoadMore">
@@ -80,7 +86,7 @@ import TenorStickerSearch from "~/components/tenor/TenorStickerSearch.vue";
 
 export default {
   name: "AlienChat",
-  props: ["id", "master"],
+  props: ["id", "master", "showQuotedPost"],
 
   components: {
     AlienChatPost,
@@ -248,12 +254,12 @@ export default {
         options = {
           master: this.id, // master is the post ID
           context: this.getOrbisContext, // context is the group ID
-          only_master: false // only get master posts (not replies)
+          only_master: false // only get master posts (not replies), or all posts
         }
       } else {
         options = {
           context: this.getOrbisContext, // context is the group ID
-          only_master: true // only get master posts (not replies)
+          only_master: !this.$config.showRepliesOnHomepage // only get master posts (not replies), or all posts
         }
       }
 
