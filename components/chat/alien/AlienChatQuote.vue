@@ -21,7 +21,7 @@
       </p>
 
       <!-- post text -->
-      <div @click="openPostDetails">
+      <div v-if="post.body" @click="openPostDetails">
         <p
           v-if="parsedText.length > postLengthLimit && !showFullText"
         >
@@ -34,6 +34,10 @@
         </p>
 
         <p v-if="parsedText.length < postLengthLimit || showFullText" class="card-text" v-html="parsedText"></p>
+      </div>
+
+      <div v-if="!post.body">
+        <p class="card-text"><small><em>(deleted)</em></small></p>
       </div>
     </div>
   </div>

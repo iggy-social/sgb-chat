@@ -37,6 +37,7 @@
         <p v-if="parsedText.length < postLengthLimit || showFullText" class="card-text" v-html="parsedText"></p>
       </div>
 
+      <!-- quoted post (replied) -->
       <AlienChatQuote class="mt-3" :post="quotePost" v-if="post.master && post.master !== post.reply_to" />
 
       <!-- post actions -->
