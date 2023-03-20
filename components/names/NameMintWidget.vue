@@ -1,10 +1,10 @@
 <template>
 <div class="card m-2 bg-light">
-  <div class="card-header bg-light">Mint a {{$config.tldName}} name</div>
+  <div class="card-header bg-light">Get a {{$config.tldName}} name</div>
 
   <div class="card-body sidebar-card-body">
     <p>
-      Mint yourself a .sgb username and start chatting with other Songbird community members.
+      Get yourself a {{$config.tldName}} username and start chatting with other community members.
     </p>
     
     <div class="input-group mb-3">

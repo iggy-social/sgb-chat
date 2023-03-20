@@ -50,8 +50,8 @@
       </div>
     </div>
   
-    <!-- TODO: show component based on the chat type selection (Alien, Forum, smth else) -->
-    <AlienChatPost v-if="post" :post="post" />
+    <!-- orbis post which has been minted -->
+    <AlienChatPost v-if="post" :post="post" :showQuotedPost="true" />
   </div>
 </template>
 

@@ -40,6 +40,13 @@
           </li>
         </ul>
       </div>
+
+      <div class="card m-2 bg-light">
+        <div class="card-header bg-light">SGB Chat Newsletter</div>
+        <div class="card-body sidebar-card-body">
+          <a class="btn btn-outline-primary mt-2 mb-2" target="_blank" href="https://zcmp.eu/Onz">Join our newsletter!</a>
+        </div>
+      </div>
    </div>
   </div>
 </div>
