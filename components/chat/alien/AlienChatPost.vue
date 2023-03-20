@@ -21,13 +21,6 @@
         <span v-if="post.timestamp"> · <NuxtLink class="link-without-color hover-color" :to="'/post/?id='+post.stream_id">{{timeSince}}</NuxtLink></span>
       </p>
 
-      <!-- replied text -->
-      <blockquote v-if="post.master && post.master !== post.reply_to" class="card-text quote-reply-to">
-        &gt; 
-        {{ getDomainFromStorage(post.reply_to_creator_details.metadata.address) }}:
-        {{ getQuotedText }}
-      </blockquote>
-
       <!-- post text -->
       <div @click="openPostDetails">
         <p
@@ -43,6 +36,8 @@
 
         <p v-if="parsedText.length < postLengthLimit || showFullText" class="card-text" v-html="parsedText"></p>
       </div>
+
+      <AlienChatQuote class="mt-3" :post="quotePost" v-if="post.master && post.master !== post.reply_to" />
 
       <!-- post actions -->
       <p class="card-subtitle mt-1 text-muted">
@@ -139,6 +134,7 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
 import IggyPostMint from "~~/components/minted-posts/IggyPostMint.vue";
+import AlienChatQuote from "~/components/chat/alien/AlienChatQuote.vue";
 
 export default {
   name: "AlienChatPost",
@@ -146,6 +142,7 @@ export default {
   props: ["post"],
 
   components: {
+    AlienChatQuote,
     ProfileImage,
     IggyPostMint
   },
@@ -157,6 +154,7 @@ export default {
       authorDomain: null,
       parsedText: null,
       postLengthLimit: 550,
+      quotePost: null,
       quoteLimit: 200,
       replyText: null,
       showFullText: false
@@ -176,6 +174,31 @@ export default {
     ) {
       this.showFullText = true;
     }
+
+    console.log("Post: ", this.post);
+
+    // create quote post object
+    if (this.post.reply_to_details) {
+      this.quotePost = {
+        body: this.post.reply_to_details.body,
+        stream_id: this.post.reply_to,
+      }
+
+      if (this.post.reply_to_creator_details.profile && this.post.reply_to_creator_details.profile.pfp) {
+        this.quotePost["pfp"] = this.post.reply_to_creator_details.profile.pfp;
+      }
+
+      if (this.post.reply_to_creator_details.profile && this.post.reply_to_creator_details.profile.username) {
+        this.quotePost["username"] = this.post.reply_to_creator_details.profile.username;
+      }
+
+      if (this.post.reply_to_creator_details.metadata && this.post.reply_to_creator_details.metadata.address) {
+        this.quotePost["address"] = this.post.reply_to_creator_details.metadata.address;
+      }
+
+      console.log("this.quotePost");
+      console.log(this.quotePost);
+    }
   },
 
   computed: {
@@ -190,20 +213,6 @@ export default {
     getOrbisImage() {
       if (this.post.creator_details.profile) {
         return this.post.creator_details.profile.pfp;
-      }
-
-      return null;
-    },
-
-    getQuotedText() {
-      if (this.post.reply_to_details.body) {
-        let qText = this.post.reply_to_details.body.substring(0, 200);
-
-        if (this.post.reply_to_details.body.length > this.quoteLimit) {
-          qText += "...";
-        }
-
-        return qText;
       }
 
       return null;
@@ -336,16 +345,6 @@ export default {
             sessionStorage.setItem(String(this.authorAddress).toLowerCase(), this.authorDomain);
           } 
         }
-      }
-    },
-
-    getDomainFromStorage(addr) {
-      const domainName = sessionStorage.getItem(String(addr).toLowerCase());
-
-      if (domainName) {
-        return domainName;
-      } else {
-        return this.shortenAddress(addr);
       }
     },
 
