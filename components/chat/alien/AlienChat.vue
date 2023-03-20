@@ -107,7 +107,7 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.checkConnectionToOrbis();
     this.getOrbisPosts();
   },
