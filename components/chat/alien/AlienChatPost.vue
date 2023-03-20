@@ -29,18 +29,20 @@
       </blockquote>
 
       <!-- post text -->
-      <p
-        v-if="parsedText.length > postLengthLimit && !showFullText"
-      >
-        <span 
-           
-          class="card-text" 
-          v-html="parsedText.substring(0, postLengthLimit) + ' ... '">
-        </span>
-        <span class="cursor-pointer hover-color" @click="showFullText = true">Read more</span>
-      </p>
+      <div @click="openPostDetails">
+        <p
+          v-if="parsedText.length > postLengthLimit && !showFullText"
+        >
+          <span 
+            
+            class="card-text" 
+            v-html="parsedText.substring(0, postLengthLimit) + ' ... '">
+          </span>
+          <span class="cursor-pointer hover-color" @click="showFullText = true">Read more</span>
+        </p>
 
-      <p v-if="parsedText.length < postLengthLimit || showFullText" class="card-text" v-html="parsedText"></p>
+        <p v-if="parsedText.length < postLengthLimit || showFullText" class="card-text" v-html="parsedText"></p>
+      </div>
 
       <!-- post actions -->
       <p class="card-subtitle mt-1 text-muted">
@@ -167,6 +169,13 @@ export default {
     }
 
     this.parsePostText();
+
+    if (
+      this.route.href === "/post/?id=" + this.post.stream_id ||
+      this.route.href === "/post?id=" + this.post.stream_id
+    ) {
+      this.showFullText = true;
+    }
   },
 
   computed: {
@@ -418,6 +427,23 @@ export default {
       }
     },
 
+    openPostDetails() {
+      // navigate to post details page if you're not already there
+      /*
+      if (
+        this.route.path !== "/post/" && // no post on any /post page is clickable
+        this.route.path !== "/post" && // no post on any /post page is clickable
+        this.route.href !== "/post?id=" + this.post.stream_id &&
+        this.route.href !== "/post/?id=" + this.post.stream_id
+      ) {
+        console.log("navigate to post details page")
+        this.$router.push({ name: 'post', query: { id: this.post.stream_id } });
+      }
+      */
+
+      this.$router.push({ name: 'post', query: { id: this.post.stream_id } });
+    },
+
     parsePostText() {
       let postText = this.post.content.body.replace(/(\r\n|\n|\r)/gm, "<br/>");
 
@@ -470,11 +496,12 @@ export default {
   },
 
   setup() {
+    const route = useRoute();
     const { address, chainId, isActivated, signer } = useEthers();
     const toast = useToast();
     const userStore = useUserStore();
 
-    return { address, chainId, isActivated, shortenAddress, signer, toast, userStore }
+    return { address, chainId, isActivated, route, shortenAddress, signer, toast, userStore }
   },
 
   watch: {
