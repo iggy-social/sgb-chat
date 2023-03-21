@@ -67,7 +67,7 @@ export default {
       authorAddress: null,
       authorDomain: null,
       parsedText: null,
-      postLengthLimit: 550,
+      postLengthLimit: 300,
       showFullText: false
     }
   },

@@ -49,8 +49,7 @@ export default defineNuxtPlugin(() => {
       if (networkId === 137) {
         // Polygon PoS Chain
         urls = [
-          "https://1rpc.io/matic",
-          "https://polygon-rpc.com/"
+          "https://rpc.ankr.com/polygon"
         ];
       } else if (networkId === 80001) {
         // Mumbai testnet (Polygon testnet)
@@ -71,7 +70,7 @@ export default defineNuxtPlugin(() => {
       } else if (networkId === 56) {
         // BSC mainnet
         urls = [
-          "https://bscrpc.com"
+          "https://rpc.ankr.com/bsc"
         ];
       } else if (networkId === 77) {
         // Gnosis Chain testnet (Sokol)
@@ -81,15 +80,12 @@ export default defineNuxtPlugin(() => {
       } else if (networkId === 100) {
         // Gnosis Chain
         urls = [
-          "https://rpc.xdaichain.com",
-          "https://rpc.gnosischain.com"
+          "https://rpc.ankr.com/gnosis"
         ];
       } else if (networkId === 250) {
         // Fantom Mainnet
         urls = [
-          "https://1rpc.io/ftm",
-          "https://rpcapi.fantom.network",
-          "https://rpc.ftm.tools"
+          "https://rpc.ankr.com/fantom"
         ];
       } else if (networkId === 4002) {
         // Fantom Testnet
@@ -101,8 +97,7 @@ export default defineNuxtPlugin(() => {
       } else if (networkId === 42161) {
         // Arbitrum
         urls = [
-          "https://1rpc.io/arb",
-          "https://arb1.arbitrum.io/rpc"
+          "https://rpc.ankr.com/arbitrum"
         ];
       } else if (networkId === 421611) {
         // Arbitrum testnet
@@ -176,7 +171,7 @@ export default defineNuxtPlugin(() => {
         chainId: "0xA",
         chainName: "Optimism",
         nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
-        rpcUrls: ["https://1rpc.io/op"]
+        rpcUrls: ["https://rpc.ankr.com/optimism"]
       }] 
     } else if (networkName == "Optimism Testnet") {
       method = "wallet_addEthereumChain"
@@ -194,7 +189,7 @@ export default defineNuxtPlugin(() => {
         chainId: "0x89",
         chainName: "Polygon PoS Chain",
         nativeCurrency: { decimals: 18, name: "MATIC", symbol: "MATIC" }, 
-        rpcUrls: ["https://1rpc.io/matic"]
+        rpcUrls: ["https://rpc.ankr.com/polygon"]
       }] 
     } else if (networkName == "Gnosis Testnet") {
       method = "wallet_addEthereumChain"
@@ -239,7 +234,7 @@ export default defineNuxtPlugin(() => {
         chainId: "0xFA",
         chainName: "Fantom",
         nativeCurrency: { decimals: 18, name: "FTM", symbol: "FTM" }, 
-        rpcUrls: ["https://1rpc.io/ftm"]
+        rpcUrls: ["https://rpc.ankr.com/fantom"]
       }] 
     } else if (networkName == "Fantom Testnet") {
       method = "wallet_addEthereumChain"
