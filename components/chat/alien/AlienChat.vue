@@ -265,7 +265,8 @@ export default {
 
       let { data, error } = await this.$orbis.getPosts(
         options,
-        this.pageCounter
+        this.pageCounter,
+        this.$config.getPostsLimit
       );
 
       if (error) {
@@ -277,10 +278,10 @@ export default {
       //console.log("data:");
       //console.log(data);
 
-      if (data.length < 50) {
-        this.showLoadMore = false; // hide Load More Posts button if there's less than 50 posts received
-      } else if (data.length === 50) {
-        this.showLoadMore = true; // show Load More Posts button if data length was full (50 posts)
+      if (data.length < this.$config.getPostsLimit) {
+        this.showLoadMore = false; // hide Load More Posts button if there's less than getPostsLimit number of posts received
+      } else if (data.length === this.$config.getPostsLimit) {
+        this.showLoadMore = true; // show Load More Posts button if data length was full (getPostsLimit number of posts)
       }
 
       this.orbisPosts.push(...data);
