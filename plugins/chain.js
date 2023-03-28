@@ -64,7 +64,8 @@ export default defineNuxtPlugin(() => {
       } else if (networkId === 19) {
         // Songbird
         urls = [
-          "https://sgb.ftso.com.au/ext/bc/C/rpc",
+          //"https://api.flare.network/songbird/bc/C/rpc?x-apikey=YOUR_API_KEY",
+          //"https://sgb.ftso.com.au/ext/bc/C/rpc",
           "https://songbird-api.flare.network/ext/C/rpc"
         ]; 
       } else if (networkId === 56) {

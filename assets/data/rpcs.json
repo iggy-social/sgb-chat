@@ -3,7 +3,7 @@
   "10": "https://rpc.ankr.com/optimism",
   "14": "https://flare-api.flare.network/ext/C/rpc",
   "16": "https://coston-api.flare.network/ext/C/rpc",
-  "19": "https://sgb.ftso.com.au/ext/bc/C/rpc",
+  "19": "https://songbird-api.flare.network/ext/C/rpc",
   "56": "https://rpc.ankr.com/bsc",
   "100": "https://rpc.ankr.com/gnosis",
   "137": "https://rpc.ankr.com/polygon",

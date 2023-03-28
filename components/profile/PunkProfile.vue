@@ -19,6 +19,15 @@
           Change image
         </button>
 
+        <button 
+          v-if="isCurrentUser"
+          :disabled="waitingSetEmail" 
+          class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#setEmailModal"
+        >
+          <span v-if="waitingSetEmail" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
+          Notifications
+        </button>
+
         <a v-if="uAddress" class="btn btn-outline-primary mt-2 me-2" :href="$config.blockExplorerBaseUrl+'/address/'+uAddress" target="_blank">
           {{ shortenAddress(uAddress) }} <i class="bi bi-box-arrow-up-right"></i>
         </a>
@@ -31,6 +40,70 @@
       <p class="text-break mt-3">Following: {{ following }}</p>
       -->
     </div>
+
+    <!-- Set Email Notifications Modal -->
+    <div class="modal fade" id="setEmailModal" tabindex="-1" aria-labelledby="setEmailModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="setEmailModalLabel">Set email notifications</h1>
+            <button type="button" id="setEmailModalClose" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div v-if="!userStore.getIsConnectedToOrbis">
+              <p>First connect to Ceramic to set email notifications:</p>
+
+              <button class="btn btn-primary" @click="connectToOrbis">Connect to Ceramic</button>
+            </div>
+            
+            <div class="mt-3" v-if="userStore.getIsConnectedToOrbis">
+              <p>Enter your email address to receive notifications about replies on your posts.</p>
+              <p>The email address will be encrypted and will not be publicly visible.</p>
+
+              <p v-if="emailForNotificationsSet">
+                Currently, the email for notifications is already set. You can change it by entering a new email address below:
+              </p>
+
+              <p v-if="!emailForNotificationsSet">
+                Currently, the email for notifications is NOT yet set. You can add your email address below:
+              </p>
+
+              <input v-model="newEmail" type="email" class="form-control mt-2" placeholder="Enter email address" />
+
+              <small v-if="newEmail && !isEmail" class="text-danger">
+                Error: The entered text is not an email.
+              </small>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            <!-- TODO: uncomment when removing an email is enabled in the Orbis SDK -->
+            <!--
+            <button 
+              type="button" class="btn btn-danger" 
+              v-if="emailForNotificationsSet" 
+              @click="setEmailNotifications('remove')"
+            >
+              Remove email
+            </button>
+            -->
+
+            <button 
+              type="button" class="btn btn-primary" 
+              @click="setEmailNotifications" 
+              :disabled="!userStore.getIsConnectedToOrbis || !isEmail"
+            >
+              <span v-if="waitingSetEmail" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
+              Submit email
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END Set Email Notifications Modal -->
 
     <!-- Change Image Modal -->
     <div class="modal fade" id="changeImageModal" tabindex="-1" aria-labelledby="changeImageModalLabel" aria-hidden="true">
@@ -90,16 +163,19 @@ export default {
   data() {
     return {
       domain: this.pDomain,
+      emailForNotificationsSet: false,
       followers: 0,
       following: 0,
       lastActivityTimestamp: null,
+      newEmail: null,
       newImageLink: null,
       orbisImage: null,
       orbisProfile: null,
       uAddress: this.pAddress,
       uBalance: 0,
       waitingDataLoad: false,
-      waitingImageUpdate: false
+      waitingImageUpdate: false,
+      waitingSetEmail: false
     }
   },
 
@@ -129,6 +205,19 @@ export default {
 
     isCurrentUser() {
       return String(this.uAddress).toLowerCase() === String(this.address).toLowerCase();
+    },
+
+    isEmail() {
+      if (this.newEmail) {
+        if (
+          this.newEmail.includes("@") &&
+          this.newEmail.includes(".")
+        ) {
+          return true;
+        }
+      }
+
+      return false;
     },
 
     isImage() {
@@ -313,6 +402,8 @@ export default {
           const profile = await this.$orbis.getProfile(data[0].did);
 
           if (profile.status === 200) {
+            console.log(profile.data);
+
             this.orbisProfile = profile.data.details.profile;
     
             if (profile && profile.data.details.profile && profile.data.details.profile.pfp) {
@@ -325,15 +416,47 @@ export default {
               this.lastActivityTimestamp = profile.data.last_activity_timestamp;
             }
 
+            console.log("Email for notifications: ", profile.data.details["encrypted_email"]);
+
+            if (profile.data.details["encrypted_email"]) {
+              this.emailForNotificationsSet = true;
+              console.log("Email for notifications set");
+            } else {
+              this.emailForNotificationsSet = false;
+              console.log("Email for notifications NOT set");
+            }
+
             this.waitingDataLoad = false;
           }
         }
 
         this.waitingDataLoad = false;
       }
-    }
+    },
 
-    // @todo: refresh button to refresh user data (e.g. profile image)
+    async setEmailNotifications(remove) {
+      if (this.userStore.getIsConnectedToOrbis) {
+        this.waitingSetEmail = true;
+
+        if (remove) {
+          this.newEmail = "";
+        }
+
+        let res = await this.$orbis.setEmail(this.newEmail);
+
+        if (res.status !== 200) { // unsuccessful
+          console.log("Error: ", res);
+          this.toast(res.result, {type: "error"});
+          this.waitingSetEmail = false;
+        } else { // successful
+          this.toast("Email notifications successfully set!", {type: "success"});
+          this.waitingSetEmail = false;
+          document.getElementById('setEmailModalClose').click();
+        }
+      } else {
+        this.toast("Please connect to chat first", {type: "error"});
+      }
+    }
   },
 
   setup() {
