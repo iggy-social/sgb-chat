@@ -141,7 +141,7 @@ export default {
     },
 
     parsePostText() {
-      let postText = this.post.body.replace(/(\r\n|\n|\r)/gm, "<br/>");
+      let postText = this.post.body;
 
       postText = sanitizeHtml(postText, {
         allowedTags: [ 'li', 'ul', 'ol', 'br', 'em', 'strong', 'i', 'b' ],
@@ -150,15 +150,18 @@ export default {
 
       postText = this.imgParsing(postText);
       postText = this.youtubeParsing(postText);
-      this.parsedText = this.urlParsing(postText);
+      postText = this.urlParsing(postText);
+
+      this.parsedText = postText.replace(/(\r\n|\n|\r)/gm, "<br/>");
     },
 
     imgParsing(text) {
-      const urlRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
+      const imageRegex = /(?:https?:\/\/(?:www\.)?)?(?:[-\w]+\.)+[^\s]+\.(?:jpe?g|gif|png)/gi;
+      //const imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
 
-      if (!urlRegex.test(text)) { return text };
+      if (!imageRegex.test(text)) { return text };
 
-      return text.replace(urlRegex, function(url) {
+      return text.replace(imageRegex, function(url) {
         return '<br/><img class="my-3 img-fluid rounded" src="' + url + '" /><br/>';
       })
     },
@@ -179,11 +182,11 @@ export default {
     },
 
     youtubeParsing(text) {
-      const urlRegex = /(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/g;
+      const ytRegex = /(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/g;
 
-      if (!urlRegex.test(text)) { return text };
+      if (!ytRegex.test(text)) { return text };
 
-      return text.replace(urlRegex, function(url) {
+      return text.replace(ytRegex, function(url) {
         const videoId = url.match(/(?:https?:\/\/)?(?:www\.|m\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\/?\?v=|\/embed\/|\/)([^\s&\?\/\#]+)/)[1];
 
         return "<iframe class='rounded' width='100%' height='315' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen></iframe>";
