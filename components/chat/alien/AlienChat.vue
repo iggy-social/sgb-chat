@@ -64,6 +64,10 @@
             :post="post" />
         </div>
 
+        <div class="d-flex justify-content-center mb-3" v-if="waitingLoadPosts">
+          <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+        </div>
+        
         <div class="d-grid gap-2 col-6 mx-auto mb-5" v-if="showLoadMore">
           <button class="btn btn-primary" type="button" @click="getOrbisPosts">Load more posts</button>
         </div>
@@ -103,7 +107,8 @@ export default {
       postText: null,
       reply_to: null, 
       showLoadMore: true,
-      waitingCreatePost: false
+      waitingCreatePost: false,
+      waitingLoadPosts: false
     }
   },
 
@@ -248,6 +253,8 @@ export default {
     },
 
     async getOrbisPosts() {
+      this.waitingLoadPosts = true;
+
       let options;
 
       if (this.id) {
@@ -287,6 +294,8 @@ export default {
       this.orbisPosts.push(...data);
 
       this.pageCounter++;
+
+      this.waitingLoadPosts = false;
     },
 
     async insertImage(imageUrl) {
