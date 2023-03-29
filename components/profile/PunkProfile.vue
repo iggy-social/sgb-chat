@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="card border">
     <div class="card-body">
       <p class="fs-3" @click="$router.back()">
@@ -9,9 +10,8 @@
 
       <ProfileImage :key="orbisImage" v-if="uAddress" class="img-fluid img-thumbnail rounded-circle w-25" :address="uAddress" :domain="domain" :image="orbisImage" />
 
-      <div class="mt-2">
+      <div class="mt-2" v-if="isCurrentUser">
         <button 
-          v-if="isCurrentUser"
           :disabled="waitingDataLoad" 
           class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#changeImageModal"
         >
@@ -20,14 +20,15 @@
         </button>
 
         <button 
-          v-if="isCurrentUser"
           :disabled="waitingSetEmail" 
           class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#setEmailModal"
         >
           <span v-if="waitingSetEmail" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
-          Notifications
+          Email notifications
         </button>
+      </div>
 
+      <div class="mt-2">
         <a v-if="uAddress" class="btn btn-outline-primary mt-2 me-2" :href="$config.blockExplorerBaseUrl+'/address/'+uAddress" target="_blank">
           {{ shortenAddress(uAddress) }} <i class="bi bi-box-arrow-up-right"></i>
         </a>
@@ -145,6 +146,42 @@
     <!-- END Change Image Modal -->
 
   </div>
+
+  <div class="card border mt-3">
+    <div class="card-body">
+
+      <!-- Tabs Navigation -->
+      <!--
+      <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item">
+          <button 
+            class="nav-link" 
+            :class="currentTab === 'posts' ? 'active' : ''" 
+            @click="changeCurrentTab('posts')" 
+          >Posts</button>
+        </li>
+        <li class="nav-item">
+          <button 
+            class="nav-link" 
+            :class="currentTab === 'mints' ? 'active' : ''" 
+            @click="changeCurrentTab('mints')" 
+          >Mints</button>
+        </li>
+      </ul>
+      -->
+      <!-- END Tabs Navigation -->
+
+      <!-- Tabs Content -->
+      <div class="tab-content mt-3">
+
+        <!-- Posts Tab -->
+        <div v-if="currentTab === 'posts' && uDid">
+          <AlienChat :byDid="uDid" :hideCommentBox="true" />
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -155,6 +192,7 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import ProfileImage from "~/components/profile/ProfileImage.vue";
 import ResolverAbi from "~/assets/abi/ResolverAbi.json";
 import resolvers from "~/assets/data/resolvers.json";
+import AlienChat from '../chat/alien/AlienChat.vue';
 
 export default {
   name: "PunkProfile",
@@ -162,6 +200,7 @@ export default {
 
   data() {
     return {
+      currentTab: "posts",
       domain: this.pDomain,
       emailForNotificationsSet: false,
       followers: 0,
@@ -173,6 +212,7 @@ export default {
       orbisProfile: null,
       uAddress: this.pAddress,
       uBalance: 0,
+      uDid: null,
       waitingDataLoad: false,
       waitingImageUpdate: false,
       waitingSetEmail: false
@@ -180,8 +220,9 @@ export default {
   },
 
   components: {
-    ProfileImage
-  },
+    ProfileImage,
+    AlienChat
+},
 
   created() {
     // if uAddress and/or domain is not provided via props, then find it yourself
@@ -239,6 +280,10 @@ export default {
   },
 
   methods: {
+    changeCurrentTab(tab) {
+      this.currentTab = tab;
+    },
+
     async changeImage() {
       if (this.userStore.getIsConnectedToOrbis) {
         this.waitingImageUpdate = true;
@@ -399,11 +444,11 @@ export default {
         let { data, error } = await this.$orbis.getDids(this.uAddress);
 
         if (data[0].did) {
+          this.uDid = data[0].did;
+
           const profile = await this.$orbis.getProfile(data[0].did);
 
           if (profile.status === 200) {
-            console.log(profile.data);
-
             this.orbisProfile = profile.data.details.profile;
     
             if (profile && profile.data.details.profile && profile.data.details.profile.pfp) {
@@ -416,14 +461,10 @@ export default {
               this.lastActivityTimestamp = profile.data.last_activity_timestamp;
             }
 
-            console.log("Email for notifications: ", profile.data.details["encrypted_email"]);
-
             if (profile.data.details["encrypted_email"]) {
               this.emailForNotificationsSet = true;
-              console.log("Email for notifications set");
             } else {
               this.emailForNotificationsSet = false;
-              console.log("Email for notifications NOT set");
             }
 
             this.waitingDataLoad = false;

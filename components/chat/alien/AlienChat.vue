@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-12 scroll-500">
 
-        <div class="card mb-3 border">
+        <div class="card mb-3 border" v-if="!hideCommentBox">
           <div class="card-body">
             <div class="form-group mt-2 mb-2">
               <textarea 
@@ -90,7 +90,13 @@ import TenorStickerSearch from "~/components/tenor/TenorStickerSearch.vue";
 
 export default {
   name: "AlienChat",
-  props: ["id", "master", "showQuotedPost"],
+  props: [
+    "byDid", // if looking for posts by a specific user (user's DID)
+    "hideCommentBox", // if true, we'll hide the comment box
+    "id", // id (optional) is the post id that this component looks for replies to
+    "master", // if there's a master post, we'll show it at the top
+    "showQuotedPost" // if true, we'll show the quoted posts (for any post that has a quote)
+  ],
 
   components: {
     AlienChatPost,
@@ -268,6 +274,10 @@ export default {
           context: this.getOrbisContext, // context is the group ID
           only_master: !this.$config.showRepliesOnHomepage // only get master posts (not replies), or all posts
         }
+      }
+
+      if (this.byDid) {
+        options["did"] = this.byDid;
       }
 
       let { data, error } = await this.$orbis.getPosts(
