@@ -26,6 +26,10 @@
           <span v-if="waitingSetEmail" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
           Email notifications
         </button>
+
+        <button class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#chatSettingsModal">
+          Chat settings
+        </button>
       </div>
 
       <div class="mt-2">
