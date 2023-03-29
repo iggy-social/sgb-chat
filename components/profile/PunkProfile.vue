@@ -86,7 +86,7 @@
             <button 
               type="button" class="btn btn-danger" 
               v-if="emailForNotificationsSet" 
-              @click="setEmailNotifications('remove')"
+              @click="setEmailNotifications(true)"
             >
               Remove email
             </button>
@@ -94,7 +94,7 @@
 
             <button 
               type="button" class="btn btn-primary" 
-              @click="setEmailNotifications" 
+              @click="setEmailNotifications(false)" 
               :disabled="!userStore.getIsConnectedToOrbis || !isEmail"
             >
               <span v-if="waitingSetEmail" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
