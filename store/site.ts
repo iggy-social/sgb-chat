@@ -7,6 +7,7 @@ export const useSiteStore = defineStore({
   state: () => {
     return {
       colorMode: "dark",
+      showOnlyMasterPosts: useLocalStorage('showOnlyMasterPosts', "false"),
     }
   },
 
@@ -19,6 +20,16 @@ export const useSiteStore = defineStore({
       }
 
       return state.colorMode;
+    },
+
+    getShowOnlyMasterPosts(state) {
+      const pStorage = useLocalStorage('showOnlyMasterPosts', null);
+
+      if (pStorage.value) {
+        state.showOnlyMasterPosts = pStorage.value;
+      }
+
+      return state.showOnlyMasterPosts;
     }
   },
 
@@ -26,6 +37,11 @@ export const useSiteStore = defineStore({
     setColorMode(cm: string) {
       this.colorMode = cm;
       localStorage.setItem("colorMode", cm);
+    },
+
+    setShowOnlyMasterPosts(somp: string) {
+      this.showOnlyMasterPosts = somp;
+      localStorage.setItem("showOnlyMasterPosts", somp);
     }
   }
 })

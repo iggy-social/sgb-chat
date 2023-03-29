@@ -10,18 +10,17 @@
     <Meta name="twitter:description" :content="'Check out this chat post on ' + $config.projectName + '!'" />
   </Head>
 
-  <AlienChatPost class="m-4" v-if="masterPost" :post="masterPost" />
+  <ChatPost class="m-4" v-if="masterPost" :post="masterPost" />
 
-  <!-- TODO: show component based on the chat type selection (Alien, Forum, smth else) -->
-  <AlienChatPost v-if="post" :post="post" />
+  <ChatPost v-if="post" :post="post" />
 
-  <AlienChat v-if="post" :id="post.stream_id" :master="post.master" />
+  <ChatFeed v-if="post" :id="post.stream_id" :master="post.master" />
 </div>
 </template>
 
 <script>
-import AlienChatPost from "~~/components/chat/alien/AlienChatPost.vue";
-import AlienChat from "~~/components/chat/alien/AlienChat.vue";
+import ChatPost from "~/components/chat/ChatPost.vue";
+import ChatFeed from "~/components/chat/ChatFeed.vue";
 import { useToast } from "vue-toastification/dist/index.mjs";
 
 export default {
@@ -35,8 +34,8 @@ export default {
   },
 
   components: {
-    AlienChat,
-    AlienChatPost
+    ChatFeed,
+    ChatPost
   },
 
   created() {

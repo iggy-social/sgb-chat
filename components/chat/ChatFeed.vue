@@ -55,7 +55,7 @@
         </div>
 
         <div v-if="orbisPosts">
-          <AlienChatPost 
+          <ChatPost 
             @insertReply="insertReply" 
             @removePost="removePost" 
             v-for="post in orbisPosts" 
@@ -80,8 +80,9 @@
 
 <script>
 import { useEthers } from 'vue-dapp';
-import AlienChatPost from "~~/components/chat/alien/AlienChatPost.vue";
+import ChatPost from "~~/components/chat/ChatPost.vue";
 import { useToast } from "vue-toastification/dist/index.mjs";
+import { useSiteStore } from '~/store/site';
 import { useUserStore } from '~/store/user';
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import SwitchChainButton from "~/components/SwitchChainButton.vue";
@@ -89,7 +90,7 @@ import TenorGifSearch from "~/components/tenor/TenorGifSearch.vue";
 import TenorStickerSearch from "~/components/tenor/TenorStickerSearch.vue";
 
 export default {
-  name: "AlienChat",
+  name: "ChatFeed",
   props: [
     "byDid", // if looking for posts by a specific user (user's DID)
     "hideCommentBox", // if true, we'll hide the comment box
@@ -99,7 +100,7 @@ export default {
   ],
 
   components: {
-    AlienChatPost,
+    ChatPost,
     ConnectWalletButton,
     SwitchChainButton,
     TenorGifSearch,
@@ -164,6 +165,15 @@ export default {
         return false;
       }
     },
+
+    showOnlyMasterPosts() {
+      // check if user chose to only show master posts on the main feed in local storage
+      if (this.siteStore.getShowOnlyMasterPosts === 'true') {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
 
   methods: {
@@ -272,12 +282,13 @@ export default {
       } else {
         options = {
           context: this.getOrbisContext, // context is the group ID
-          only_master: !this.$config.showRepliesOnHomepage // only get master posts (not replies), or all posts
+          only_master: this.showOnlyMasterPosts // only get master posts (not replies), or all posts
         }
       }
 
       if (this.byDid) {
         options["did"] = this.byDid;
+        options["only_master"] = false;
       }
 
       let { data, error } = await this.$orbis.getPosts(
@@ -318,7 +329,7 @@ export default {
     },
 
     async insertReply(streamId, replyToId, replyText, repliedText, repliedAddress) {
-      // callback hook for AlienChatPost component
+      // callback hook for ChatPost component
       // listens for reply event and inserts reply into feed
       this.orbisPosts.unshift({
         stream_id: streamId,
@@ -349,7 +360,7 @@ export default {
     },
 
     async removePost(streamId) {
-      // callback hook for AlienChatPost component
+      // callback hook for ChatPost component
       // listens for delete event and removes post from feed
       this.orbisPosts = this.orbisPosts.filter((post) => post.stream_id !== streamId);
     }
@@ -358,9 +369,10 @@ export default {
   setup() {
     const { address, chainId, isActivated, signer } = useEthers();
     const toast = useToast();
+    const siteStore = useSiteStore();
     const userStore = useUserStore();
 
-    return { address, chainId, isActivated, signer, toast, userStore }
+    return { address, chainId, isActivated, signer, toast, siteStore, userStore }
   },
 }
 </script>

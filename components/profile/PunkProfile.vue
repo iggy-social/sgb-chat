@@ -176,7 +176,7 @@
 
         <!-- Posts Tab -->
         <div v-if="currentTab === 'posts' && uDid">
-          <AlienChat :byDid="uDid" :hideCommentBox="true" />
+          <ChatFeed :byDid="uDid" :hideCommentBox="true" />
         </div>
       </div>
     </div>
@@ -192,7 +192,7 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import ProfileImage from "~/components/profile/ProfileImage.vue";
 import ResolverAbi from "~/assets/abi/ResolverAbi.json";
 import resolvers from "~/assets/data/resolvers.json";
-import AlienChat from '../chat/alien/AlienChat.vue';
+import ChatFeed from '../chat/ChatFeed.vue';
 
 export default {
   name: "PunkProfile",
@@ -221,7 +221,7 @@ export default {
 
   components: {
     ProfileImage,
-    AlienChat
+    ChatFeed
 },
 
   created() {
@@ -469,6 +469,25 @@ export default {
 
             this.waitingDataLoad = false;
           }
+
+          /*
+          console.log("BEFORE notificationsData");
+
+          // fetch notifications
+          let { notificationsData, notificationsError } = await this.$orbis.getNotifications({ type: 'social_in_context' });
+
+          console.log("AFTER notificationsData:");
+          console.log(notificationsData);
+
+          console.log("notificationsError:");
+          console.log(notificationsError);
+
+          if (notificationsData) {
+            console.log("notificationsData:");
+            console.log(notificationsData);
+            // this.userStore.setNotifications(notificationsData);
+          }
+          */
         }
 
         this.waitingDataLoad = false;

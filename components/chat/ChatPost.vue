@@ -38,7 +38,7 @@
       </div>
 
       <!-- quoted post (replied) -->
-      <AlienChatQuote class="mt-3" :post="quotePost" v-if="showQuote" />
+      <ChatQuote class="mt-3" :post="quotePost" v-if="showQuote" />
 
       <!-- post actions -->
       <p class="card-subtitle mt-1 text-muted">
@@ -135,15 +135,15 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
 import IggyPostMint from "~~/components/minted-posts/IggyPostMint.vue";
-import AlienChatQuote from "~/components/chat/alien/AlienChatQuote.vue";
+import ChatQuote from "~/components/chat/ChatQuote.vue";
 
 export default {
-  name: "AlienChatPost",
+  name: "ChatPost",
   emits: ["insertReply", "removePost"],
   props: ["post", "showQuotedPost"],
 
   components: {
-    AlienChatQuote,
+    ChatQuote,
     ProfileImage,
     IggyPostMint
   },

@@ -55,7 +55,7 @@ import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
 
 export default {
-  name: "AlienChatQuote",
+  name: "ChatQuote",
   props: ["post"], // quote post: body, stream_id, pfp, username, address
 
   components: {

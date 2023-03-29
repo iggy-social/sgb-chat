@@ -1,16 +1,16 @@
 <template>
-  <AlienChat class="mt-1" :showQuotedPost="$config.showRepliesOnHomepage" />
+  <ChatFeed class="mt-1" :showQuotedPost="$config.showRepliesOnHomepage" />
 </template>
 
 <script>
 import { useEthers } from 'vue-dapp'
-import AlienChat from "../components/chat/alien/AlienChat.vue"
+import ChatFeed from "../components/chat/ChatFeed.vue"
 
 export default {
   name: "index",
 
   components: {
-    AlienChat
+    ChatFeed
   },
 
   setup() {
