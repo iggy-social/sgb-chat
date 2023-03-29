@@ -167,7 +167,7 @@ export default {
     },
 
     urlParsing(text) {
-      const urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|gif|pdf|docx))[^\s]+)/g;
+      const urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|gif|pdf|docx))[^\s]+)(?<![,.:;?!"')])/g;
 
       if (!urlRegex.test(text)) { return text };
 
