@@ -478,8 +478,14 @@ export default {
     },
 
     urlParsing(text) {
-      //const urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|gif|pdf|docx))[^\s]+)/g;
-      const urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|gif|pdf|docx))[^\s]+)(?<![,.:;?!"')])/g;
+      let urlRegex;
+
+      try {
+        urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\/"\')])', 'g');
+      } catch (error) {
+        // fallback to simplified regex (without lookbehinds) in case of an old browser or Safari
+        urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|gif|pdf|docx))[^\s]+)/g;
+      }
 
       if (!urlRegex.test(text)) { return text };
 
