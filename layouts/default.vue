@@ -141,10 +141,10 @@
 <script>
 import { ethers } from 'ethers';
 import { MetaMaskConnector, WalletConnectConnector, CoinbaseWalletConnector, useEthers, useWallet } from 'vue-dapp';
+import { useNotificationsStore } from '~/store/notifications';
 import { useSidebarStore } from '~/store/sidebars';
 import { useSiteStore } from '~/store/site';
 import { useUserStore } from '~/store/user';
-//import { useLocalStorage } from '@vueuse/core';
 import ResolverAbi from "~/assets/abi/ResolverAbi.json";
 import resolvers from "~/assets/data/resolvers.json";
 import rpcs from "~/assets/data/rpcs.json";
@@ -240,6 +240,43 @@ export default {
   },
 
   methods: {
+    async fetchOrbisNotifications() {
+      if (this.isActivated) {
+        this.notificationsStore.setLoadingNotifications(true);
+
+        // fetch new notifications count
+        let { data, error, status } = await this.$orbis.getNotificationsCount({type: "social", context: this.$config.orbisContext}); 
+
+        if (status === 200 && data?.count_new_notifications) {
+          this.notificationsStore.setUnreadNotificationsCount(data.count_new_notifications);
+        } else if (error) {
+          console.log("New notifications count error", error);
+        }
+
+        // fetch notifications
+        let { 
+          data: notifications, 
+          error: notificationsError, 
+          status: notificationsStatus 
+        } = await this.$orbis.getNotifications(
+          {
+            type: "social", 
+            context: this.$config.orbisContext
+          }
+        );
+
+        if (notificationsStatus === 200 && notifications) {
+          const newNotifications = notifications.filter(function(item) { return (item.status === "new"); });
+
+          this.notificationsStore.setNotifications(newNotifications);
+        } else if (notificationsError) {
+          console.log("Notifications fetching error", notificationsError);
+        }
+
+        this.notificationsStore.setLoadingNotifications(false);
+      }
+    },
+
     async fetchOrbisProfile() {
       if (this.isActivated) {
         let { data, error } = await this.$orbis.getDids(this.address);
@@ -256,6 +293,9 @@ export default {
             this.userStore.setFollowing(profile.data.count_following);
             this.userStore.setLastActivityTimestamp(profile.data.last_activity_timestamp);
           }
+
+          // fetch notifications
+          this.fetchOrbisNotifications();
         }
       }
     },
@@ -319,6 +359,7 @@ export default {
 
   setup() {
     const config = useRuntimeConfig();
+    const notificationsStore = useNotificationsStore();
     const sidebarStore = useSidebarStore();
     const siteStore = useSiteStore();
     const userStore = useUserStore();
@@ -343,7 +384,7 @@ export default {
     
     return { 
       address, chainId, coinbaseConnector, connectWith, isActivated, mmConnector, signer, 
-      sidebarStore, siteStore, userStore, wcConnector 
+      notificationsStore, sidebarStore, siteStore, userStore, wcConnector 
     }
   },
 

@@ -1,7 +1,7 @@
 <template>
   <Head>
-    <Title>About SGB Chat</Title>
-    <Meta property="og:title" content="About SGB Chat" />
+    <Title>About | {{ $config.projectMetadataTitle }}</Title>
+    <Meta property="og:title" :content="'About | ' + $config.projectMetadataTitle" />
   </Head>
 
   <div class="card border">

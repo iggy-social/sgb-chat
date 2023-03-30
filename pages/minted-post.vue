@@ -1,6 +1,9 @@
 <template>
   <div>
     <Head>
+      <Title>Post NFT | {{ $config.projectMetadataTitle }}</Title>
+      <Meta property="og:title" :content="'Post NFT | ' + $config.projectMetadataTitle" />
+
       <Meta name="description" :content="'Check out this minted post NFT on ' + $config.projectName + '!'" />
 
       <Meta property="og:image" :content="$config.projectUrl+$config.previewImagePostNft" />

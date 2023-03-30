@@ -34,6 +34,18 @@
             </NuxtLink>
           </li>
           <li class="nav-item p-1" @click="closeLeftSidebar">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/notifications') ? 'active' : ''" aria-current="page" to="/notifications">
+              <i class="bi bi-bell"></i> Notifications
+
+              <span 
+                class="badge text-bg-secondary" 
+                v-if="!notificationsStore.getLoadingNotifications && notificationsStore.getUnreadNotificationsCount > 0">
+                {{ notificationsStore.getUnreadNotificationsCount }}
+              </span>
+
+            </NuxtLink>
+          </li>
+          <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/about') ? 'active' : ''" aria-current="page" to="/about">
               <i class="bi bi-patch-question"></i> About
             </NuxtLink>
@@ -54,6 +66,7 @@
 
 <script>
 import { useEthers } from 'vue-dapp';
+import { useNotificationsStore } from '~/store/notifications';
 import { useSidebarStore } from '~/store/sidebars';
 import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
@@ -79,9 +92,10 @@ export default {
   setup() {
     const sidebarStore = useSidebarStore();
     const { address, isActivated } = useEthers();
+    const notificationsStore = useNotificationsStore();
     const userStore = useUserStore();
 
-    return { address, isActivated, sidebarStore, userStore }
+    return { address, isActivated, notificationsStore, sidebarStore, userStore }
   },
 }
 </script>

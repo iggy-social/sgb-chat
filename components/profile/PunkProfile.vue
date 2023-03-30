@@ -473,25 +473,6 @@ export default {
 
             this.waitingDataLoad = false;
           }
-
-          /*
-          console.log("BEFORE notificationsData");
-
-          // fetch notifications
-          let { notificationsData, notificationsError } = await this.$orbis.getNotifications({ type: 'social_in_context' });
-
-          console.log("AFTER notificationsData:");
-          console.log(notificationsData);
-
-          console.log("notificationsError:");
-          console.log(notificationsError);
-
-          if (notificationsData) {
-            console.log("notificationsData:");
-            console.log(notificationsData);
-            // this.userStore.setNotifications(notificationsData);
-          }
-          */
         }
 
         this.waitingDataLoad = false;
