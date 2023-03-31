@@ -33,7 +33,7 @@
               <i class="bi bi-person"></i> Profile
             </NuxtLink>
           </li>
-          <li class="nav-item p-1" @click="closeLeftSidebar">
+          <li v-if="isActivated" class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/notifications') ? 'active' : ''" aria-current="page" to="/notifications">
               <i class="bi bi-bell"></i> Notifications
 

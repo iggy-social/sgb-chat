@@ -15,7 +15,7 @@
         <span v-if="notificationsStore.getLoadingNotifications" class="spinner-border spinner-border-md" role="status" aria-hidden="true"></span>    
         
         <button 
-          v-if="notificationsStore.getUnreadNotificationsCount > 0" 
+          v-if="notificationsStore.getUnreadNotificationsCount > 0 && !notificationsStore.getLoadingNotifications" 
           class="btn btn-primary btn-sm"
           @click="clearNotifications"
           :disabled="clearingNotifications"

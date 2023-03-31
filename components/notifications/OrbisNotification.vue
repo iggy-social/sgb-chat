@@ -53,8 +53,6 @@ export default {
 
   mounted() {
     if (this.notification) {
-      console.log(this.notification);
-
       this.authorAddress = this.notification["user_notifiying_details"]["did"].split(":")[4];
 
       // get username from session storage

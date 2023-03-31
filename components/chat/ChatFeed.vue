@@ -1,78 +1,72 @@
 <template>
-  <div class="container-md">
-    <div class="row">
-      <div class="col-lg-12 scroll-500">
-
-        <div class="card mb-3 border" v-if="!hideCommentBox">
-          <div class="card-body">
-            <div class="form-group mt-2 mb-2">
-              <textarea 
-                v-model="postText" 
-                :disabled="!userStore.getIsConnectedToOrbis || !isSupportedChain || !hasDomainOrNotRequired" 
-                class="form-control" id="exampleTextarea" rows="5" 
-                :placeholder="createPostPlaceholder"
-              ></textarea>
-            </div>
-
-            <!-- Create Post button -->
-            <button 
-              v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
-              :disabled="!postText || waitingCreatePost" 
-              class="btn btn-primary me-2 mt-2" 
-              @click="createPost"
-            >Submit</button>
-
-            <!-- GIF button -->
-            <TenorGifSearch 
-              v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
-              @insertGif="insertImage"
-            />
-
-            <!-- IMG button -->
-            <TenorStickerSearch 
-              v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
-              @insertSticker="insertImage"
-            />
-
-            <!-- Sign Into Chat button -->
-            <button 
-              v-if="isActivated && !userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
-              class="btn btn-primary" @click="connectToOrbis"
-            >Sign into chat</button>
-
-            <!-- Sign Into Chat button -->
-            <button 
-              v-if="isActivated && isSupportedChain && !hasDomainOrNotRequired" 
-              class="btn btn-primary disabled"
-            >Get yourself a {{ $config.tldName }} name to post <i class="bi bi-arrow-right"></i></button>
-            
-            <!-- Connect Wallet button -->
-            <ConnectWalletButton v-if="!isActivated" class="btn btn-primary" btnText="Connect wallet" />
-
-            <!-- Switch Chain button -->
-            <SwitchChainButton v-if="isActivated && !isSupportedChain" :navbar="false" :dropdown="false" />
-          </div>
+  <div>
+    <div class="card mb-3 border" v-if="!hideCommentBox">
+      <div class="card-body">
+        <div class="form-group mt-2 mb-2">
+          <textarea 
+            v-model="postText" 
+            :disabled="!userStore.getIsConnectedToOrbis || !isSupportedChain || !hasDomainOrNotRequired" 
+            class="form-control" id="exampleTextarea" rows="5" 
+            :placeholder="createPostPlaceholder"
+          ></textarea>
         </div>
 
-        <div v-if="orbisPosts">
-          <ChatPost 
-            @insertReply="insertReply" 
-            @removePost="removePost" 
-            v-for="post in orbisPosts" 
-            :key="post.stream_id"
-            :showQuotedPost="showQuotedPost" 
-            :post="post" />
-        </div>
+        <!-- Create Post button -->
+        <button 
+          v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
+          :disabled="!postText || waitingCreatePost" 
+          class="btn btn-primary me-2 mt-2" 
+          @click="createPost"
+        >Submit</button>
 
-        <div class="d-flex justify-content-center mb-3" v-if="waitingLoadPosts">
-          <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
-        </div>
+        <!-- GIF button -->
+        <TenorGifSearch 
+          v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
+          @insertGif="insertImage"
+        />
+
+        <!-- IMG button -->
+        <TenorStickerSearch 
+          v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
+          @insertSticker="insertImage"
+        />
+
+        <!-- Sign Into Chat button -->
+        <button 
+          v-if="isActivated && !userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
+          class="btn btn-primary" @click="connectToOrbis"
+        >Sign into chat</button>
+
+        <!-- Sign Into Chat button -->
+        <button 
+          v-if="isActivated && isSupportedChain && !hasDomainOrNotRequired" 
+          class="btn btn-primary disabled"
+        >Get yourself a {{ $config.tldName }} name to post <i class="bi bi-arrow-right"></i></button>
         
-        <div class="d-grid gap-2 col-6 mx-auto mb-5" v-if="showLoadMore">
-          <button class="btn btn-primary" type="button" @click="getOrbisPosts">Load more posts</button>
-        </div>
+        <!-- Connect Wallet button -->
+        <ConnectWalletButton v-if="!isActivated" class="btn btn-primary" btnText="Connect wallet" />
 
+        <!-- Switch Chain button -->
+        <SwitchChainButton v-if="isActivated && !isSupportedChain" :navbar="false" :dropdown="false" />
       </div>
+    </div>
+
+    <div v-if="orbisPosts">
+      <ChatPost 
+        @insertReply="insertReply" 
+        @removePost="removePost" 
+        v-for="post in orbisPosts" 
+        :key="post.stream_id"
+        :showQuotedPost="showQuotedPost" 
+        :post="post" />
+    </div>
+
+    <div class="d-flex justify-content-center mb-3" v-if="waitingLoadPosts">
+      <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+    </div>
+    
+    <div class="d-grid gap-2 col-6 mx-auto mb-5" v-if="showLoadMore">
+      <button class="btn btn-primary" type="button" @click="getOrbisPosts">Load more posts</button>
     </div>
   </div>
 </template>

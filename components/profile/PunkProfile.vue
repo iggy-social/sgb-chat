@@ -19,16 +19,16 @@
           Change image
         </button>
 
+        <button class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#chatSettingsModal">
+          Chat settings
+        </button>
+
         <button 
           :disabled="waitingSetEmail" 
           class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#setEmailModal"
         >
           <span v-if="waitingSetEmail" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
           Email notifications
-        </button>
-
-        <button class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#chatSettingsModal">
-          Chat settings
         </button>
       </div>
 
@@ -326,37 +326,41 @@ export default {
     },
 
     async checkConnectionToOrbis() {
-      let res = await this.$orbis.isConnected();
+      if (!this.userStore.getIsConnectedToOrbis) {
+        let res = await this.$orbis.isConnected();
 
-      if (res) {
-        this.userStore.setIsConnectedToOrbis(true);
+        if (res) {
+          this.userStore.setIsConnectedToOrbis(true);
 
-        if (this.$orbis.session && !this.userStore.getDid) {
-          this.userStore.setDid(this.$orbis.session.did._id);
-          this.userStore.setDidParent(this.$orbis.session.did._parentId);
+          if (this.$orbis.session && !this.userStore.getDid) {
+            this.userStore.setDid(this.$orbis.session.did._id);
+            this.userStore.setDidParent(this.$orbis.session.did._parentId);
+          }
+        } else {
+          this.userStore.setIsConnectedToOrbis(false);
         }
-      } else {
-        this.userStore.setIsConnectedToOrbis(false);
       }
     },
 
     async connectToOrbis() {
-      let res = await this.$orbis.connect_v2({
-        provider: this.signer.provider.provider, 
-        lit: false
-      });
+      if (!this.userStore.getIsConnectedToOrbis) {
+        let res = await this.$orbis.connect_v2({
+          provider: this.signer.provider.provider, 
+          lit: false
+        });
 
-      /** Check if connection is successful or not */
-      if(res.status == 200) {
-        this.userStore.setIsConnectedToOrbis(true);
+        /** Check if connection is successful or not */
+        if(res.status == 200) {
+          this.userStore.setIsConnectedToOrbis(true);
 
-        if (this.$orbis.session) {
-          this.userStore.setDid(this.$orbis.session.did._id);
-          this.userStore.setDidParent(this.$orbis.session.did._parentId);
+          if (this.$orbis.session) {
+            this.userStore.setDid(this.$orbis.session.did._id);
+            this.userStore.setDidParent(this.$orbis.session.did._parentId);
+          }
+        } else {
+          console.log("Error connecting to Ceramic: ", res);
+          this.toast(res.result, {type: "error"});
         }
-      } else {
-        console.log("Error connecting to Ceramic: ", res);
-        this.toast(res.result, {type: "error"});
       }
     },
 

@@ -231,6 +231,10 @@ export default {
   },
 
   computed: {
+    isConnectedToOrbis () {
+      return this.userStore.getIsConnectedToOrbis;
+    },
+
     isMobile() {
       if (this.width < this.breakpoint) {
         return true;
@@ -241,7 +245,7 @@ export default {
 
   methods: {
     async fetchOrbisNotifications() {
-      if (this.isActivated) {
+      if (this.userStore.getIsConnectedToOrbis) {
         this.notificationsStore.setLoadingNotifications(true);
 
         // fetch new notifications count
@@ -425,10 +429,14 @@ export default {
         if (!this.userStore.getDid) {
           this.getOrbisDids();
         }
-
-        this.fetchOrbisProfile();
       }
 		},
+
+    isConnectedToOrbis(newVal, oldVal) {
+      if (newVal && oldVal === false) {
+        this.fetchOrbisProfile();
+      }
+    },
 
     width(newVal, oldVal) {
       if (newVal > this.breakpoint) {
