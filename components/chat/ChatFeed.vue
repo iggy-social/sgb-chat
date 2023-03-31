@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="scroll-500">
     <div class="card mb-3 border" v-if="!hideCommentBox">
       <div class="card-body">
         <div class="form-group mt-2 mb-2">
