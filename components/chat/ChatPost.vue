@@ -44,7 +44,7 @@
       <p class="card-subtitle mt-1 text-muted">
         
         <span>
-          <i @click="likePost" class="cursor-pointer hover-color" :class="alreadyLiked ? 'bi bi-heart-fill' : 'bi bi-heart'"></i> 
+          <i @click="likePost" class="cursor-pointer hover-color" :class="alreadyLiked ? 'bi bi-heart-fill text-primary' : 'bi bi-heart'"></i> 
           {{post.count_likes}}
         </span>
 

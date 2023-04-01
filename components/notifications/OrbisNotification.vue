@@ -19,7 +19,13 @@
           {{ getUsernameOrShortAddress }}
         </NuxtLink>
         
-        {{ getNotificationAction }}
+        <span v-if="getNotificationAction === 'reply'">
+          <i class="bi bi-chat-dots-fill ms-1 text-primary"></i> replied to your post
+        </span>
+
+        <span v-if="getNotificationAction === 'like'">
+          <i class="bi bi-heart-fill ms-1 text-primary"></i> liked your post
+        </span>
       </p>
 
       <p class="mb-0 cursor-pointer" @click="openPostDetails">
@@ -74,13 +80,25 @@ export default {
   computed: {
     getNotificationAction() {
       if (this.notification.family === "reply_to") {
-        return " replied to your post";
+        return "reply";
+      } else if (this.notification.family === "reaction" && this.notification.content.type === "like") {
+        return "like";
       }
+
+      return "";
     },
 
     getNotificationContent() {
       if (this.notification?.content?.body) {
         const content = this.notification["content"]["body"];
+
+        if (content.length > this.lengthLimit) {
+          return content.substring(0, this.lengthLimit) + "...";
+        } else {
+          return content;
+        }
+      } else if (this.notification?.post_details?.content?.body) {
+        const content =  this.notification["post_details"]["content"]["body"];
 
         if (content.length > this.lengthLimit) {
           return content.substring(0, this.lengthLimit) + "...";
@@ -93,10 +111,8 @@ export default {
     },
 
     getPostStreamId() {
-      if (this.notification.family === "reply_to") {
-        if (this.notification?.post_details?.stream_id) {
-          return this.notification["post_details"]["stream_id"];
-        }
+      if (this.notification?.post_details?.stream_id) {
+        return this.notification["post_details"]["stream_id"];
       }
 
       return null;
