@@ -265,15 +265,20 @@ export default {
     async getOrbisPosts() {
       this.waitingLoadPosts = true;
 
+      let ascending = false; // sort by descending order (from newest to oldest) by default
       let options;
 
       if (this.id) {
+        // Post details page
+        ascending = true; // if this is a post details page, sort replies by ascending order (from oldest to newest)
+
         options = {
           master: this.id, // master is the post ID
           context: this.getOrbisContext, // context is the group ID
           only_master: false // only get master posts (not replies), or all posts
         }
       } else {
+        // Main feed
         options = {
           context: this.getOrbisContext, // context is the group ID
           only_master: this.showOnlyMasterPosts // only get master posts (not replies), or all posts
@@ -288,7 +293,8 @@ export default {
       let { data, error } = await this.$orbis.getPosts(
         options,
         this.pageCounter,
-        this.$config.getPostsLimit
+        this.$config.getPostsLimit,
+        ascending
       );
 
       if (error) {

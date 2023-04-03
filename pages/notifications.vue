@@ -62,11 +62,11 @@ export default {
       // get current unix timestamp
       let timestampNow = Math.floor(Date.now() / 1000);
 
-      let res = await this.$orbis.setNotificationsReadTime(
-        "social", 
-        Number(timestampNow),
-        this.$config.orbisContext
-      );
+      let res = await this.$orbis.setNotificationsReadTime({
+        type: "social", 
+        timestamp: Number(timestampNow),
+        context: this.$config.orbisContext
+      });
       
       if (res.status === 200) {
         this.notificationsStore.setNotifications([]);
