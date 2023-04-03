@@ -149,6 +149,7 @@ export default {
       });
 
       postText = this.imgParsing(postText);
+      postText = this.imgWithoutExtensionParsing(postText);
       postText = this.youtubeParsing(postText);
       postText = this.urlParsing(postText);
 
@@ -162,7 +163,20 @@ export default {
       if (!imageRegex.test(text)) { return text };
 
       return text.replace(imageRegex, function(url) {
-        return '<br/><img class="my-3 img-fluid rounded" src="' + url + '" /><br/>';
+        return '<img class="img-fluid rounded" src="' + url + '" />';
+      })
+    },
+
+    imgWithoutExtensionParsing(text) {
+      // if image doesn't have an extension, it won't be parsed by imgParsing
+      // so we need to parse it here
+      // but image link needs to end with "?img" to be parsed (otherwise frontend will think it's a link)
+      const imageRegex = /(http|https|ipfs):\/\/\S+\?img/;
+
+      if (!imageRegex.test(text)) { return text };
+
+      return text.replace(imageRegex, function(url) {
+        return '<img class="img-fluid rounded" src="' + url + '" />';
       })
     },
 
@@ -170,7 +184,7 @@ export default {
       let urlRegex;
 
       try {
-        urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\/"\')])', 'g');
+        urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\"\')])', 'g');
       } catch (error) {
         // fallback to simplified regex (without lookbehinds) in case of an old browser or Safari
         urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|gif|pdf|docx))[^\s]+)/g;

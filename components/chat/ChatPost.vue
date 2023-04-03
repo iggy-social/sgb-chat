@@ -15,7 +15,7 @@
     <div class="col-10 col-md-11">
       
       <!-- post author and timestamp -->
-      <p class="card-subtitle mb-1 text-muted">
+      <p class="card-subtitle mb-2 text-muted">
         <NuxtLink v-if="authorDomain" class="link-without-color hover-color" :to="'/profile/?id='+authorDomain">{{showDomainOrAddressOrAnon}}</NuxtLink>
         <span v-if="!authorDomain">{{showDomainOrAddressOrAnon}}</span>
         <span v-if="post.timestamp"> · <NuxtLink class="link-without-color hover-color" :to="'/post/?id='+post.stream_id">{{timeSince}}</NuxtLink></span>
@@ -41,7 +41,7 @@
       <ChatQuote class="mt-3" :post="quotePost" v-if="showQuote" />
 
       <!-- post actions -->
-      <p class="card-subtitle mt-1 text-muted">
+      <p class="card-subtitle mt-3 text-muted">
         
         <span>
           <i @click="likePost" class="cursor-pointer hover-color" :class="alreadyLiked ? 'bi bi-heart-fill text-primary' : 'bi bi-heart'"></i> 
@@ -459,7 +459,10 @@ export default {
         allowedAttributes: {}
       });
 
+      console.log("postText: ", postText);
+
       postText = this.imgParsing(postText);
+      postText = this.imgWithoutExtensionParsing(postText);
       postText = this.youtubeParsing(postText);
       postText = this.urlParsing(postText);
 
@@ -473,7 +476,20 @@ export default {
       if (!imageRegex.test(text)) { return text };
 
       return text.replace(imageRegex, function(url) {
-        return '<br/><img class="my-3 img-fluid rounded" src="' + url + '" /><br/>';
+        return '<div></div><img class="img-fluid rounded" src="' + url + '" />';
+      })
+    },
+
+    imgWithoutExtensionParsing(text) {
+      // if image doesn't have an extension, it won't be parsed by imgParsing
+      // so we need to parse it here
+      // but image link needs to end with "?img" to be parsed (otherwise frontend will think it's a link)
+      const imageRegex = /(http|https|ipfs):\/\/\S+\?img/;
+
+      if (!imageRegex.test(text)) { return text };
+
+      return text.replace(imageRegex, function(url) {
+        return '<img class="img-fluid rounded" src="' + url + '" />';
       })
     },
 
@@ -481,7 +497,7 @@ export default {
       let urlRegex;
 
       try {
-        urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\/"\')])', 'g');
+        urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\"\')])', 'g');
       } catch (error) {
         // fallback to simplified regex (without lookbehinds) in case of an old browser or Safari
         urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|gif|pdf|docx))[^\s]+)/g;
@@ -492,6 +508,9 @@ export default {
       return text.replace(urlRegex, function(url) {
         if (url.startsWith("https://www.youtube.com/embed/")) {
           // ignore youtube embeds
+          return url;
+        } else if (url.endsWith("?img")) {
+          // ignore urls ending with "?img" beause they represent images (even though they don't have an image extension)
           return url;
         }
 

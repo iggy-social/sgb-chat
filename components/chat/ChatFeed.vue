@@ -25,10 +25,17 @@
           @insertGif="insertImage"
         />
 
-        <!-- IMG button -->
+        <!-- Sticker button 
         <TenorStickerSearch 
           v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
           @insertSticker="insertImage"
+        />
+        -->
+
+        <!-- Upload IMG button -->
+        <Web3StorageImageUpload 
+          v-if="$config.web3storageKey != '' && userStore.getIsConnectedToOrbis"  
+          @insertImage="insertImage"
         />
 
         <!-- Sign Into Chat button -->
@@ -82,6 +89,7 @@ import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import SwitchChainButton from "~/components/SwitchChainButton.vue";
 import TenorGifSearch from "~/components/tenor/TenorGifSearch.vue";
 import TenorStickerSearch from "~/components/tenor/TenorStickerSearch.vue";
+import Web3StorageImageUpload from "~/components/storage/Web3StorageImageUpload.vue";
 
 export default {
   name: "ChatFeed",
@@ -98,7 +106,8 @@ export default {
     ConnectWalletButton,
     SwitchChainButton,
     TenorGifSearch,
-    TenorStickerSearch
+    TenorStickerSearch,
+    Web3StorageImageUpload
   },
 
   data() {

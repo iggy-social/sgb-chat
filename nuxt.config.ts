@@ -81,6 +81,7 @@ export default defineNuxtConfig({
       tokenAddress: null, // leave null if it's a native token of the chain
       tokenDecimals: 18,
       tokenSymbol: "SGB",
+      web3storageKey: process.env.WEB3_STORAGE_KEY || ""
     }
   },
   vite: {
