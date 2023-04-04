@@ -12,12 +12,20 @@
 
       <div class="mt-2" v-if="isCurrentUser">
         <button 
+          v-if="$config.web3storageKey === ''"
           :disabled="waitingDataLoad" 
           class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#changeImageModal"
         >
           <span v-if="waitingDataLoad" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
           Change image
         </button>
+
+        <!-- Upload IMG button -->
+        <Web3StorageImageUpload 
+          v-if="$config.web3storageKey !== '' && userStore.getIsConnectedToOrbis"  
+          @insertImage="insertImage"
+          buttonText="Change image"
+        />
 
         <button class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#chatSettingsModal">
           Chat settings
@@ -194,6 +202,7 @@ import { ethers } from 'ethers';
 import { useUserStore } from '~/store/user';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import ProfileImage from "~/components/profile/ProfileImage.vue";
+import Web3StorageImageUpload from "~/components/storage/Web3StorageImageUpload.vue";
 import ResolverAbi from "~/assets/abi/ResolverAbi.json";
 import resolvers from "~/assets/data/resolvers.json";
 import ChatFeed from '../chat/ChatFeed.vue';
@@ -224,8 +233,9 @@ export default {
   },
 
   components: {
+    ChatFeed,
     ProfileImage,
-    ChatFeed
+    Web3StorageImageUpload
 },
 
   created() {
@@ -481,6 +491,12 @@ export default {
 
         this.waitingDataLoad = false;
       }
+    },
+
+    async insertImage(imageUrl) {
+      // get image from Web3StorageImageUpload component and call the changeImage function
+      this.newImageLink = imageUrl;
+      this.changeImage();
     },
 
     async setEmailNotifications(remove) {

@@ -459,8 +459,6 @@ export default {
         allowedAttributes: {}
       });
 
-      console.log("postText: ", postText);
-
       postText = this.imgParsing(postText);
       postText = this.imgWithoutExtensionParsing(postText);
       postText = this.youtubeParsing(postText);

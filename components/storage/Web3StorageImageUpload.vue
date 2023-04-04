@@ -1,7 +1,7 @@
 <template>
   <button data-bs-toggle="modal" data-bs-target="#imageUploadModal" class="btn btn-primary me-2 mt-2">
     <i class="bi bi-file-earmark-image-fill"></i> 
-    IMG
+    {{ getButtonText }}
   </button>
   
   <!-- Modal -->
@@ -29,7 +29,14 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="uploadToWeb3Storage">Upload image</button>
+          <button 
+            type="button" class="btn btn-primary" 
+            @click="uploadToWeb3Storage"
+            :disabled="waitingUpload"
+          >
+            <span v-if="waitingUpload" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Upload image
+          </button>
         </div>
       </div>
     </div>
@@ -41,13 +48,21 @@
 
   export default {
     name: "Web3StorageImageUpload",
+    props: ["buttonText"],
     emits: ["insertImage"],
   
     data()  {
       return {
         file: null,
-        maxSize: 1 * 1024 * 1024, // 1 MB
+        maxSize: 1 * 1024 * 1024, // 1 MB, @todo: move to nuxt config
+        waitingUpload: false
       }
+    },
+
+    computed: {
+      getButtonText() {
+        return this.buttonText || "IMG";
+      },
     },
   
     methods: {
@@ -57,6 +72,8 @@
       },
 
       async uploadToWeb3Storage() {
+        this.waitingUpload = true;
+
         const file = this.file;
 
         if (!file) {
@@ -93,6 +110,7 @@
           } else {
             const data = await response.json();
 
+            this.waitingUpload = false;
             document.getElementById('closeImageUploadModal').click();
 
             //console.log("https://" + data.cid + ".ipfs.w3s.link/" + encodeURIComponent(file.name));
@@ -103,6 +121,7 @@
 
           
         } catch (error) {
+          this.waitingUpload = false;
           console.error('Error uploading image:', error);
           this.toast('Error uploading image', {type: "error"});
         }

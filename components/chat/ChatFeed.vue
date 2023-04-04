@@ -34,8 +34,9 @@
 
         <!-- Upload IMG button -->
         <Web3StorageImageUpload 
-          v-if="$config.web3storageKey != '' && userStore.getIsConnectedToOrbis"  
+          v-if="isActivated && $config.web3storageKey !== '' && userStore.getIsConnectedToOrbis"  
           @insertImage="insertImage"
+          buttonText="IMG"
         />
 
         <!-- Sign Into Chat button -->
