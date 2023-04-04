@@ -79,7 +79,7 @@
           headers: {
             'accept': 'application/json',
             "Authorization": 'Bearer ' + this.$config.web3storageKey,
-            "X-NAME": file.name
+            "X-NAME": encodeURIComponent(file.name) // make name URI safe
           },
           body: formData
         };
@@ -95,8 +95,8 @@
 
             document.getElementById('closeImageUploadModal').click();
 
-            //console.log("https://" + data.cid + ".ipfs.w3s.link/" + file.name);
-            //console.log("https://dweb.link/ipfs/" + data.cid + "/" + file.name);
+            //console.log("https://" + data.cid + ".ipfs.w3s.link/" + encodeURIComponent(file.name));
+            //console.log("https://dweb.link/ipfs/" + data.cid + "/" + encodeURIComponent(file.name));
 
             this.$emit("insertImage", "https://" + data.cid + ".ipfs.w3s.link?img");
           }
