@@ -163,7 +163,7 @@ export default {
       if (!imageRegex.test(text)) { return text };
 
       return text.replace(imageRegex, function(url) {
-        return '<img class="img-fluid rounded" src="' + url + '" />';
+        return '<div></div><img class="img-fluid rounded" src="' + url + '" />';
       })
     },
 
@@ -195,6 +195,9 @@ export default {
       return text.replace(urlRegex, function(url) {
         if (url.startsWith("https://www.youtube.com/embed/")) {
           // ignore youtube embeds
+          return url;
+        } else if (url.endsWith("?img")) {
+          // ignore urls ending with "?img" beause they represent images (even though they don't have an image extension)
           return url;
         }
 
