@@ -151,10 +151,8 @@ export default {
       this.post = data;
 
       if (error) {
-        console.log("Orbis error");
-        console.log(error)
-        this.toast("Orbis error", {type: "error"});
-        this.toast(error, {type: "error"});
+        console.log("Orbis error:", error);
+        this.toast("The post has been deleted.", {type: "warning"});
       }
 
       // fetch balanceOf of current user
