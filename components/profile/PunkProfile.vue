@@ -159,7 +159,7 @@
 
   </div>
 
-  <div class="card border mt-3">
+  <div class="card border mt-3 mb-3">
     <div class="card-body">
 
       <!-- Tabs Navigation -->
@@ -190,8 +190,8 @@
         </div>
 
         <!-- Mints Tab -->
-        <div v-if="currentTab === 'mints' && uDid">
-          <UserMintedPosts />
+        <div v-if="currentTab === 'mints'">
+          <UserMintedPosts :address="uAddress" />
         </div>
       </div>
     </div>
@@ -466,7 +466,7 @@ export default {
       if (this.uAddress) {
         let { data, error } = await this.$orbis.getDids(this.uAddress);
 
-        if (data[0].did) {
+        if (data[0]?.did) {
           this.uDid = data[0].did;
 
           const profile = await this.$orbis.getProfile(data[0].did);

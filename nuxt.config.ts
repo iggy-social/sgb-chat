@@ -56,6 +56,7 @@ export default defineNuxtConfig({
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
       iggyPostAddress: "0x99Dbf11aCd46baFBCE82506FaeB4F13E6Ea1726A",
       iggyPostMinterAddress: "0xabf9960132818049340253C3Ca0551F92Db856d7",
+      iggyPostEnumerationAddress: "0x0BF6333Fc85159663A30Ac89FD02c5031B97c5ee",
       marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgbchat/",
       marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0x99dbf11acd46bafbce82506faeb4f13e6ea1726a_", // url + nft id
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
@@ -65,6 +66,7 @@ export default defineNuxtConfig({
       previewImagePost: "/img/cover-post.png",
       previewImagePostNft: "/img/cover-post-nft.png",
       previewImageProfile: "/img/cover-profile.png",
+      profileMintedPostIdsMax: 36, // max number of minted post ids to show in the profile page
       projectMetadataTitle: "SGB Chat - Web3 Social on Songbird",
       projectName: "SGB Chat (beta)",
       projectDescription: "SGB Chat is the first decentralized social network on Songbird. Brought to you by Songbird Domains.",
