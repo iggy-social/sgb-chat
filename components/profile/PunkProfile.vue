@@ -190,7 +190,7 @@
         </div>
 
         <!-- Mints Tab -->
-        <div v-if="currentTab === 'mints'">
+        <div v-if="currentTab === 'mints' && uAddress">
           <UserMintedPosts :address="uAddress" />
         </div>
       </div>
@@ -244,6 +244,13 @@ export default {
 },
 
   created() {
+    // get profileCurrentTab from localStorage
+    this.currentTab = localStorage.getItem("profileCurrentTab");
+
+    if (!this.currentTab) {
+      this.currentTab = "posts";
+    }
+
     // if uAddress and/or domain is not provided via props, then find it yourself
     if (!this.pAddress || !this.pDomain) {
       this.fetchAddressAndDomain();
@@ -301,6 +308,7 @@ export default {
   methods: {
     changeCurrentTab(tab) {
       this.currentTab = tab;
+      localStorage.setItem("profileCurrentTab", tab);
     },
 
     async changeImage() {
