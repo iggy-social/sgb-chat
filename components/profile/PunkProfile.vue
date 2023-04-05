@@ -163,7 +163,6 @@
     <div class="card-body">
 
       <!-- Tabs Navigation -->
-      <!--
       <ul class="nav nav-tabs nav-fill">
         <li class="nav-item">
           <button 
@@ -180,7 +179,6 @@
           >Mints</button>
         </li>
       </ul>
-      -->
       <!-- END Tabs Navigation -->
 
       <!-- Tabs Content -->
@@ -189,6 +187,11 @@
         <!-- Posts Tab -->
         <div v-if="currentTab === 'posts' && uDid">
           <ChatFeed :byDid="uDid" :hideCommentBox="true" />
+        </div>
+
+        <!-- Mints Tab -->
+        <div v-if="currentTab === 'mints' && uDid">
+          <UserMintedPosts />
         </div>
       </div>
     </div>
@@ -203,6 +206,7 @@ import { useUserStore } from '~/store/user';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import ProfileImage from "~/components/profile/ProfileImage.vue";
 import Web3StorageImageUpload from "~/components/storage/Web3StorageImageUpload.vue";
+import UserMintedPosts from "~/components/minted-posts/UserMintedPosts.vue";
 import ResolverAbi from "~/assets/abi/ResolverAbi.json";
 import resolvers from "~/assets/data/resolvers.json";
 import ChatFeed from '../chat/ChatFeed.vue';
@@ -235,6 +239,7 @@ export default {
   components: {
     ChatFeed,
     ProfileImage,
+    UserMintedPosts,
     Web3StorageImageUpload
 },
 
