@@ -11,51 +11,58 @@
           ></textarea>
         </div>
 
-        <!-- Create Post button -->
-        <button 
-          v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
-          :disabled="!postText || waitingCreatePost" 
-          class="btn btn-primary me-2 mt-2" 
-          @click="createPost"
-        >Submit</button>
+        <div class="d-flex justify-content-between">
+          <div>
+            <!-- Create Post button -->
+            <button 
+              v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
+              :disabled="!postText || waitingCreatePost" 
+              class="btn btn-primary me-2 mt-2" 
+              @click="createPost"
+            >Submit</button>
 
-        <!-- GIF button -->
-        <TenorGifSearch 
-          v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
-          @insertGif="insertImage"
-        />
+            <!-- Sign Into Chat button -->
+            <button 
+              v-if="isActivated && !userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
+              class="btn btn-primary" @click="connectToOrbis"
+            >Sign into chat</button>
 
-        <!-- Sticker button 
-        <TenorStickerSearch 
-          v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
-          @insertSticker="insertImage"
-        />
-        -->
+            <!-- Get Username button -->
+            <button 
+              v-if="isActivated && isSupportedChain && !hasDomainOrNotRequired" 
+              class="btn btn-primary disabled"
+            >Get yourself a {{ $config.tldName }} name to post <i class="bi bi-arrow-right"></i></button>
+            
+            <!-- Connect Wallet button -->
+            <ConnectWalletButton v-if="!isActivated" class="btn btn-primary" btnText="Connect wallet" />
 
-        <!-- Upload IMG button -->
-        <Web3StorageImageUpload 
-          v-if="isActivated && $config.web3storageKey !== '' && userStore.getIsConnectedToOrbis"  
-          @insertImage="insertImage"
-          buttonText="IMG"
-        />
-
-        <!-- Sign Into Chat button -->
-        <button 
-          v-if="isActivated && !userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
-          class="btn btn-primary" @click="connectToOrbis"
-        >Sign into chat</button>
-
-        <!-- Sign Into Chat button -->
-        <button 
-          v-if="isActivated && isSupportedChain && !hasDomainOrNotRequired" 
-          class="btn btn-primary disabled"
-        >Get yourself a {{ $config.tldName }} name to post <i class="bi bi-arrow-right"></i></button>
+            <!-- Switch Chain button -->
+            <SwitchChainButton v-if="isActivated && !isSupportedChain" :navbar="false" :dropdown="false" />
+          </div>
         
-        <!-- Connect Wallet button -->
-        <ConnectWalletButton v-if="!isActivated" class="btn btn-primary" btnText="Connect wallet" />
+          <div>
+            <!-- GIF button -->
+            <TenorGifSearch 
+              v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
+              @insertGif="insertImage"
+            />
 
-        <!-- Switch Chain button -->
-        <SwitchChainButton v-if="isActivated && !isSupportedChain" :navbar="false" :dropdown="false" />
+            <!-- Sticker button 
+            <TenorStickerSearch 
+              v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
+              @insertSticker="insertImage"
+            />
+            -->
+
+            <!-- Upload IMG button -->
+            <Web3StorageImageUpload 
+              v-if="isActivated && $config.web3storageKey !== '' && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
+              @insertImage="insertImage"
+              buttonText="IMG"
+              cls="btn btn-outline-primary me-2 mt-2"
+            />
+          </div>
+        </div>
       </div>
     </div>
 

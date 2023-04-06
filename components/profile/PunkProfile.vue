@@ -25,6 +25,7 @@
           v-if="$config.web3storageKey !== '' && userStore.getIsConnectedToOrbis"  
           @insertImage="insertImage"
           buttonText="Change image"
+          cls="btn btn-primary me-2 mt-2"
         />
 
         <button class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#chatSettingsModal">

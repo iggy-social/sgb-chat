@@ -1,5 +1,5 @@
 <template>
-  <button data-bs-toggle="modal" data-bs-target="#imageUploadModal" class="btn btn-primary me-2 mt-2">
+  <button data-bs-toggle="modal" data-bs-target="#imageUploadModal" :class="cls">
     <i class="bi bi-file-earmark-image-fill"></i> 
     {{ getButtonText }}
   </button>
@@ -48,7 +48,7 @@
 
   export default {
     name: "Web3StorageImageUpload",
-    props: ["buttonText"],
+    props: ["buttonText", "cls"],
     emits: ["insertImage"],
   
     data()  {
