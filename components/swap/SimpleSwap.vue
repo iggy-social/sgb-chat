@@ -2,7 +2,7 @@
   <div>
 
     <!-- Input token -->
-    <div class="input-group mb-3">
+    <div class="input-group mt-3 mb-1">
       <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         {{ inputToken?.symbol }}
       </button>
@@ -26,21 +26,32 @@
         placeholder="0.00"
       >
 
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+      <button
+        @click="inputTokenAmount = inputTokenBalance" 
+        class="btn btn-outline-secondary" 
+        type="button" id="button-addon2"
+      >
         <small>MAX</small>
       </button>
     </div>
 
+    <small @click="inputTokenAmount = inputTokenBalance">
+      <em>Balance: </em>  
+      <em class="cursor-pointer hover-color">
+        {{ formatInputTokenBalance }} {{ inputToken?.symbol }}
+      </em>
+    </small>
+
     <!-- Arrow down -->
     <h4 
       @click="getOutputAmount" 
-      class="text-center mb-3 mt-3 cursor-pointer"
+      class="text-center mt-2 cursor-pointer"
     >
       <i class="bi bi-arrow-down"></i>
     </h4>
 
     <!-- Output token -->
-    <div class="input-group mb-4">
+    <div class="input-group mt-4 mb-4">
       <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         {{ outputToken?.symbol }}
       </button>
@@ -78,7 +89,9 @@
 </template>
 
 <script>
+import { useEthers } from 'vue-dapp';
 import tokens from '~/assets/data/tokens.json';
+import { getTokenBalance } from '~/utils/balanceUtils';
 
 export default {
   name: 'SimpleSwap',
@@ -90,6 +103,7 @@ export default {
       filterTextOutput: '',
       inputToken: null,
       inputTokenAmount: null,
+      inputTokenBalance: null,
       outputText: "Click Get amount",
       outputToken: null,
       outputTokenAmount: null,
@@ -100,8 +114,8 @@ export default {
   mounted() {
     this.tokenList = tokens.tokens;
 
-    this.inputToken = tokens.tokens[0];
-    this.outputToken = tokens.tokens[1];
+    this.selectInputToken(tokens.tokens[0]);
+    this.selectOutputToken(tokens.tokens[1]);
 
     if (this.outputPlaceholder) {
       this.outputText = this.outputPlaceholder;
@@ -117,22 +131,46 @@ export default {
     filteredTokensOutput() {
       const regex = new RegExp(this.filterTextOutput, 'i');
       return this.tokenList.filter(token => regex.test(token.symbol));
+    },
+
+    formatInputTokenBalance() {
+      if (this.inputTokenBalance) {
+        if (this.inputTokenBalance == 0) {
+          return 0;
+        } else if (this.inputTokenBalance > 100) {
+          return Number(this.inputTokenBalance).toFixed(2);
+        } else {
+          return Number(this.inputTokenBalance).toFixed(4);
+        }
+      }
+
+      return 0;
     }
   },
 
   methods: {
+    // imported from utils
+    getTokenBalance,
+
+    // custom
     getOutputAmount() {
       // TODO: call a function in composables
       console.log("getOutputAmount")
     },
 
-    selectInputToken(token) {
+    async selectInputToken(token) {
       this.inputToken = token;
+      this.inputTokenBalance = await this.getTokenBalance(token, this.address, this.signer);
     },
 
     selectOutputToken(token) {
       this.outputToken = token;
     }
-  }
+  },
+
+  setup() {
+    const { address, signer } = useEthers();
+    return { address, signer }
+  },
 }
 </script>

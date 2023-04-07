@@ -13,6 +13,29 @@
 
         <div class="d-flex justify-content-between">
           <div>
+            <!-- GIF button -->
+            <TenorGifSearch 
+              v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
+              @insertGif="insertImage"
+            />
+
+            <!-- Sticker button 
+            <TenorStickerSearch 
+              v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
+              @insertSticker="insertImage"
+            />
+            -->
+
+            <!-- Upload IMG button -->
+            <Web3StorageImageUpload 
+              v-if="isActivated && $config.web3storageKey !== '' && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
+              @insertImage="insertImage"
+              buttonText="IMG"
+              cls="btn btn-outline-primary me-2 mt-2"
+            />
+          </div>
+          
+          <div>
             <!-- Create Post button -->
             <button 
               v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired" 
@@ -40,28 +63,6 @@
             <SwitchChainButton v-if="isActivated && !isSupportedChain" :navbar="false" :dropdown="false" />
           </div>
         
-          <div>
-            <!-- GIF button -->
-            <TenorGifSearch 
-              v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
-              @insertGif="insertImage"
-            />
-
-            <!-- Sticker button 
-            <TenorStickerSearch 
-              v-if="$config.tenorApiKey != '' && isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
-              @insertSticker="insertImage"
-            />
-            -->
-
-            <!-- Upload IMG button -->
-            <Web3StorageImageUpload 
-              v-if="isActivated && $config.web3storageKey !== '' && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
-              @insertImage="insertImage"
-              buttonText="IMG"
-              cls="btn btn-outline-primary me-2 mt-2"
-            />
-          </div>
         </div>
       </div>
     </div>
