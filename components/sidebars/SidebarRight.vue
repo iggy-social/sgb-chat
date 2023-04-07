@@ -5,29 +5,18 @@
 
       <NameMintWidget />
 
-      <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
-
-      <!-- Swap Widget 
+      <!-- Swap Widget -->
       <div class="card m-2 bg-light">
         <div class="card-header bg-light">Swap</div>
+
         <div class="card-body">
 
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="0.0" aria-describedby="swap-token-1" disabled>
-            <span class="input-group-text" id="swap-token-1">USDC</span>
-          </div>
+          <SimpleSwap outputPlaceholder="Click ⮕" />
 
-          <p class="text-center"><i class="bi bi-arrow-down-up"></i></p>
-
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="0.0" aria-describedby="swap-token-2" disabled>
-            <span class="input-group-text" id="swap-token-2">ETH</span>
-          </div>
-
-          <button class="btn btn-outline-primary mt-2 mb-2" disabled>Swap</button>
         </div>
       </div>
-      -->
+
+      <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
       
     </div>
   </div>
@@ -38,6 +27,7 @@
 import { useSidebarStore } from '~/store/sidebars';
 import MintedPostsWidget from '~/components/minted-posts/MintedPostsWidget.vue';
 import NameMintWidget from '~/components/names/NameMintWidget.vue';
+import SimpleSwap from '~~/components/swap/SimpleSwap.vue';
 
 export default {
     name: "SidebarRight",
@@ -45,7 +35,8 @@ export default {
 
     components: { 
       MintedPostsWidget,
-      NameMintWidget 
+      NameMintWidget,
+      SimpleSwap
     },
 
     methods: {
