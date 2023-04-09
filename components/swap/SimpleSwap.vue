@@ -165,6 +165,11 @@ export default {
 
     selectOutputToken(token) {
       this.outputToken = token;
+    },
+
+    preSwapTokens() {
+      // before doing a token swap, check the amountOut again: getOutputTokenAmount
+      // if the amountOut is different, notify user about it in the modal
     }
   },
 

@@ -157,7 +157,7 @@ export default {
     },
 
     imgParsing(text) {
-      const imageRegex = /(?:https?:\/\/(?:www\.)?)?(?:[-\w]+\.)+[^\s]+\.(?:jpe?g|gif|png)/gi;
+      const imageRegex = /(?:https?:\/\/(?:www\.)?)?(?:[-\w]+\.)+[^\s]+\.(?:jpe?g|gif|png|img)/gi;
       //const imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
 
       if (!imageRegex.test(text)) { return text };
@@ -184,10 +184,10 @@ export default {
       let urlRegex;
 
       try {
-        urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\"\')])', 'g');
+        urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|img|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\"\')])', 'g');
       } catch (error) {
         // fallback to simplified regex (without lookbehinds) in case of an old browser or Safari
-        urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|gif|pdf|docx))[^\s]+)/g;
+        urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|img|gif|pdf|docx))[^\s]+)/g;
       }
 
       if (!urlRegex.test(text)) { return text };
@@ -196,8 +196,8 @@ export default {
         if (url.startsWith("https://www.youtube.com/embed/")) {
           // ignore youtube embeds
           return url;
-        } else if (url.endsWith("?img")) {
-          // ignore urls ending with "?img" beause they represent images (even though they don't have an image extension)
+        } else if (url.endsWith("?.img") || url.endsWith("?img")) {
+          // ignore urls ending with "?.img" beause they represent images (even though they don't have an image extension)
           return url;
         }
 

@@ -5,7 +5,7 @@
 
       <NameMintWidget />
 
-      <!-- Swap Widget -->
+      <!-- Swap Widget 
       <div class="card m-2 bg-light">
         <div class="card-header bg-light">Swap</div>
 
@@ -15,6 +15,7 @@
 
         </div>
       </div>
+      -->
 
       <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
       
