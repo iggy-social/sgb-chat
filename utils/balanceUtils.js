@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import erc20Abi from "~/assets/abi/erc20Abi.json";
+import Erc20Abi from "~/assets/abi/Erc20Abi.json";
 
 export async function getTokenBalance(token, userAddress, signer) {
   let provider = signer;
@@ -17,7 +17,7 @@ export async function getTokenBalance(token, userAddress, signer) {
       balanceWei = await signer.getBalance();
     }
   } else {
-    const contract = new ethers.Contract(token.address, erc20Abi, provider);
+    const contract = new ethers.Contract(token.address, Erc20Abi, provider);
     balanceWei = await contract.balanceOf(userAddress);
   }
 
