@@ -51,7 +51,7 @@
     </h4>
 
     <!-- Output token -->
-    <div class="input-group mt-4 mb-4">
+    <div class="input-group mt-4">
       <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         {{ outputToken?.symbol }}
       </button>
@@ -81,8 +81,20 @@
       </button>
     </div>
 
-    <div class="d-flex justify-content-center">
-      <button class="btn btn-outline-primary" type="button">Swap tokens</button>
+    <small 
+      v-if="outputTokenAmount && !bothTokensAreNativeCoinOrWrappedTokenOrSame"
+    >
+      <em>
+        You will get at least {{ outputTokenAmount }} {{ outputToken.symbol }}, but probably more (1% slippage).
+      </em>
+    </small>
+
+    <div class="d-flex justify-content-center mt-4">
+      <button
+        :disabled="!inputToken || !outputToken || !inputTokenAmount || !outputTokenAmount || !isActivated || bothTokensAreTheSame" 
+        class="btn btn-outline-primary" 
+        type="button"
+      >Swap tokens</button>
     </div>
 
   </div>
@@ -90,12 +102,16 @@
 
 <script>
 import { useEthers } from 'vue-dapp';
+import { useToast } from "vue-toastification/dist/index.mjs";
 import tokens from '~/assets/data/tokens.json';
+import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
 import { getTokenBalance } from '~/utils/balanceUtils';
+import { getOutputTokenAmount } from '~/utils/simpleSwapUtils';
+import { ethers } from 'ethers';
 
 export default {
   name: 'SimpleSwap',
-  props: ["outputPlaceholder"],
+  props: ["outputPlaceholder", "routerAddress"],
 
   data() {
     return {
@@ -106,7 +122,7 @@ export default {
       inputTokenBalance: null,
       outputText: "Click Get amount",
       outputToken: null,
-      outputTokenAmount: null,
+      outputTokenAmountWei: null,
       tokenList: []
     }
   },
@@ -123,6 +139,29 @@ export default {
   },
 
   computed: {
+    bothTokensAreNativeCoinOrWrappedTokenOrSame() {
+      if (
+        (this.inputToken.address == ethers.constants.AddressZero && this.outputToken.address == wrappedNativeTokens[this.$config.supportedChainId]) || 
+        (this.inputToken.address == wrappedNativeTokens[this.$config.supportedChainId] && this.outputToken.address == ethers.constants.AddressZero) || 
+        (this.inputToken.address == ethers.constants.AddressZero && this.outputToken.address == ethers.constants.AddressZero) || 
+        (this.inputToken.address == wrappedNativeTokens[this.$config.supportedChainId] && this.outputToken.address == wrappedNativeTokens[this.$config.supportedChainId])
+      ) {
+        return true;
+      } else if (this.inputToken.address == this.outputToken.address) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    bothTokensAreTheSame() {
+      if (this.inputToken.address == this.outputToken.address) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     filteredTokensInput() {
       const regex = new RegExp(this.filterTextInput, 'i');
       return this.tokenList.filter(token => regex.test(token.symbol));
@@ -145,6 +184,22 @@ export default {
       }
 
       return 0;
+    },
+
+    outputTokenAmount() {
+      if (this.outputTokenAmountWei) {
+        let amount = ethers.utils.formatUnits(String(this.outputTokenAmountWei), this.outputToken.decimals);
+
+        if (amount == 0) {
+          return 0;
+        } else if (amount > 100) {
+          return Number(amount).toFixed(2);
+        } else {
+          return Number(amount).toFixed(4);
+        }
+      }
+
+      return null;
     }
   },
 
@@ -153,29 +208,46 @@ export default {
     getTokenBalance,
 
     // custom
-    getOutputAmount() {
-      // TODO: call a function in composables
-      console.log("getOutputAmount")
-    },
+    async getOutputAmount() {
+      if (!this.inputTokenAmount) {
+        this.toast.error("Please enter an amount");
+        return;
+      }
 
-    async selectInputToken(token) {
-      this.inputToken = token;
-      this.inputTokenBalance = await this.getTokenBalance(token, this.address, this.signer);
-    },
-
-    selectOutputToken(token) {
-      this.outputToken = token;
+      if (this.bothTokensAreNativeCoinOrWrappedTokenOrSame) {
+        this.outputTokenAmountWei = ethers.utils.parseUnits(this.inputTokenAmount, this.inputToken.decimals);
+      } else {
+        this.outputTokenAmountWei = await getOutputTokenAmount(this.signer, this.inputToken, this.outputToken, this.inputTokenAmount, this.routerAddress);
+      }
     },
 
     preSwapTokens() {
       // before doing a token swap, check the amountOut again: getOutputTokenAmount
       // if the amountOut is different, notify user about it in the modal
+      // check for token approvals
+    },
+
+    async selectInputToken(token) {
+      this.inputToken = token;
+      this.inputTokenAmount = null;
+      this.inputTokenBalance = await this.getTokenBalance(token, this.address, this.signer);
+    },
+
+    selectOutputToken(token) {
+      this.outputToken = token;
+      this.outputTokenAmountWei = null;
+    },
+
+    swapTokens() {
+      // do the token swap
     }
   },
 
   setup() {
-    const { address, signer } = useEthers();
-    return { address, signer }
+    const { address, isActivated, signer } = useEthers();
+    const toast = useToast();
+
+    return { address, isActivated, signer, toast }
   },
 }
 </script>

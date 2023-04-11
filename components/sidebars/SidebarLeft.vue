@@ -46,6 +46,11 @@
             </NuxtLink>
           </li>
           <li class="nav-item p-1" @click="closeLeftSidebar">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/swap') ? 'active' : ''" aria-current="page" to="/swap">
+              <i class="bi bi-arrow-down-up"></i> Swap
+            </NuxtLink>
+          </li>
+          <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/about') ? 'active' : ''" aria-current="page" to="/about">
               <i class="bi bi-patch-question"></i> About
             </NuxtLink>

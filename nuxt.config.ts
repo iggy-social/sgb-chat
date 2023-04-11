@@ -78,6 +78,7 @@ export default defineNuxtConfig({
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
       showRepliesOnHomepage: true, // show replies on the homepage
       supportedChainId: 19,
+      swapRouterAddress: "0x249f1172Ebd8686386a5C0Ee704378B85acD0627", // usually the iggy swap contract address
       tenorApiKey: process.env.TENOR_KEY || "",
       tldName: ".sgb",
       tokenAddress: null, // leave null if it's a native token of the chain

@@ -1,16 +1,18 @@
 import { ethers } from "ethers";
 import Erc20Abi from "~/assets/abi/Erc20Abi.json";
 
+const config = useRuntimeConfig();
+
 export async function getTokenBalance(token, userAddress, signer) {
   let provider = signer;
 
   if (!provider) {
-    provider = this.$getFallbackProvider(this.$config.supportedChainId);
+    provider = this.$getFallbackProvider(config.supportedChainId);
   }
 
   let balanceWei;
 
-  if (token.address === "0x0") {
+  if (token.address === ethers.constants.AddressZero) {
     if (!signer) {
       balanceWei = await provider.getBalance(userAddress);
     } else {
