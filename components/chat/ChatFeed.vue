@@ -87,10 +87,9 @@
   </div>
 </template>
 
-
 <script>
 import { useEthers } from 'vue-dapp';
-import ChatPost from "~~/components/chat/ChatPost.vue";
+import ChatPost from "~/components/chat/ChatPost.vue";
 import { useToast } from "vue-toastification/dist/index.mjs";
 import { useSiteStore } from '~/store/site';
 import { useUserStore } from '~/store/user';

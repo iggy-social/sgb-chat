@@ -2,9 +2,9 @@ import { ethers } from "ethers";
 import Erc20Abi from "~/assets/abi/Erc20Abi.json";
 import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
 
-const config = useRuntimeConfig();
-
 export async function approveToken(signer, token, beneficiary, amount) {
+  const config = useRuntimeConfig();
+
   // TODO
   let provider = signer;
 
@@ -16,6 +16,8 @@ export async function approveToken(signer, token, beneficiary, amount) {
 }
 
 export async function getOutputTokenAmount(signer, inputToken, outputToken, amountIn, routerAddress) {
+  const config = useRuntimeConfig();
+
   let provider = signer;
 
   if (!provider) {
@@ -67,6 +69,8 @@ export async function getOutputTokenAmount(signer, inputToken, outputToken, amou
 }
 
 export async function swapTokens(signer, inputToken, outputToken, amountIn, amountOutMin) {
+  const config = useRuntimeConfig();
+  
   // TODO
   // find slippage and deadline in local storage (if not found, use default values)
   // if swapping native coin for wrapped token, use the wrapped token contract to deposit

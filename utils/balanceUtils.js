@@ -1,9 +1,9 @@
 import { ethers } from "ethers";
 import Erc20Abi from "~/assets/abi/Erc20Abi.json";
 
-const config = useRuntimeConfig();
-
 export async function getTokenBalance(token, userAddress, signer) {
+  const config = useRuntimeConfig();
+  
   let provider = signer;
 
   if (!provider) {
