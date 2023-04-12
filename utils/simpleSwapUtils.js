@@ -2,13 +2,6 @@ import { ethers } from "ethers";
 import Erc20Abi from "~/assets/abi/Erc20Abi.json";
 import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
 
-export async function approveToken(signer, token, beneficiary, amount) {
-  // TODO
-  let provider = signer;
-
-  return null
-}
-
 export async function getOutputTokenAmount(signer, inputToken, outputToken, amountIn, routerAddress) {
   const config = useRuntimeConfig();
 

@@ -115,21 +115,13 @@
         Approve token
       </button>
 
-      <!-- @TODO: TEMP (DELETE AFTER): Approve token button -->
-      <button
-        class="btn btn-outline-primary" 
-        type="button"
-        data-bs-toggle="modal" 
-        data-bs-target="#simpleSwapTokenApprovalModal"
-      >
-        Approve token (TEMP)
-      </button>
-
       <!-- Approve token modal -->
       <TokenApprovalModal 
         id="simpleSwapTokenApprovalModal"
         :token="inputToken"
         :amount="inputTokenAmount"
+        :routerAddress="routerAddress"
+        @setApprovalAmount="changeInputTokenAllowance"
       />
 
       <!-- Swap tokens button -->
@@ -302,6 +294,10 @@ export default {
     // imported from utils
     getTokenAllowance,
     getTokenBalance,
+
+    changeInputTokenAllowance(newAllowance) {
+      this.inputTokenAllowance = Number(newAllowance);
+    },
 
     // custom
     async getOutputAmount() {
