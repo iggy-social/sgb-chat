@@ -90,11 +90,78 @@
     </small>
 
     <div class="d-flex justify-content-center mt-4">
+
+      <!-- Connect Wallet button -->
+      <ConnectWalletButton v-if="!isActivated" class="btn btn-outline-primary" btnText="Connect wallet" />
+
+      <!-- Disabled Swap tokens button (if not input amount is entered) -->
       <button
-        :disabled="!inputToken || !outputToken || !inputTokenAmount || !outputTokenAmount || !isActivated || bothTokensAreTheSame" 
+        v-if="isActivated && !inputTokenAmount"
+        :disabled="true" 
         class="btn btn-outline-primary" 
         type="button"
-      >Swap tokens</button>
+      >
+        Swap tokens
+      </button>
+
+      <!-- Approve token button -->
+      <button
+        v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && allowanceTooLow" 
+        class="btn btn-outline-primary" 
+        type="button"
+        data-bs-toggle="modal" 
+        data-bs-target="#simpleSwapTokenApprovalModal"
+      >
+        Approve token
+      </button>
+
+      <!-- @TODO: TEMP (DELETE AFTER): Approve token button -->
+      <button
+        class="btn btn-outline-primary" 
+        type="button"
+        data-bs-toggle="modal" 
+        data-bs-target="#simpleSwapTokenApprovalModal"
+      >
+        Approve token (TEMP)
+      </button>
+
+      <!-- Approve token modal -->
+      <TokenApprovalModal 
+        id="simpleSwapTokenApprovalModal"
+        :token="inputToken"
+        :amount="inputTokenAmount"
+      />
+
+      <!-- Swap tokens button -->
+      <button
+        v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && !allowanceTooLow"
+        :disabled="!inputToken || !outputToken || !inputTokenAmount || !outputTokenAmount || !isActivated || bothTokensAreTheSame || !inputAmountLessThanBalance" 
+        class="btn btn-outline-primary" 
+        type="button"
+      >
+        Swap tokens
+      </button>
+
+      <!-- Balance too low button -->
+      <button
+        v-if="isActivated && inputTokenAmount && !inputAmountLessThanBalance"
+        :disabled="true" 
+        class="btn btn-outline-primary" 
+        type="button"
+      >
+        Balance too low
+      </button>
+
+      <!-- Both tokens are the same button -->
+      <button
+        v-if="isActivated && inputTokenAmount && bothTokensAreTheSame"
+        :disabled="true" 
+        class="btn btn-outline-primary" 
+        type="button"
+      >
+        Both tokens are the same
+      </button>
+
     </div>
 
   </div>
@@ -105,9 +172,11 @@ import { useEthers } from 'vue-dapp';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import tokens from '~/assets/data/tokens.json';
 import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
-import { getTokenBalance } from '~/utils/balanceUtils';
+import { getTokenAllowance, getTokenBalance } from '~/utils/balanceUtils';
 import { getOutputTokenAmount } from '~/utils/simpleSwapUtils';
 import { ethers } from 'ethers';
+import ConnectWalletButton from '~/components/ConnectWalletButton.vue';
+import TokenApprovalModal from '~/components/approvals/TokenApprovalModal.vue';
 
 export default {
   name: 'SimpleSwap',
@@ -118,6 +187,7 @@ export default {
       filterTextInput: '',
       filterTextOutput: '',
       inputToken: null,
+      inputTokenAllowance: 0,
       inputTokenAmount: null,
       inputTokenBalance: null,
       outputText: "Click Get amount",
@@ -125,6 +195,11 @@ export default {
       outputTokenAmountWei: null,
       tokenList: []
     }
+  },
+
+  components: {
+    ConnectWalletButton,
+    TokenApprovalModal
   },
 
   mounted() {
@@ -139,6 +214,14 @@ export default {
   },
 
   computed: {
+    allowanceTooLow() {
+      if (this.inputTokenAllowance < this.inputTokenAmount) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     bothTokensAreNativeCoinOrWrappedTokenOrSame() {
       if (
         (this.inputToken.address == ethers.constants.AddressZero && this.outputToken.address == wrappedNativeTokens[this.$config.supportedChainId]) || 
@@ -186,6 +269,18 @@ export default {
       return 0;
     },
 
+    inputAmountLessThanBalance() {
+      if (this.inputTokenAmount && this.inputTokenBalance) {
+        if (Number(this.inputTokenAmount) <= Number(this.inputTokenBalance)) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      return false;
+    },
+
     outputTokenAmount() {
       if (this.outputTokenAmountWei) {
         let amount = ethers.utils.formatUnits(String(this.outputTokenAmountWei), this.outputToken.decimals);
@@ -205,6 +300,7 @@ export default {
 
   methods: {
     // imported from utils
+    getTokenAllowance,
     getTokenBalance,
 
     // custom
@@ -228,9 +324,29 @@ export default {
     },
 
     async selectInputToken(token) {
+      this.inputTokenAllowance = 0; // reset the allowance each time a new token is selected
+
       this.inputToken = token;
       this.inputTokenAmount = null;
-      this.inputTokenBalance = await this.getTokenBalance(token, this.address, this.signer);
+
+      if (this.signer) {
+        this.inputTokenBalance = await this.getTokenBalance(token, this.address, this.signer);
+      }
+
+      console.log("token.address", token.address);
+      console.log("token symbol", token.symbol);
+
+      console.log("input token allowance before", this.inputTokenAllowance);
+
+      if (token.address == ethers.constants.AddressZero) {
+        console.log("native coin selected");
+        this.inputTokenAllowance = Number(ethers.constants.MaxUint256);
+      } else {
+        this.inputTokenAllowance = await this.getTokenAllowance(token, this.address, this.routerAddress, this.signer);
+      }
+
+      console.log("input token allowance after", this.inputTokenAllowance);
+      
     },
 
     selectOutputToken(token) {
@@ -249,5 +365,13 @@ export default {
 
     return { address, isActivated, signer, toast }
   },
+
+  watch: {
+    async isActivated() {
+      if (this.address) {
+        this.inputTokenBalance = await this.getTokenBalance(this.inputToken, this.address, this.signer);
+      }
+    }
+  }
 }
 </script>

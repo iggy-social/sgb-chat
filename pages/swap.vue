@@ -11,11 +11,7 @@
           <i class="bi bi-arrow-left-circle cursor-pointer"></i>
         </p>
 
-        <h3 class="mb-3 mt-3">Token Swap</h3>
-
-        <p class="text-break mt-3 mb-4"> 
-          Swap tokens through this interface.
-        </p>
+        <h3 class="mb-4 mt-3">Token Swap</h3>
         
         <div class="d-flex justify-content-center">
           <div class="col-12 col-lg-8">

@@ -1,6 +1,21 @@
 import { ethers } from "ethers";
 import Erc20Abi from "~/assets/abi/Erc20Abi.json";
 
+export async function getTokenAllowance(token, userAddress, beneficiary, signer) {
+  const config = useRuntimeConfig();
+  
+  let provider = signer;
+
+  if (!provider) {
+    provider = this.$getFallbackProvider(config.supportedChainId);
+  }
+
+  const contract = new ethers.Contract(token.address, Erc20Abi, provider);
+  const allowanceWei = await contract.allowance(userAddress, beneficiary);
+
+  return ethers.utils.formatUnits(allowanceWei, token.decimals);
+}
+
 export async function getTokenBalance(token, userAddress, signer) {
   const config = useRuntimeConfig();
   
