@@ -47,16 +47,25 @@
 
 <script>
 import { ethers } from "ethers";
+import { useEthers } from 'vue-dapp';
+import { useToast } from "vue-toastification/dist/index.mjs";
 import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
+import { swapTokens } from '~/utils/simpleSwapUtils';
+import WaitingToast from "~/components/WaitingToast";
 
 export default {
   name: "SwapTokensModal",
-  props: ["inputToken", "inputTokenAmount", "modalId", "outputToken", "outputTokenAmount", "outputTokenAmountWei"],
+  props: ["inputToken", "inputTokenAmount", "modalId", "outputToken", "outputTokenAmount", "outputTokenAmountWei", "routerAddress"],
+  emits: ["changeInputTokenBalance"],
 
   data() {
     return {
       waiting: false,
     };
+  },
+
+  components: {
+    WaitingToast
   },
 
   computed: {
@@ -105,9 +114,71 @@ export default {
   },
 
   methods: {
-    swap() {
+
+    async swap() {
       this.waiting = true;
+
+      const inputTokenAmountWei = ethers.utils.parseUnits(this.inputTokenAmount, this.inputToken?.decimals);
+
+      try {
+        const tx = await swapTokens(
+          this.signer,
+          this.inputToken,
+          this.outputToken,
+          inputTokenAmountWei,
+          this.outputTokenAmountWei,
+          this.routerAddress
+        );
+
+        const toastWait = this.toast(
+          {
+            component: WaitingToast,
+            props: {
+              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+            }
+          },
+          {
+            type: "info",
+            onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          }
+        );
+
+        const receipt = await tx.wait();
+
+        if (receipt.status === 1) {
+          this.toast.dismiss(toastWait);
+          this.toast("You have successfully swapped "+this.inputToken.symbol+" for "+ this.outputToken.symbol +"!", {
+            type: "success",
+            onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          this.$emit("changeInputTokenBalance");
+          this.waiting = false;
+          document.getElementById('closeSwapTokensModal'+this.modalId).click();
+        } else {
+          this.waiting = false;
+          this.toast.dismiss(toastWait);
+          this.toast("Transaction has failed.", {
+            type: "error",
+            onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          console.log(receipt);
+        }
+
+      } catch (e) {
+        this.toast.error("Something went wrong while swapping tokens");
+        this.waiting = false;
+        return;
+      }
+
+      this.waiting = false;
     },
-  }
+  },
+
+  setup() {
+    const { signer } = useEthers();
+    const toast = useToast();
+
+    return { signer, toast }
+  },
 }
 </script>

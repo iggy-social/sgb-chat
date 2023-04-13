@@ -145,6 +145,8 @@
         :outputToken="outputToken" 
         :outputTokenAmount="outputTokenAmount"
         :outputTokenAmountWei="outputTokenAmountWei"
+        :routerAddress="routerAddress"
+        @changeInputTokenBalance="subtractInputTokenBalance"
       />
 
       <!-- Balance too low button -->
@@ -174,7 +176,6 @@
 
 <script>
 import { useEthers } from 'vue-dapp';
-import { useToast } from "vue-toastification/dist/index.mjs";
 import tokens from '~/assets/data/tokens.json';
 import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
 import { getTokenAllowance, getTokenBalance } from '~/utils/balanceUtils';
@@ -377,6 +378,10 @@ export default {
       this.outputTokenAmountWei = null;
     },
 
+    subtractInputTokenBalance() {
+      this.inputTokenBalance = Number(this.inputTokenBalance) - Number(this.inputTokenAmount);
+    },
+
     togglePreswapCheck() {
       this.preswapCheck = !this.preswapCheck;
     }
@@ -384,9 +389,8 @@ export default {
 
   setup() {
     const { address, isActivated, signer } = useEthers();
-    const toast = useToast();
 
-    return { address, isActivated, signer, toast }
+    return { address, isActivated, signer }
   },
 
   watch: {

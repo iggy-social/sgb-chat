@@ -50,13 +50,29 @@ export async function getOutputTokenAmount(signer, inputToken, outputToken, amou
   return amounts[amounts.length - 1]; // return amount out (the output token amount)
 }
 
-export async function swapTokens(signer, inputToken, outputToken, amountIn, amountOutMin, routerAddress) {
-  // TODO
-  // find slippage and deadline in local storage (if not found, use default values)
-  // if swapping native coin for wrapped token, use the wrapped token contract to deposit
-  // if swapping wrapped token for native coin, use the wrapped token contract to withdraw
-  // else use the iggy router contract to swap
+export function swapTokens(signer, inputToken, outputToken, amountIn, amountOutMin, routerAddress) {
+  const config = useRuntimeConfig();
   let provider = signer;
+  const wrappedAddress = wrappedNativeTokens[String(config.supportedChainId)];
+
+  // if swapping native coin for wrapped token, use the wrapped token contract to deposit
+  if (inputToken.address === ethers.constants.AddressZero && outputToken.address === wrappedAddress) {
+    // wrapped native coin interface with deposit and withdraw functions
+    const wrappedInterface = new ethers.utils.Interface([
+      "function deposit() payable",
+      "function withdraw(uint wad)"
+    ]);
+
+    const wrappedContract = new ethers.Contract(wrappedAddress, wrappedInterface, provider);
+    return wrappedContract.deposit({ value: amountIn });
+  }
+
+  console.log("swapTokens 7")
+
+  // if swapping wrapped token for native coin, use the wrapped token contract to withdraw
+
+  // else use the iggy router contract to swap
+    // find slippage and deadline in local storage (if not found, use default values)
 
   return null
 }
