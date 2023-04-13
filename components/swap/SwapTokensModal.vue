@@ -62,8 +62,8 @@ export default {
   computed: {
     bothTokensAreNativeCoinOrWrappedToken() {
       if (
-        (this.inputIsSgb && this.outputIsWsgb) || 
-        (this.inputIsWsgb && this.outputIsSgb)
+        (this.inputIsNativeCoin && this.outputIsWrappedNativeCoin) || 
+        (this.inputIsWrappedNativeCoin && this.outputIsNativeCoin)
       ) {
         return true;
       } else {
@@ -71,7 +71,7 @@ export default {
       }
     },
 
-    inputIsSgb() {
+    inputIsNativeCoin() {
       if (String(this.inputToken?.address).toLowerCase() == String(ethers.constants.AddressZero).toLowerCase()) {
         return true;
       } else {
@@ -79,7 +79,7 @@ export default {
       }
     },
 
-    inputIsWsgb() {
+    inputIsWrappedNativeCoin() {
       if (String(this.inputToken?.address).toLowerCase() == String(wrappedNativeTokens[this.$config.supportedChainId]).toLowerCase()) {
         return true;
       } else {
@@ -87,7 +87,7 @@ export default {
       }
     },
 
-    outputIsSgb() {
+    outputIsNativeCoin() {
       if (String(this.outputToken?.address).toLowerCase() == String(ethers.constants.AddressZero).toLowerCase()) {
         return true;
       } else {
@@ -95,7 +95,7 @@ export default {
       }
     },
 
-    outputIsWsgb() {
+    outputIsWrappedNativeCoin() {
       if (String(this.outputToken?.address).toLowerCase() == String(wrappedNativeTokens[this.$config.supportedChainId]).toLowerCase()) {
         return true;
       } else {

@@ -106,7 +106,7 @@
 
       <!-- Approve token button -->
       <button
-        v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && allowanceTooLow" 
+        v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && allowanceTooLow && !unwrappingWrappedNativeCoin" 
         class="btn btn-outline-primary" 
         type="button"
         data-bs-toggle="modal" 
@@ -126,7 +126,7 @@
 
       <!-- Swap tokens button (and fetch the output token amount again) -->
       <button
-        v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && !allowanceTooLow"
+        v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && (!allowanceTooLow || unwrappingWrappedNativeCoin)"
         :disabled="!inputToken || !outputToken || !inputTokenAmount || !outputTokenAmount || !isActivated || bothTokensAreTheSame || !inputAmountLessThanBalance" 
         class="btn btn-outline-primary" 
         type="button"
@@ -149,7 +149,7 @@
 
       <!-- Balance too low button -->
       <button
-        v-if="isActivated && inputTokenAmount && !inputAmountLessThanBalance"
+        v-if="isActivated && inputTokenAmount && !inputAmountLessThanBalance && !bothTokensAreTheSame"
         :disabled="true" 
         class="btn btn-outline-primary" 
         type="button"
@@ -253,6 +253,22 @@ export default {
       }
     },
 
+    inputIsWrappedNativeCoin() {
+      if (String(this.inputToken?.address).toLowerCase() == String(wrappedNativeTokens[this.$config.supportedChainId]).toLowerCase()) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    outputIsNativeCoin() {
+      if (String(this.outputToken?.address).toLowerCase() == String(ethers.constants.AddressZero).toLowerCase()) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     filteredTokensInput() {
       const regex = new RegExp(this.filterTextInput, 'i');
       return this.tokenList.filter(token => regex.test(token.symbol));
@@ -303,7 +319,15 @@ export default {
       }
 
       return null;
-    }
+    },
+
+    unwrappingWrappedNativeCoin() {
+      if (this.inputIsWrappedNativeCoin && this.outputIsNativeCoin) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
 
   methods: {
@@ -331,6 +355,7 @@ export default {
 
     async selectInputToken(token) {
       this.inputTokenAllowance = 0; // reset the allowance each time a new token is selected
+      this.outputTokenAmountWei = null;
 
       this.inputToken = token;
       this.inputTokenAmount = null;
