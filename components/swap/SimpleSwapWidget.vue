@@ -5,7 +5,6 @@
   <div class="card-body sidebar-card-body">
 
     <SimpleSwap 
-      outputPlaceholder="Click ⮕" 
       :routerAddress="$config.swapRouterAddress" 
       swapId="SidebarRight1"
     />

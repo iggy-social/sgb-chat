@@ -24,6 +24,7 @@
         type="text" 
         class="form-control" 
         placeholder="0.00"
+        @keyup="getOutputAmountWithTimeout"
       >
 
       <button
@@ -76,9 +77,11 @@
         disabled
       >
 
+      <!--
       <button @click="getOutputAmount" class="btn btn-outline-secondary" type="button">
         <small>Get amount</small>
       </button>
+      -->
     </div>
 
     <small 
@@ -191,16 +194,18 @@ export default {
 
   data() {
     return {
+      debounce: null, // debounce for getOutputAmount
       filterTextInput: '',
       filterTextOutput: '',
       inputToken: null,
       inputTokenAllowance: 0,
       inputTokenAmount: null,
       inputTokenBalance: null,
-      outputText: "Click Get amount",
+      outputText: "0", // "Click Get amount",
       outputToken: null,
       outputTokenAmountWei: null,
       preswapCheck: false,
+      timeout: 800, // timeout for getOutputAmount in miliseconds
       tokenList: []
     }
   },
@@ -342,17 +347,37 @@ export default {
 
     // custom
     async getOutputAmount() {
+      /*
       if (!this.inputTokenAmount) {
         this.toast.error("Please enter an amount");
         return;
       }
+      */
 
-      if (this.bothTokensAreNativeCoinOrWrappedTokenOrSame) {
-        this.outputTokenAmountWei = ethers.utils.parseUnits(this.inputTokenAmount, this.inputToken.decimals);
+      if (this.inputTokenAmount) {
+        if (this.bothTokensAreNativeCoinOrWrappedTokenOrSame) {
+          this.outputTokenAmountWei = ethers.utils.parseUnits(this.inputTokenAmount, this.inputToken.decimals);
+        } else {
+          const outputWei = await getOutputTokenAmount(this.signer, this.inputToken, this.outputToken, this.inputTokenAmount, this.routerAddress);
+          
+          // deduct 0.5% slippage (TODO: add slippage into settings)
+          this.outputTokenAmountWei = outputWei.sub(outputWei.div(1000).mul(5)); // 0.5% slippage
+        }
       } else {
-        // TODO: deduct slippage
-        this.outputTokenAmountWei = await getOutputTokenAmount(this.signer, this.inputToken, this.outputToken, this.inputTokenAmount, this.routerAddress);
+        this.outputTokenAmountWei = null;
       }
+    },
+
+    getOutputAmountWithTimeout() {
+      if (this.debounce) {
+        clearTimeout(this.debounce);
+      }
+
+      const self = this;
+
+      this.debounce = setTimeout(() => {
+        self.getOutputAmount();
+      }, self.timeout);
     },
 
     async selectInputToken(token) {
