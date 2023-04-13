@@ -1,5 +1,5 @@
 <template>
-<div class="modal fade" :id="'simpleSwapTokenApprovalModal'+modalId" tabindex="-1" :aria-labelledby="'tokenApprovalModalLabel'+modalId" aria-hidden="true">
+<div class="modal fade" :id="'tokenApprovalModal'+modalId" tabindex="-1" :aria-labelledby="'tokenApprovalModalLabel'+modalId" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

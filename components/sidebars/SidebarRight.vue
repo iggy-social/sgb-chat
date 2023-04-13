@@ -5,11 +5,11 @@
 
       <NameMintWidget />
 
-      <!-- Swap Widget -->
+      <!-- Swap Widget 
       <div class="card m-2 bg-light">
-        <div class="card-header bg-light">Swap</div>
+        <div class="card-header bg-light">Swap tokens</div>
 
-        <div class="card-body">
+        <div class="card-body sidebar-card-body">
 
           <SimpleSwap 
             outputPlaceholder="Click ⮕" 
@@ -19,7 +19,7 @@
 
         </div>
       </div>
-      
+      -->
 
       <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
       

@@ -1,7 +1,7 @@
 <template>
   <Head>
     <Title>Swap | {{ $config.projectMetadataTitle }}</Title>
-    <Meta property="og:title" :content="'Swap | ' + $config.projectMetadataTitle" />
+    <Meta property="og:title" :content="'Token Swap | ' + $config.projectMetadataTitle" />
   </Head>
 
   <div class="scroll-500">

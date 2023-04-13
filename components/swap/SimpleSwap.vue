@@ -110,7 +110,7 @@
         class="btn btn-outline-primary" 
         type="button"
         data-bs-toggle="modal" 
-        :data-bs-target="'#simpleSwapTokenApprovalModal'+swapId"
+        :data-bs-target="'#tokenApprovalModal'+swapId"
       >
         Approve token
       </button>
@@ -124,15 +124,28 @@
         @setApprovalAmount="changeInputTokenAllowance"
       />
 
-      <!-- Swap tokens button -->
+      <!-- Swap tokens button (and fetch the output token amount again) -->
       <button
         v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && !allowanceTooLow"
         :disabled="!inputToken || !outputToken || !inputTokenAmount || !outputTokenAmount || !isActivated || bothTokensAreTheSame || !inputAmountLessThanBalance" 
         class="btn btn-outline-primary" 
         type="button"
+        data-bs-toggle="modal" 
+        :data-bs-target="'#swapTokensModal'+swapId"
+        @click="getOutputAmount"
       >
         Swap tokens
       </button>
+
+      <!-- Swap tokens modal -->
+      <SwapTokensModal 
+        :modalId="swapId" 
+        :inputToken="inputToken" 
+        :inputTokenAmount="inputTokenAmount" 
+        :outputToken="outputToken" 
+        :outputTokenAmount="outputTokenAmount"
+        :outputTokenAmountWei="outputTokenAmountWei"
+      />
 
       <!-- Balance too low button -->
       <button
@@ -169,6 +182,7 @@ import { getOutputTokenAmount } from '~/utils/simpleSwapUtils';
 import { ethers } from 'ethers';
 import ConnectWalletButton from '~/components/ConnectWalletButton.vue';
 import TokenApprovalModal from '~/components/approvals/TokenApprovalModal.vue';
+import SwapTokensModal from '~/components/swap/SwapTokensModal.vue';
 
 export default {
   name: 'SimpleSwap',
@@ -185,12 +199,14 @@ export default {
       outputText: "Click Get amount",
       outputToken: null,
       outputTokenAmountWei: null,
+      preswapCheck: false,
       tokenList: []
     }
   },
 
   components: {
     ConnectWalletButton,
+    SwapTokensModal,
     TokenApprovalModal
   },
 
@@ -313,12 +329,6 @@ export default {
       }
     },
 
-    preSwapTokens() {
-      // before doing a token swap, check the amountOut again: getOutputTokenAmount
-      // if the amountOut is different, notify user about it in the modal
-      // check for token approvals
-    },
-
     async selectInputToken(token) {
       this.inputTokenAllowance = 0; // reset the allowance each time a new token is selected
 
@@ -329,20 +339,12 @@ export default {
         this.inputTokenBalance = await this.getTokenBalance(token, this.address, this.signer);
       }
 
-      console.log("token.address", token.address);
-      console.log("token symbol", token.symbol);
-
-      console.log("input token allowance before", this.inputTokenAllowance);
-
       if (token.address == ethers.constants.AddressZero) {
         console.log("native coin selected");
         this.inputTokenAllowance = Number(ethers.constants.MaxUint256);
       } else {
         this.inputTokenAllowance = await this.getTokenAllowance(token, this.address, this.routerAddress, this.signer);
       }
-
-      console.log("input token allowance after", this.inputTokenAllowance);
-      
     },
 
     selectOutputToken(token) {
@@ -350,8 +352,8 @@ export default {
       this.outputTokenAmountWei = null;
     },
 
-    swapTokens() {
-      // do the token swap
+    togglePreswapCheck() {
+      this.preswapCheck = !this.preswapCheck;
     }
   },
 
