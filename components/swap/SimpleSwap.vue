@@ -207,7 +207,7 @@ export default {
 
   computed: {
     allowanceTooLow() {
-      if (this.inputTokenAllowance < this.inputTokenAmount) {
+      if (Number(this.inputTokenAllowance) < Number(this.inputTokenAmount)) {
         return true;
       } else {
         return false;
