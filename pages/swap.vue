@@ -15,7 +15,10 @@
         
         <div class="d-flex justify-content-center">
           <div class="col-12 col-lg-8">
-            <SimpleSwap :routerAddress="$config.swapRouterAddress" />
+            <SimpleSwap 
+              :routerAddress="$config.swapRouterAddress" 
+              swapId="SwapPage1" 
+            />
           </div>
         </div>
         

@@ -110,14 +110,14 @@
         class="btn btn-outline-primary" 
         type="button"
         data-bs-toggle="modal" 
-        data-bs-target="#simpleSwapTokenApprovalModal"
+        :data-bs-target="'#simpleSwapTokenApprovalModal'+swapId"
       >
         Approve token
       </button>
 
       <!-- Approve token modal -->
       <TokenApprovalModal 
-        id="simpleSwapTokenApprovalModal"
+        :modalId="swapId"
         :token="inputToken"
         :amount="inputTokenAmount"
         :routerAddress="routerAddress"
@@ -172,7 +172,7 @@ import TokenApprovalModal from '~/components/approvals/TokenApprovalModal.vue';
 
 export default {
   name: 'SimpleSwap',
-  props: ["outputPlaceholder", "routerAddress"],
+  props: ["swapId", "outputPlaceholder", "routerAddress"],
 
   data() {
     return {

@@ -1,10 +1,10 @@
 <template>
-<div class="modal fade" tabindex="-1" aria-labelledby="tokenApprovalModalLabel" aria-hidden="true">
+<div class="modal fade" :id="'simpleSwapTokenApprovalModal'+modalId" tabindex="-1" :aria-labelledby="'tokenApprovalModalLabel'+modalId" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="tokenApprovalModalLabel">Approve {{ token?.symbol }} token</h1>
-        <button id="closeTokenApprovalModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" :id="'tokenApprovalModalLabel'+modalId">Approve {{ token?.symbol }} token</h1>
+        <button :id="'closeTokenApprovalModal'+modalId" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body">
@@ -70,7 +70,7 @@ import Erc20Abi from "~/assets/abi/Erc20Abi.json";
 
 export default {
   name: 'TokenApprovalModal',
-  props: ["amount", "routerAddress", "token"],
+  props: ["amount", "modalId", "routerAddress", "token"],
   emits: ["setApprovalAmount"],
 
   components: {
@@ -139,7 +139,7 @@ export default {
           });
           this.$emit("setApprovalAmount", approvalAmount);
           this.waiting = false;
-          document.getElementById('closeTokenApprovalModal').click();
+          document.getElementById('closeTokenApprovalModal'+this.modalId).click();
         } else {
           this.waiting = false;
           this.toast.dismiss(toastWait);
