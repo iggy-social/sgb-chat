@@ -123,11 +123,13 @@ export default {
       try {
         const tx = await swapTokens(
           this.signer,
+          this.address,
           this.inputToken,
           this.outputToken,
           inputTokenAmountWei,
           this.outputTokenAmountWei,
-          this.routerAddress
+          this.routerAddress,
+          ethers.constants.AddressZero // TODO: referrer address
         );
 
         const toastWait = this.toast(
@@ -175,10 +177,10 @@ export default {
   },
 
   setup() {
-    const { signer } = useEthers();
+    const { address, signer } = useEthers();
     const toast = useToast();
 
-    return { signer, toast }
+    return { address, signer, toast }
   },
 }
 </script>

@@ -366,7 +366,6 @@ export default {
       }
 
       if (token.address == ethers.constants.AddressZero) {
-        console.log("native coin selected");
         this.inputTokenAllowance = Number(ethers.constants.MaxUint256);
       } else {
         this.inputTokenAllowance = await this.getTokenAllowance(token, this.address, this.routerAddress, this.signer);

@@ -45,15 +45,19 @@ export async function getOutputTokenAmount(signer, inputToken, outputToken, amou
 
   const amounts = await routerContract.getAmountsOut(amountInWei, path);
 
-  //console.log("swap utils: getOutputTokenAmount", amountIn, inputToken.symbol, "for", Number(amounts[amounts.length - 1]), outputToken.symbol);
-
   return amounts[amounts.length - 1]; // return amount out (the output token amount)
 }
 
-export function swapTokens(signer, inputToken, outputToken, amountIn, amountOutMin, routerAddress) {
+export function swapTokens(signer, receiver, inputToken, outputToken, amountIn, amountOutMin, routerAddress, referrer) {
   const config = useRuntimeConfig();
   let provider = signer;
-  const wrappedAddress = wrappedNativeTokens[String(config.supportedChainId)];
+
+  // TODO: find deadline in local storage (if not found, use default values)
+  const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 minutes from the current Unix time
+
+  const wrappedAddress = String(wrappedNativeTokens[String(config.supportedChainId)]).toLowerCase();
+  const inputTokenAddress = String(inputToken.address).toLowerCase();
+  const outputTokenAddress = String(outputToken.address).toLowerCase();
 
   // wrapped native coin interface with deposit and withdraw functions
   const wrappedInterface = new ethers.utils.Interface([
@@ -61,20 +65,62 @@ export function swapTokens(signer, inputToken, outputToken, amountIn, amountOutM
     "function withdraw(uint wad)"
   ]);
 
-  if (inputToken.address === ethers.constants.AddressZero && outputToken.address === wrappedAddress) {
+  const wrappedContract = new ethers.Contract(wrappedAddress, wrappedInterface, provider);
+
+  if (inputTokenAddress === ethers.constants.AddressZero && outputTokenAddress === wrappedAddress) {
     // if swapping native coin for wrapped token, use the wrapped token contract to deposit
-    const wrappedContract = new ethers.Contract(wrappedAddress, wrappedInterface, provider);
     return wrappedContract.deposit({ value: amountIn });
-  } else if (inputToken.address === wrappedAddress && outputToken.address === ethers.constants.AddressZero) {
+  } else if (inputTokenAddress === wrappedAddress && outputTokenAddress === ethers.constants.AddressZero) {
     // if swapping wrapped token for native coin, use the wrapped token contract to withdraw
-    const wrappedContract = new ethers.Contract(wrappedAddress, wrappedInterface, provider);
     return wrappedContract.withdraw(amountIn);
+  } else {
+    // else if at least one of the tokens is ERC-20 token (but not wrapped native token)
+    const routerAbi = [
+      "function swapExactTokensForTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
+      "function swapExactTokensForTokensWithReferrer(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
+      "function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)",
+      "function swapExactETHForTokensWithReferrer(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)",
+      "function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
+      "function swapExactTokensForETHWithReferrer(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
+    ];
+
+    const routerContract = new ethers.Contract(routerAddress, routerAbi, provider);
+
+    // set path
+    let path = [inputTokenAddress, outputTokenAddress];
+
+    if (
+      inputTokenAddress === ethers.constants.AddressZero &&
+      outputTokenAddress !== wrappedAddress &&
+      outputTokenAddress !== ethers.constants.AddressZero
+    ) {
+      // swap the native coin for ERC20 token (which is not wrapped native coin)
+      if (referrer === ethers.constants.AddressZero) {
+        return routerContract.swapExactETHForTokens(amountOutMin, path, receiver, deadline, { value: amountIn });
+      } else {
+        return routerContract.swapExactETHForTokensWithReferrer(amountOutMin, path, receiver, deadline, referrer, { value: amountIn });
+      }
+      
+    } else if (
+      inputTokenAddress !== ethers.constants.AddressZero && 
+      inputTokenAddress !== wrappedAddress &&
+      outputTokenAddress === ethers.constants.AddressZero
+    ) {
+      // swap ERC20 token (which is not wrapped native coin) for native coin
+      if (referrer === ethers.constants.AddressZero) {
+        return routerContract.swapExactTokensForETH(amountIn, amountOutMin, path, receiver, deadline);
+      } else {  
+        return routerContract.swapExactTokensForETHWithReferrer(amountIn, amountOutMin, path, receiver, deadline, referrer);
+      }
+    } else {
+      // swap ERC20 token for ERC20 token (none of which is a wrapped native coin)
+      path = [inputTokenAddress, wrappedAddress, outputTokenAddress];
+
+      if (referrer === ethers.constants.AddressZero) {
+        return routerContract.swapExactTokensForTokens(amountIn, amountOutMin, path, receiver, deadline);
+      } else {
+        return routerContract.swapExactTokensForTokensWithReferrer(amountIn, amountOutMin, path, receiver, deadline, referrer);
+      }
+    }
   }
-
-  // if swapping wrapped token for native coin, use the wrapped token contract to withdraw
-
-  // else use the iggy router contract to swap
-    // find slippage and deadline in local storage (if not found, use default values)
-
-  return null
 }
