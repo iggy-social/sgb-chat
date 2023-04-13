@@ -2,7 +2,7 @@
   <div>
 
     <!-- Input token -->
-    <div class="input-group mt-3 mb-1">
+    <div class="input-group mb-1">
       <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         {{ inputToken?.symbol }}
       </button>
@@ -28,7 +28,7 @@
       >
 
       <button
-        @click="inputTokenAmount = inputTokenBalance" 
+        @click="setMaxInputTokenAmount" 
         class="btn btn-outline-secondary" 
         type="button" id="button-addon2"
       >
@@ -36,7 +36,7 @@
       </button>
     </div>
 
-    <small @click="inputTokenAmount = inputTokenBalance">
+    <small @click="setMaxInputTokenAmount">
       <em>Balance: </em>  
       <em class="cursor-pointer hover-color">
         {{ formatInputTokenBalance }} {{ inputToken?.symbol }}
@@ -401,6 +401,12 @@ export default {
     selectOutputToken(token) {
       this.outputToken = token;
       this.outputTokenAmountWei = null;
+    },
+
+    setMaxInputTokenAmount() {
+      this.inputTokenAmount = this.inputTokenBalance;
+
+      this.getOutputAmount();
     },
 
     subtractInputTokenBalance() {

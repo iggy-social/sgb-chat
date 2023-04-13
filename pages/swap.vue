@@ -6,14 +6,14 @@
 
   <div class="scroll-500">
     <div class="card border">
-      <div class="card-body">
+      <div class="card-body mb-3">
         <p class="fs-3">
           <i class="bi bi-arrow-left-circle cursor-pointer" @click="$router.back()"></i>
         </p>
 
-        <h3 class="mb-4 mt-3">Token Swap</h3>
+        <h3 class="mt-3">Token Swap</h3>
         
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center mt-5">
           <div class="col-12 col-lg-8">
             <SimpleSwap 
               :routerAddress="$config.swapRouterAddress" 
