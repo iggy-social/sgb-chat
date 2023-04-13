@@ -1,6 +1,6 @@
 <template>
   <button data-bs-toggle="modal" data-bs-target="#imageUploadModal" :class="cls">
-    <i class="bi bi-file-earmark-image-fill"></i> 
+    <i :class="getIcon"></i> 
     {{ getButtonText }}
   </button>
   
@@ -48,7 +48,7 @@
 
   export default {
     name: "Web3StorageImageUpload",
-    props: ["buttonText", "cls"],
+    props: ["buttonText", "cls", "icon"],
     emits: ["insertImage"],
   
     data()  {
@@ -63,6 +63,10 @@
       getButtonText() {
         return this.buttonText || "IMG";
       },
+
+      getIcon() {
+        return this.icon || "bi bi-file-earmark-image-fill";
+      }
     },
   
     methods: {

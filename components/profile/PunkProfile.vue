@@ -17,6 +17,7 @@
           class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#changeImageModal"
         >
           <span v-if="waitingDataLoad" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
+          <i class="bi bi-person-circle"></i>
           Change image
         </button>
 
@@ -26,9 +27,11 @@
           @insertImage="insertImage"
           buttonText="Change image"
           cls="btn btn-primary me-2 mt-2"
+          icon="bi bi-person-circle"
         />
 
         <button class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#chatSettingsModal">
+          <i class="bi bi-gear-fill"></i>
           Settings
         </button>
 
@@ -37,6 +40,7 @@
           class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#setEmailModal"
         >
           <span v-if="waitingSetEmail" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
+          <i class="bi bi-envelope-at-fill"></i>
           Email notifications
         </button>
       </div>
@@ -242,9 +246,9 @@ export default {
     ProfileImage,
     UserMintedPosts,
     Web3StorageImageUpload
-},
+  },
 
-  created() {
+  mounted() {
     // get profileCurrentTab from localStorage
     this.currentTab = localStorage.getItem("profileCurrentTab");
 
