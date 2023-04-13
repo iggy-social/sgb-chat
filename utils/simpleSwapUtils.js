@@ -55,19 +55,21 @@ export function swapTokens(signer, inputToken, outputToken, amountIn, amountOutM
   let provider = signer;
   const wrappedAddress = wrappedNativeTokens[String(config.supportedChainId)];
 
-  // if swapping native coin for wrapped token, use the wrapped token contract to deposit
-  if (inputToken.address === ethers.constants.AddressZero && outputToken.address === wrappedAddress) {
-    // wrapped native coin interface with deposit and withdraw functions
-    const wrappedInterface = new ethers.utils.Interface([
-      "function deposit() payable",
-      "function withdraw(uint wad)"
-    ]);
+  // wrapped native coin interface with deposit and withdraw functions
+  const wrappedInterface = new ethers.utils.Interface([
+    "function deposit() payable",
+    "function withdraw(uint wad)"
+  ]);
 
+  if (inputToken.address === ethers.constants.AddressZero && outputToken.address === wrappedAddress) {
+    // if swapping native coin for wrapped token, use the wrapped token contract to deposit
     const wrappedContract = new ethers.Contract(wrappedAddress, wrappedInterface, provider);
     return wrappedContract.deposit({ value: amountIn });
+  } else if (inputToken.address === wrappedAddress && outputToken.address === ethers.constants.AddressZero) {
+    // if swapping wrapped token for native coin, use the wrapped token contract to withdraw
+    const wrappedContract = new ethers.Contract(wrappedAddress, wrappedInterface, provider);
+    return wrappedContract.withdraw(amountIn);
   }
-
-  console.log("swapTokens 7")
 
   // if swapping wrapped token for native coin, use the wrapped token contract to withdraw
 
