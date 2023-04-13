@@ -3,24 +3,13 @@
   <div id="sidebar2" class="collapse collapse-horizontal" :class="{ show: sidebarStore.showRightSidebar }">
     <div id="sidebar-nav" class="list-group border-0 rounded-0 text-sm-start min-vh-100">
 
+      <!-- Mint/register a domain name -->
       <NameMintWidget />
 
-      <!-- Swap Widget 
-      <div class="card m-2 bg-light">
-        <div class="card-header bg-light">Swap tokens</div>
+      <!-- Swap tokens -->
+      <SimpleSwapWidget />
 
-        <div class="card-body sidebar-card-body">
-
-          <SimpleSwap 
-            outputPlaceholder="Click ⮕" 
-            :routerAddress="$config.swapRouterAddress" 
-            swapId="SidebarRight1"
-          />
-
-        </div>
-      </div>
-      -->
-
+      <!-- Random minted post(s) -->
       <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
       
     </div>
@@ -32,7 +21,7 @@
 import { useSidebarStore } from '~/store/sidebars';
 import MintedPostsWidget from '~/components/minted-posts/MintedPostsWidget.vue';
 import NameMintWidget from '~/components/names/NameMintWidget.vue';
-import SimpleSwap from '~~/components/swap/SimpleSwap.vue';
+import SimpleSwapWidget from '~/components/swap/SimpleSwapWidget.vue';
 
 export default {
     name: "SidebarRight",
@@ -41,7 +30,7 @@ export default {
     components: { 
       MintedPostsWidget,
       NameMintWidget,
-      SimpleSwap
+      SimpleSwapWidget
     },
 
     methods: {

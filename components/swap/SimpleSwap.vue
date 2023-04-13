@@ -350,6 +350,7 @@ export default {
       if (this.bothTokensAreNativeCoinOrWrappedTokenOrSame) {
         this.outputTokenAmountWei = ethers.utils.parseUnits(this.inputTokenAmount, this.inputToken.decimals);
       } else {
+        // TODO: deduct slippage
         this.outputTokenAmountWei = await getOutputTokenAmount(this.signer, this.inputToken, this.outputToken, this.inputTokenAmount, this.routerAddress);
       }
     },
