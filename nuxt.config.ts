@@ -59,6 +59,7 @@ export default defineNuxtConfig({
       iggyPostEnumerationAddress: "0x0BF6333Fc85159663A30Ac89FD02c5031B97c5ee",
       marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgbchat/",
       marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0x99dbf11acd46bafbce82506faeb4f13e6ea1726a_", // url + nft id
+      maxImageUploadSizeMb: 1, // max image upload size in MB
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
       orbisTest: false, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context

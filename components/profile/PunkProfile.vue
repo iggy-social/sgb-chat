@@ -29,7 +29,7 @@
         />
 
         <button class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#chatSettingsModal">
-          Chat settings
+          Settings
         </button>
 
         <button 

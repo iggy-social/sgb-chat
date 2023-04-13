@@ -100,35 +100,7 @@
     </div>
     <!-- END Connect Wallet modal -->
 
-    <!-- Chat Settings Modal -->
-    <div class="modal fade" id="chatSettingsModal" tabindex="-1" aria-labelledby="chatSettingsModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="chatSettingsModalLabel">Chat settings</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="form-check">
-
-              <input 
-                class="form-check-input" 
-                type="checkbox" 
-                id="flexCheckChecked" 
-                :checked="showRepliesOnHomeFeed"
-                @click="toggleShowOnlyMasterPosts"
-              >
-
-              <label class="form-check-label" for="flexCheckChecked">
-                Show replies in home feed
-              </label>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- END Chat Settings Modal -->
+    <ChatSettingsModal />
 
   </div>
 
@@ -152,6 +124,7 @@ import NavbarDesktop from "~/components/navbars/NavbarDesktop.vue";
 import NavbarMobile from "~/components/navbars/NavbarMobile.vue";
 import SidebarLeft from "~/components/sidebars/SidebarLeft.vue";
 import SidebarRight from "~/components/sidebars/SidebarRight.vue";
+import ChatSettingsModal from "~/components/ChatSettingsModal.vue";
 
 export default {
   data() {
@@ -160,12 +133,12 @@ export default {
       isMounted: false,
       lSidebar: null,
       rSidebar: null,
-      showRepliesOnHomeFeed: null,
       width: null
     }
   },
 
   components: {
+    ChatSettingsModal,
     NavbarDesktop,
     NavbarMobile,
     SidebarLeft,
@@ -174,23 +147,6 @@ export default {
 
   mounted() {
     this.isMounted = true;
-
-    // set initial checkbox value in chat settings modal for showing replies on home feed
-    if (!window.localStorage.getItem("showOnlyMasterPosts")) {
-      if (this.$config.showRepliesOnHomepage) {
-        this.siteStore.setShowOnlyMasterPosts("false");
-        this.showRepliesOnHomeFeed = true;
-      } else {
-        this.siteStore.setShowOnlyMasterPosts("true");
-        this.showRepliesOnHomeFeed = false;
-      }
-    } else {
-      if (window.localStorage.getItem("showOnlyMasterPosts") == "true") {
-        this.showRepliesOnHomeFeed = false;
-      } else {
-        this.showRepliesOnHomeFeed = true;
-      }
-    }
 
     // connect to wallet if user was connected before
     if (!this.isActivated) {
@@ -345,14 +301,6 @@ export default {
         } else {
           this.userStore.setDefaultDomain(null);
         }
-      }
-    },
-
-    toggleShowOnlyMasterPosts() {
-      if (this.siteStore.getShowOnlyMasterPosts === "true") {
-        this.siteStore.setShowOnlyMasterPosts("false");
-      } else {
-        this.siteStore.setShowOnlyMasterPosts("true");
       }
     },
 

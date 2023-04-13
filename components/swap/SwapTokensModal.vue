@@ -27,7 +27,8 @@
 
         <small v-if="!bothTokensAreNativeCoinOrWrappedToken">
           <em>
-            You will get at least {{ outputTokenAmount }} {{ outputToken?.symbol }}, but probably more (1% slippage).
+            You will get at least {{ outputTokenAmount }} {{ outputToken?.symbol }}, but probably more 
+            ({{ siteStore.getSlippage }}% slippage).
           </em>
         </small>
 
@@ -52,6 +53,7 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
 import { swapTokens } from '~/utils/simpleSwapUtils';
 import WaitingToast from "~/components/WaitingToast";
+import { useSiteStore } from '~/store/site';
 
 export default {
   name: "SwapTokensModal",
@@ -179,8 +181,9 @@ export default {
   setup() {
     const { address, signer } = useEthers();
     const toast = useToast();
+    const siteStore = useSiteStore();
 
-    return { address, signer, toast }
+    return { address, signer, siteStore, toast }
   },
 }
 </script>

@@ -16,7 +16,7 @@
         <div class="modal-body">
   
           <div>
-            <label for="formFileLg" class="form-label">Upload an image (max 1 MB size)</label>
+            <label for="formFileLg" class="form-label">Upload an image (max {{ $config.maxImageUploadSizeMb }} MB size)</label>
             <input 
               @change="handleFileInput"
               class="form-control form-control-lg" 
@@ -54,7 +54,7 @@
     data()  {
       return {
         file: null,
-        maxSize: 1 * 1024 * 1024, // 1 MB, @todo: move to nuxt config
+        maxSize: this.$config.maxImageUploadSizeMb * 1024 * 1024, // in MB
         waitingUpload: false
       }
     },
@@ -83,8 +83,8 @@
         }
 
         if (file.size > this.maxSize) {
-          console.error('File is too large (max size is 1 MB)');
-          this.toast('File is too large (max size is 1 MB)', {type: "error"});
+          console.error('File is too large (max size is ' + this.$config.maxImageUploadSizeMb + ' MB)');
+          this.toast('File is too large (max size is ' + this.$config.maxImageUploadSizeMb + ' MB)', {type: "error"});
           return;
         }
 

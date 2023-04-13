@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import Erc20Abi from "~/assets/abi/Erc20Abi.json";
 import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
+import { useSiteStore } from '~/store/site';
 
 export async function getOutputTokenAmount(signer, inputToken, outputToken, amountIn, routerAddress) {
   const config = useRuntimeConfig();
@@ -50,10 +51,11 @@ export async function getOutputTokenAmount(signer, inputToken, outputToken, amou
 
 export function swapTokens(signer, receiver, inputToken, outputToken, amountIn, amountOutMin, routerAddress, referrer) {
   const config = useRuntimeConfig();
+  const siteStore = useSiteStore();
   let provider = signer;
 
-  // TODO: find deadline in local storage (if not found, use default values)
-  const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 minutes from the current Unix time
+  // get deadline in minutes from the site store
+  const deadline = Math.floor(Date.now() / 1000) + 60 * Number(siteStore.getSwapDeadline); // X minutes from the current Unix time
 
   const wrappedAddress = String(wrappedNativeTokens[String(config.supportedChainId)]).toLowerCase();
   const inputTokenAddress = String(inputToken.address).toLowerCase();

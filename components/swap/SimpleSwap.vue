@@ -88,7 +88,8 @@
       v-if="outputTokenAmount && !bothTokensAreNativeCoinOrWrappedTokenOrSame"
     >
       <em>
-        You will get at least {{ outputTokenAmount }} {{ outputToken.symbol }}, but probably more (1% slippage).
+        You will get at least {{ outputTokenAmount }} {{ outputToken.symbol }}, but probably more 
+        ({{ siteStore.getSlippage }}% slippage).
       </em>
     </small>
 
@@ -187,6 +188,7 @@ import { ethers } from 'ethers';
 import ConnectWalletButton from '~/components/ConnectWalletButton.vue';
 import TokenApprovalModal from '~/components/approvals/TokenApprovalModal.vue';
 import SwapTokensModal from '~/components/swap/SwapTokensModal.vue';
+import { useSiteStore } from '~/store/site';
 
 export default {
   name: 'SimpleSwap',
@@ -360,8 +362,9 @@ export default {
         } else {
           const outputWei = await getOutputTokenAmount(this.signer, this.inputToken, this.outputToken, this.inputTokenAmount, this.routerAddress);
           
-          // deduct 0.5% slippage (TODO: add slippage into settings)
-          this.outputTokenAmountWei = outputWei.sub(outputWei.div(1000).mul(5)); // 0.5% slippage
+          // deduct slippage
+          const slippageBps = Math.floor(Number(this.siteStore.getSlippage) * 100);
+          this.outputTokenAmountWei = outputWei.sub(outputWei.div(10000).mul(slippageBps)); // apply slippage
         }
       } else {
         this.outputTokenAmountWei = null;
@@ -420,8 +423,9 @@ export default {
 
   setup() {
     const { address, isActivated, signer } = useEthers();
+    const siteStore = useSiteStore();
 
-    return { address, isActivated, signer }
+    return { address, isActivated, signer, siteStore };
   },
 
   watch: {

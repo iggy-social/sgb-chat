@@ -404,8 +404,6 @@ export default {
     },
 
     async replyPost() {
-      // @todo
-
       if (this.userStore.getIsConnectedToOrbis) {
         const options = {
           master: this.post.master, // the main post in the thread
