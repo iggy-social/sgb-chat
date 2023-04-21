@@ -71,9 +71,6 @@ export default {
       if (res.status === 200) {
         this.notificationsStore.setNotifications([]);
         this.notificationsStore.setUnreadNotificationsCount(0);
-
-        this.toast("Notifications cleared.", {type: "success"});
-
         this.clearingNotifications = false;
       } else { // error
         console.log(res);

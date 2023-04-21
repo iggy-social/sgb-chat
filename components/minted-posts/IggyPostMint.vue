@@ -121,6 +121,9 @@ export default {
             }
           );
 
+          // close the modal
+          document.getElementById('closeMintPostModal'+this.post.stream_id).click();
+
           const receipt = await tx.wait();
 
           if (receipt.status === 1) {
@@ -130,7 +133,6 @@ export default {
               type: "success",
               onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
             });
-            document.getElementById('closeMintPostModal'+this.post.stream_id).click();
           } else {
             this.waitingMint = false;
             this.toast.dismiss(toastWait);
