@@ -52,6 +52,7 @@ import ResolverAbi from "~/assets/abi/ResolverAbi.json";
 import resolvers from "~/assets/data/resolvers.json";
 import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
+import { imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } from '~/utils/textUtils';
 
 export default {
   name: "ChatQuote",
@@ -147,74 +148,13 @@ export default {
         allowedAttributes: {}
       });
 
-      postText = this.imgParsing(postText);
-      postText = this.imgWithoutExtensionParsing(postText);
-      postText = this.youtubeParsing(postText);
-      postText = this.urlParsing(postText);
+      postText = imgParsing(postText);
+      postText = imgWithoutExtensionParsing(postText);
+      postText = youtubeParsing(postText);
+      postText = urlParsing(postText);
 
       this.parsedText = postText.replace(/(\r\n|\n|\r)/gm, "<br/>");
-    },
-
-    imgParsing(text) {
-      const imageRegex = /(?:https?:\/\/(?:www\.)?)?(?:[-\w]+\.)+[^\s]+\.(?:jpe?g|gif|png|img)/gi;
-      //const imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
-
-      if (!imageRegex.test(text)) { return text };
-
-      return text.replace(imageRegex, function(url) {
-        return '<div></div><img class="img-fluid rounded" src="' + url + '" />';
-      })
-    },
-
-    imgWithoutExtensionParsing(text) {
-      // if image doesn't have an extension, it won't be parsed by imgParsing
-      // so we need to parse it here
-      // but image link needs to end with "?img" to be parsed (otherwise frontend will think it's a link)
-      const imageRegex = /(http|https|ipfs):\/\/\S+\?img/;
-
-      if (!imageRegex.test(text)) { return text };
-
-      return text.replace(imageRegex, function(url) {
-        return '<img class="img-fluid rounded" src="' + url + '" />';
-      })
-    },
-
-    urlParsing(text) {
-      let urlRegex;
-
-      try {
-        urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|img|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\"\')])', 'g');
-      } catch (error) {
-        // fallback to simplified regex (without lookbehinds) in case of an old browser or Safari
-        urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|img|gif|pdf|docx))[^\s]+)/g;
-      }
-
-      if (!urlRegex.test(text)) { return text };
-
-      return text.replace(urlRegex, function(url) {
-        if (url.startsWith("https://www.youtube.com/embed/")) {
-          // ignore youtube embeds
-          return url;
-        } else if (url.endsWith("?.img") || url.endsWith("?img")) {
-          // ignore urls ending with "?.img" beause they represent images (even though they don't have an image extension)
-          return url;
-        }
-
-        return '<a target="_blank" href="' + url + '">' + url + '</a>';
-      })
-    },
-
-    youtubeParsing(text) {
-      const ytRegex = /(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/g;
-
-      if (!ytRegex.test(text)) { return text };
-
-      return text.replace(ytRegex, function(url) {
-        const videoId = url.match(/(?:https?:\/\/)?(?:www\.|m\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\/?\?v=|\/embed\/|\/)([^\s&\?\/\#]+)/)[1];
-
-        return "<iframe class='rounded' width='100%' height='315' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen></iframe>";
-      })
-    },
+    }
   },
 
   setup() {
