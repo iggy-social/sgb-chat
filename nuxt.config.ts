@@ -79,6 +79,7 @@ export default defineNuxtConfig({
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
       showRepliesOnHomepage: true, // show replies on the homepage
       supportedChainId: 19,
+      swapPriceImpactMaxBps: 1000, // max price impact in bips (1 bps = 0.01%, 1000bps = 10%) for the swap function
       swapRouterAddress: "0x8FF82d2b0ab704Ba2AB5a567f32F1447A6158260", // iggy swap router contract address
       tenorApiKey: process.env.TENOR_KEY || "",
       tldName: ".sgb",

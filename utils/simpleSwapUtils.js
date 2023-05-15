@@ -1,7 +1,29 @@
 import { ethers } from "ethers";
-import Erc20Abi from "~/assets/abi/Erc20Abi.json";
 import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
 import { useSiteStore } from '~/store/site';
+
+export async function getPriceImpactBps(signer, inputToken, outputToken, amountIn, routerAddress) {
+  const config = useRuntimeConfig();
+
+  let provider = signer;
+
+  if (!provider) {
+    provider = this.$getFallbackProvider(config.supportedChainId);
+  }
+
+  // router interface
+  const routerAbi = [
+    "function getPriceImpact(address tokenIn, address tokenOut, uint amountIn) external view returns (uint)",
+  ];
+
+  const routerContract = new ethers.Contract(routerAddress, routerAbi, provider);
+
+  const amountInWei = ethers.utils.parseUnits(amountIn, inputToken.decimals);
+
+  const impact = await routerContract.getPriceImpact(inputToken.address, outputToken.address, amountInWei);
+
+  return Number(impact);
+}
 
 export async function getOutputTokenAmount(signer, inputToken, outputToken, amountIn, routerAddress) {
   const config = useRuntimeConfig();

@@ -93,6 +93,7 @@
       </em>
     </small>
 
+    <!-- BUTTONS -->
     <div class="d-flex justify-content-center mt-4">
 
       <!-- Connect Wallet button -->
@@ -110,7 +111,7 @@
 
       <!-- Approve token button -->
       <button
-        v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && allowanceTooLow && !unwrappingWrappedNativeCoin" 
+        v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && allowanceTooLow && !unwrappingWrappedNativeCoin && !priceImpactTooHigh" 
         class="btn btn-outline-primary" 
         type="button"
         data-bs-toggle="modal" 
@@ -130,7 +131,7 @@
 
       <!-- Swap tokens button (and fetch the output token amount again) -->
       <button
-        v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && (!allowanceTooLow || unwrappingWrappedNativeCoin)"
+        v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && !priceImpactTooHigh && !priceImpactTooHigh && (!allowanceTooLow || unwrappingWrappedNativeCoin)"
         :disabled="!inputToken || !outputToken || !inputTokenAmount || !outputTokenAmount || !isActivated || bothTokensAreTheSame || !inputAmountLessThanBalance" 
         class="btn btn-outline-primary" 
         type="button"
@@ -155,7 +156,7 @@
 
       <!-- Balance too low button -->
       <button
-        v-if="isActivated && inputTokenAmount && !inputAmountLessThanBalance && !bothTokensAreTheSame"
+        v-if="isActivated && inputTokenAmount && !inputAmountLessThanBalance && !bothTokensAreTheSame && !priceImpactTooHigh"
         :disabled="true" 
         class="btn btn-outline-primary" 
         type="button"
@@ -165,12 +166,22 @@
 
       <!-- Both tokens are the same button -->
       <button
-        v-if="isActivated && inputTokenAmount && bothTokensAreTheSame"
+        v-if="isActivated && inputTokenAmount && bothTokensAreTheSame && !priceImpactTooHigh"
         :disabled="true" 
         class="btn btn-outline-primary" 
         type="button"
       >
         Both tokens are the same
+      </button>
+
+      <!-- Price impact too high -->
+      <button
+        v-if="isActivated && inputTokenAmount && priceImpactTooHigh"
+        :disabled="true" 
+        class="btn btn-outline-primary" 
+        type="button"
+      >
+        Price impact too high
       </button>
 
     </div>
@@ -183,7 +194,7 @@ import { useEthers } from 'vue-dapp';
 import tokens from '~/assets/data/tokens.json';
 import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
 import { getTokenAllowance, getTokenBalance } from '~/utils/balanceUtils';
-import { getOutputTokenAmount } from '~/utils/simpleSwapUtils';
+import { getOutputTokenAmount, getPriceImpactBps } from '~/utils/simpleSwapUtils';
 import { ethers } from 'ethers';
 import ConnectWalletButton from '~/components/ConnectWalletButton.vue';
 import TokenApprovalModal from '~/components/approvals/TokenApprovalModal.vue';
@@ -207,6 +218,7 @@ export default {
       outputToken: null,
       outputTokenAmountWei: null,
       preswapCheck: false,
+      priceImpact: 0,
       timeout: 800, // timeout for getOutputAmount in miliseconds
       tokenList: []
     }
@@ -261,22 +273,6 @@ export default {
       }
     },
 
-    inputIsWrappedNativeCoin() {
-      if (String(this.inputToken?.address).toLowerCase() == String(wrappedNativeTokens[this.$config.supportedChainId]).toLowerCase()) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-
-    outputIsNativeCoin() {
-      if (String(this.outputToken?.address).toLowerCase() == String(ethers.constants.AddressZero).toLowerCase()) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-
     filteredTokensInput() {
       const regex = new RegExp(this.filterTextInput, 'i');
       return this.tokenList.filter(token => regex.test(token.symbol));
@@ -313,6 +309,22 @@ export default {
       return false;
     },
 
+    inputIsWrappedNativeCoin() {
+      if (String(this.inputToken?.address).toLowerCase() == String(wrappedNativeTokens[this.$config.supportedChainId]).toLowerCase()) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    outputIsNativeCoin() {
+      if (String(this.outputToken?.address).toLowerCase() == String(ethers.constants.AddressZero).toLowerCase()) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     outputTokenAmount() {
       if (this.outputTokenAmountWei) {
         let amount = ethers.utils.formatUnits(String(this.outputTokenAmountWei), this.outputToken.decimals);
@@ -327,6 +339,14 @@ export default {
       }
 
       return null;
+    },
+
+    priceImpactTooHigh() {
+      if (this.priceImpact > this.$config.swapPriceImpactMaxBps) {
+        return true;
+      }
+      
+      return false;
     },
 
     unwrappingWrappedNativeCoin() {
@@ -356,7 +376,9 @@ export default {
       }
       */
 
+      
       if (this.inputTokenAmount) {
+        // get output amount
         if (this.bothTokensAreNativeCoinOrWrappedTokenOrSame) {
           this.outputTokenAmountWei = ethers.utils.parseUnits(this.inputTokenAmount, this.inputToken.decimals);
         } else {
@@ -366,6 +388,9 @@ export default {
           const slippageBps = Math.floor(Number(this.siteStore.getSlippage) * 100);
           this.outputTokenAmountWei = outputWei.sub(outputWei.div(10000).mul(slippageBps)); // apply slippage
         }
+
+        // get price impact (in bps)
+        this.priceImpact = await getPriceImpactBps(this.signer, this.inputToken, this.outputToken, this.inputTokenAmount, this.routerAddress);
       } else {
         this.outputTokenAmountWei = null;
       }
