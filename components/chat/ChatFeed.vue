@@ -297,6 +297,7 @@ export default {
       } else {
         // Main feed
         options = {
+          //algorithm: "recommendations", // recommendations, all-posts, all-posts-non-filtered
           context: this.getOrbisContext, // context is the group ID
           only_master: this.showOnlyMasterPosts // only get master posts (not replies), or all posts
         }

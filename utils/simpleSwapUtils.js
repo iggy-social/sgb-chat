@@ -115,8 +115,15 @@ export function swapTokens(signer, receiver, inputToken, outputToken, amountIn, 
         return routerContract.swapExactTokensForETHWithReferrer(amountIn, amountOutMin, path, receiver, deadline, referrer);
       }
     } else {
-      // swap ERC20 token for ERC20 token (none of which is a wrapped native coin)
-      path = [inputTokenAddress, wrappedAddress, outputTokenAddress];
+      // swap ERC20 token for ERC20 token
+
+      // if none of the tokens is wrapped native coin, add wrapped native coin to the middle of the path
+      if (
+        inputTokenAddress !== wrappedAddress &&
+        outputTokenAddress !== wrappedAddress
+      ) {
+        path = [inputTokenAddress, wrappedAddress, outputTokenAddress];
+      }
 
       if (referrer === ethers.constants.AddressZero) {
         return routerContract.swapExactTokensForTokens(amountIn, amountOutMin, path, receiver, deadline);
