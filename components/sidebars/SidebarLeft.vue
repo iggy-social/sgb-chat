@@ -50,6 +50,18 @@
               <i class="bi bi-arrow-down-up"></i> Swap
             </NuxtLink>
           </li>
+          <!--
+          <li class="nav-item p-1" @click="closeLeftSidebar">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/airdrop') ? 'active' : ''" aria-current="page" to="/airdrop">
+              <i class="bi bi-gift"></i> Airdrop
+            </NuxtLink>
+          </li>
+          <li class="nav-item p-1" @click="closeLeftSidebar">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/stake') ? 'active' : ''" aria-current="page" to="/stake">
+              <i class="bi bi-cash-stack"></i> Stake & Earn
+            </NuxtLink>
+          </li>
+          -->
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/about') ? 'active' : ''" aria-current="page" to="/about">
               <i class="bi bi-patch-question"></i> About

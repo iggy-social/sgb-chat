@@ -50,7 +50,10 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      airdropClaimDomainsAddress: "0x742d7A1d08c20d9f85c41f8562Ed29aFc64d3c4a", // chat token claim for domain holders contract address
+      airdropPostMintersAddress: "0x8A6d7926Db502Bb5b9Ffbcc2FF195623f52040C8", // chat token claim for post minters contract address
       blockExplorerBaseUrl: "https://songbird-explorer.flare.network",
+      chatTokenSymbol: "CHIRP", // chat token symbol or name
       domainRequiredToPost: true,
       favicon: "/img/favicon.png",
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
@@ -78,6 +81,9 @@ export default defineNuxtConfig({
       punkTldAddress: "0xBDACF94dDCAB51c39c2dD50BffEe60Bb8021949a", // punk domain TLD address
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
       showRepliesOnHomepage: true, // show replies on the homepage
+      stakingTokenAddress: "", // a token to stake address
+      stakingTokenSymbol: "LP tokens", // a token to stake symbol or name
+      stakingContractAddress: "",
       supportedChainId: 19,
       swapPriceImpactMaxBps: 1000, // max price impact in bips (1 bps = 0.01%, 1000bps = 10%) for the swap function
       swapRouterAddress: "0x8FF82d2b0ab704Ba2AB5a567f32F1447A6158260", // iggy swap router contract address
