@@ -1,5 +1,6 @@
 <template>
   <Head>
+    <Title>Profile | {{ $config.projectMetadataTitle }}</Title>
     <Meta name="description" :content="'Check out this profile on ' + $config.projectName + '!'" />
 
     <Meta property="og:image" :content="$config.projectUrl+$config.previewImageProfile" />
