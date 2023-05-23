@@ -58,7 +58,7 @@ export default defineNuxtConfig({
       favicon: "/img/favicon.png",
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
       iggyPostAddress: "0x99Dbf11aCd46baFBCE82506FaeB4F13E6Ea1726A",
-      iggyPostMinterAddress: "0xabf9960132818049340253C3Ca0551F92Db856d7",
+      iggyPostMinterAddress: "0xeC5Af9F794B9f26bB62Cd951088445c95EAF428D",
       iggyPostEnumerationAddress: "0x0BF6333Fc85159663A30Ac89FD02c5031B97c5ee",
       marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgbchat/",
       marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0x99dbf11acd46bafbce82506faeb4f13e6ea1726a_", // url + nft id
