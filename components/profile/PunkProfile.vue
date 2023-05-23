@@ -50,7 +50,8 @@
           {{ shortenAddress(uAddress) }} <i class="bi bi-box-arrow-up-right"></i>
         </a>
 
-        <button class="btn btn-outline-primary mt-2 disabled">{{ balanceEth }} {{ $config.tokenSymbol }}</button>
+        <button class="btn btn-outline-primary mt-2 me-2 disabled">{{ balanceEth }} {{ $config.tokenSymbol }}</button>
+        <button class="btn btn-outline-primary mt-2 disabled">{{ balanceChatToken }} {{ $config.chatTokenSymbol }}</button>
       </div>
 
       <!--
@@ -222,6 +223,7 @@ export default {
 
   data() {
     return {
+      balanceChatTokenWei: 0,
       currentTab: "posts",
       domain: this.pDomain,
       emailForNotificationsSet: false,
@@ -265,6 +267,16 @@ export default {
   },
 
   computed: {
+    balanceChatToken() {
+      const bal = ethers.utils.formatEther(this.balanceChatTokenWei);
+
+      if (bal >= 0) {
+        return Math.floor(Number(bal));
+      } else {
+        return Number(bal).toFixed(4)
+      }
+    },
+
     balanceEth() {
       const bal = ethers.utils.formatEther(this.uBalance);
 
@@ -467,6 +479,15 @@ export default {
 
         // fetch balance of an address
         this.uBalance = await provider.getBalance(this.uAddress);
+
+        // fetch chat balance
+        const chatInterface = new ethers.utils.Interface([
+          "function balanceOf(address owner) view returns (uint256)"
+        ]);
+        
+        const chatContract = new ethers.Contract(this.$config.chatTokenAddress, chatInterface, provider);
+
+        this.balanceChatTokenWei = await chatContract.balanceOf(this.uAddress);
       }
     },
 
