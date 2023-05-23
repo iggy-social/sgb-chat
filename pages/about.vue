@@ -34,6 +34,36 @@
 
       <hr />
 
+      <h5>$CHIRP token</h5>
+
+      <p>
+        $CHIRP is the official token of Sgb.Chat, designed to reward and empower active contributors.
+      </p>
+
+      <p>
+        Regarding the $CHIRP token:
+      </p>
+
+      <ul>
+        <li>$CHIRP is a valueless souvenir token.</li>
+        <li>Anyone who mints a post on Sgb.Chat will receive $CHIRP tokens (this campaign will take place for 1 year).</li>
+      </ul>
+
+      <p>
+        Airdrop details:
+      </p>
+
+      <ul>
+        <li>Eligible participants for the airdrop include both .sgb domain holders and active Sgb.Chat users.</li>
+        <li>If you own multiple .sgb domains, you can claim the airdrop for each domain you have.</li>
+        <li>Users who have minted a post as an NFT on Sgb.Chat will receive an additional $CHIRP airdrop.</li>
+        <li>To claim the airdrop, go to the Airdrop page in the left sidebar of SGB Chat.</li>
+      </ul>
+
+      <hr />
+
+      <h5>Beta test</h5>
+
       <p class="text-break mt-3">
         SGB Chat is still in beta. This means that many features are still missing, but will be added over time. 
         There may also be bugs and other issues.
