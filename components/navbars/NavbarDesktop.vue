@@ -24,6 +24,16 @@
           </div>
         </li>
 
+        <li v-if="isActivated && $config.chatTokenAddress" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            {{ userStore.getChatTokenBalance }} {{ $config.chatTokenSymbol }}
+          </a>
+          <div class="dropdown-menu dropdown-menu-end">
+            <NuxtLink class="dropdown-item cursor-pointer" to="/airdrop">Airdrop</NuxtLink>
+            <span class="dropdown-item cursor-pointer disabled">Stay tuned for more...</span>
+          </div>
+        </li>
+
         <li class="nav-item cursor-pointer">
           <span class="nav-link" v-if="siteStore.getColorMode === 'dark'" @click="changeColorMode('light')">
             <i class="bi bi-brightness-high"></i>

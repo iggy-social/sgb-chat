@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia';
+import { ethers } from 'ethers';
 
 export const useUserStore = defineStore({
   id: 'user',
 
   state: () => {
     return {
+      chatTokenBalanceWei: BigInt(0),
       defaultDomain: null,
       did: null,
       didParent: null,
@@ -17,6 +19,18 @@ export const useUserStore = defineStore({
   },
 
   getters: {
+    getChatTokenBalance(state) {
+      const balance = ethers.utils.formatEther(state.chatTokenBalanceWei);
+
+      const formatter = Intl.NumberFormat('en', { notation: 'compact' });
+
+      return formatter.format(Number(balance));
+    },
+
+    getChatTokenBalanceWei(state) {
+      return state.chatTokenBalanceWei;
+    },
+
     getDefaultDomain(state) {
       return state.defaultDomain;
     },
@@ -51,6 +65,14 @@ export const useUserStore = defineStore({
   },
 
   actions: {
+    addToChatTokenBalanceWei(balance: ethers.BigNumber) {
+      this.chatTokenBalanceWei += balance.toBigInt();
+    },
+
+    setChatTokenBalanceWei(balance: ethers.BigNumber) {
+      this.chatTokenBalanceWei = balance.toBigInt();
+    },
+
     setDefaultDomain(domain: any) {
       this.defaultDomain = domain;
     },

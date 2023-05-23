@@ -19,6 +19,10 @@
             {{ userStore.getDefaultDomain }}
           </h6>
 
+          <button v-if="userStore.getChatTokenBalanceWei > 0 && $config.chatTokenAddress" class="btn btn-outline-primary btn-sm mt-2 mb-2 disabled">
+            {{ userStore.getChatTokenBalance }} {{ $config.chatTokenSymbol }}
+          </button>
+
           <hr />
         </div>
 

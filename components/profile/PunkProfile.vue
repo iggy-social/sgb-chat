@@ -51,7 +51,10 @@
         </a>
 
         <button class="btn btn-outline-primary mt-2 me-2 disabled">{{ balanceEth }} {{ $config.tokenSymbol }}</button>
-        <button class="btn btn-outline-primary mt-2 disabled">{{ balanceChatToken }} {{ $config.chatTokenSymbol }}</button>
+
+        <button v-if="$config.chatTokenAddress" class="btn btn-outline-primary mt-2 disabled">
+          {{ balanceChatToken }} {{ $config.chatTokenSymbol }}
+        </button>
       </div>
 
       <!--
@@ -480,14 +483,16 @@ export default {
         // fetch balance of an address
         this.uBalance = await provider.getBalance(this.uAddress);
 
-        // fetch chat balance
-        const chatInterface = new ethers.utils.Interface([
-          "function balanceOf(address owner) view returns (uint256)"
-        ]);
-        
-        const chatContract = new ethers.Contract(this.$config.chatTokenAddress, chatInterface, provider);
+        if (this.$config.chatTokenAddress) {
+          // fetch chat balance
+          const chatInterface = new ethers.utils.Interface([
+            "function balanceOf(address owner) view returns (uint256)"
+          ]);
+          
+          const chatContract = new ethers.Contract(this.$config.chatTokenAddress, chatInterface, provider);
 
-        this.balanceChatTokenWei = await chatContract.balanceOf(this.uAddress);
+          this.balanceChatTokenWei = await chatContract.balanceOf(this.uAddress);
+        }
       }
     },
 

@@ -200,6 +200,36 @@ export default {
   },
 
   methods: {
+    async connectCoinbase() {
+			await this.connectWith(this.coinbaseConnector);
+			localStorage.setItem("connected", "coinbase"); // store in local storage to autoconnect next time
+			document.getElementById('closeConnectModal').click();
+		},
+
+		async connectMetaMask() {
+			await this.connectWith(this.mmConnector);
+			localStorage.setItem("connected", "metamask"); // store in local storage to autoconnect next time
+			document.getElementById('closeConnectModal').click();
+		},
+
+		async connectWalletConnect() {
+			await this.connectWith(this.wcConnector);
+			localStorage.setItem("connected", "walletconnect"); // store in local storage to autoconnect next time
+			document.getElementById('closeConnectModal').click();
+		},
+
+    async fetchChatTokenBalance() {
+      const chatTokenInterface = new ethers.utils.Interface([
+        "function balanceOf(address owner) view returns (uint256)",
+      ]);
+
+      const chatTokenContract = new ethers.Contract(this.$config.chatTokenAddress, chatTokenInterface, this.signer);
+
+      const balance = await chatTokenContract.balanceOf(this.address);
+
+      this.userStore.setChatTokenBalanceWei(balance);
+    },
+
     async fetchOrbisNotifications() {
       if (this.userStore.getIsConnectedToOrbis) {
         this.notificationsStore.setLoadingNotifications(true);
@@ -260,34 +290,6 @@ export default {
       }
     },
 
-    async getOrbisDids() {
-      const isConn = await this.$orbis.isConnected();
-      this.userStore.setIsConnectedToOrbis(isConn);
-
-      if (this.$orbis.session) {
-        this.userStore.setDid(this.$orbis.session.did._id);
-        this.userStore.setDidParent(this.$orbis.session.did._parentId);
-      }
-    },
-
-    async connectCoinbase() {
-			await this.connectWith(this.coinbaseConnector);
-			localStorage.setItem("connected", "coinbase"); // store in local storage to autoconnect next time
-			document.getElementById('closeConnectModal').click();
-		},
-
-		async connectMetaMask() {
-			await this.connectWith(this.mmConnector);
-			localStorage.setItem("connected", "metamask"); // store in local storage to autoconnect next time
-			document.getElementById('closeConnectModal').click();
-		},
-
-		async connectWalletConnect() {
-			await this.connectWith(this.wcConnector);
-			localStorage.setItem("connected", "walletconnect"); // store in local storage to autoconnect next time
-			document.getElementById('closeConnectModal').click();
-		},
-
     async fetchUserDomain() {
       if (this.chainId === this.$config.supportedChainId) {
         const contract = new ethers.Contract(resolvers[this.chainId], ResolverAbi, this.signer);
@@ -301,9 +303,21 @@ export default {
         } else {
           this.userStore.setDefaultDomain(null);
         }
+
+        this.fetchChatTokenBalance();
       }
     },
 
+    async getOrbisDids() {
+      const isConn = await this.$orbis.isConnected();
+      this.userStore.setIsConnectedToOrbis(isConn);
+
+      if (this.$orbis.session) {
+        this.userStore.setDid(this.$orbis.session.did._id);
+        this.userStore.setDidParent(this.$orbis.session.did._parentId);
+      }
+    },
+    
     onWidthChange() {
       this.width = window.innerWidth;
     }
