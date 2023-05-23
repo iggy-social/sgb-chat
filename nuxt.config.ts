@@ -54,6 +54,7 @@ export default defineNuxtConfig({
       airdropPostMintersAddress: "0x8A6d7926Db502Bb5b9Ffbcc2FF195623f52040C8", // chat token claim for post minters contract address
       blockExplorerBaseUrl: "https://songbird-explorer.flare.network",
       chatTokenAddress: "0x81aDd7359f2B95276F8542f2a0acD7ECD2Ae9349", // chat token address
+      chatTokenImage: "https://bafybeig2a6e7oe5rjajcrfmvi5vsnhbrh6dnqfll2edm2og3efcrrueup4.ipfs.w3s.link/chirp.png", // chat token image
       chatTokenSymbol: "CHIRP", // chat token symbol or name
       domainRequiredToPost: true,
       favicon: "/img/favicon.png",

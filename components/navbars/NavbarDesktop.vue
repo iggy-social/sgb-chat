@@ -29,7 +29,8 @@
             {{ userStore.getChatTokenBalance }} {{ $config.chatTokenSymbol }}
           </a>
           <div class="dropdown-menu dropdown-menu-end">
-            <NuxtLink class="dropdown-item cursor-pointer" to="/airdrop">Airdrop</NuxtLink>
+            <NuxtLink class="dropdown-item cursor-pointer" to="/airdrop">Claim {{ $config.chatTokenSymbol }} airdrop</NuxtLink>
+            <span class="dropdown-item cursor-pointer" @click="addToMetaMask">Add {{ $config.chatTokenSymbol }} to MetaMask</span>
             <span class="dropdown-item cursor-pointer disabled">Stay tuned for more...</span>
           </div>
         </li>
@@ -55,6 +56,7 @@ import { useSiteStore } from '~/store/site';
 import { useUserStore } from '~/store/user';
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import SwitchChainButton from "~/components/SwitchChainButton.vue";
+import { addTokenToMetaMask } from '~/utils/tokenUtils';
 
 export default {
   name: "Navbar",
@@ -77,6 +79,16 @@ export default {
   },
 
   methods: {
+    addToMetaMask() {
+      addTokenToMetaMask(
+        window.ethereum,
+        this.$config.chatTokenAddress, 
+        this.$config.chatTokenSymbol, 
+        18, // decimals
+        this.$config.chatTokenImage
+      );
+    },
+
     changeColorMode(newMode) {
       this.siteStore.setColorMode(newMode);
       document.documentElement.setAttribute("data-bs-theme", this.siteStore.getColorMode);
