@@ -37,6 +37,7 @@ import { ethers } from 'ethers';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import WaitingToast from "~/components/WaitingToast";
 import sanitizeHtml from 'sanitize-html';
+import { useUserStore } from '~/store/user';
 
 export default {
   name: "IggyPostMint",
@@ -70,6 +71,20 @@ export default {
       }
     },
 
+    async fetchChatTokenBalance() {
+      if (this.$config.chatTokenAddress) {
+        const chatTokenInterface = new ethers.utils.Interface([
+          "function balanceOf(address owner) view returns (uint256)",
+        ]);
+
+        const chatTokenContract = new ethers.Contract(this.$config.chatTokenAddress, chatTokenInterface, this.signer);
+
+        const balance = await chatTokenContract.balanceOf(this.address);
+
+        this.userStore.setChatTokenBalanceWei(balance);
+      }
+    },
+
     async fetchMintData() {
       if (this.isActivated) {
         const iggyPostInterface = new ethers.utils.Interface([
@@ -94,6 +109,8 @@ export default {
 
         const iggyMinterContract = new ethers.Contract(this.$config.iggyPostMinterAddress, iggyPostMinterInterface, this.signer);
 
+        const postPriceWei = ethers.utils.parseUnits(this.postPrice, this.$config.tokenDecimals);
+
         // mint post
         try {
           const tx = await iggyMinterContract.mint(
@@ -104,7 +121,7 @@ export default {
             String(this.textPreview), // text preview
             1, // quantity
             {
-              value: ethers.utils.parseUnits(this.postPrice, this.$config.tokenDecimals)
+              value: postPriceWei
             }
           );
 
@@ -129,6 +146,7 @@ export default {
           if (receipt.status === 1) {
             this.waitingMint = false;
             this.toast.dismiss(toastWait);
+            this.fetchChatTokenBalance();
             this.toast("You have successfully minted this post as NFT!", {
               type: "success",
               onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
@@ -155,9 +173,10 @@ export default {
   setup() {
     const { address, isActivated, signer } = useEthers();
     const toast = useToast();
+    const userStore = useUserStore();
 
     return {
-      address, isActivated, signer, toast
+      address, isActivated, signer, toast, userStore
     }
   }
 }

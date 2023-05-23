@@ -41,6 +41,15 @@
       </p>
 
       <p>
+        ${{ $config.chatTokenSymbol }} token address is: 
+        <a 
+          target="_blank" 
+          :href="$config.blockExplorerBaseUrl+'/token/'+$config.chatTokenAddress">
+          {{ $config.chatTokenAddress }}
+        </a>
+      </p>
+
+      <p>
         Regarding the $CHIRP token:
       </p>
 

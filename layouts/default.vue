@@ -219,15 +219,17 @@ export default {
 		},
 
     async fetchChatTokenBalance() {
-      const chatTokenInterface = new ethers.utils.Interface([
-        "function balanceOf(address owner) view returns (uint256)",
-      ]);
+      if (this.$config.chatTokenAddress) {
+        const chatTokenInterface = new ethers.utils.Interface([
+          "function balanceOf(address owner) view returns (uint256)",
+        ]);
 
-      const chatTokenContract = new ethers.Contract(this.$config.chatTokenAddress, chatTokenInterface, this.signer);
+        const chatTokenContract = new ethers.Contract(this.$config.chatTokenAddress, chatTokenInterface, this.signer);
 
-      const balance = await chatTokenContract.balanceOf(this.address);
+        const balance = await chatTokenContract.balanceOf(this.address);
 
-      this.userStore.setChatTokenBalanceWei(balance);
+        this.userStore.setChatTokenBalanceWei(balance);
+      }
     },
 
     async fetchOrbisNotifications() {
