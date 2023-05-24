@@ -2,7 +2,7 @@
 <div class="card mb-3 border" v-if="post">
   <div class="card-body row">
     <div class="col-2 col-md-1">
-      <NuxtLink :to="'/profile/?id='+authorDomain">
+      <NuxtLink :to="'/profile/?id='+String(showDomainOrFullAddress)">
         <ProfileImage 
           class="img-fluid rounded-circle"
           :address="authorAddress" 
@@ -16,8 +16,7 @@
       
       <!-- post author and timestamp -->
       <p class="card-subtitle mb-2 text-muted">
-        <NuxtLink v-if="authorDomain" class="link-without-color hover-color" :to="'/profile/?id='+authorDomain">{{showDomainOrAddressOrAnon}}</NuxtLink>
-        <span v-if="!authorDomain">{{showDomainOrAddressOrAnon}}</span>
+        <NuxtLink class="link-without-color hover-color" :to="'/profile/?id='+String(showDomainOrFullAddress)">{{showDomainOrAddressOrAnon}}</NuxtLink>
         <span v-if="post.timestamp"> · <NuxtLink class="link-without-color hover-color" :to="'/post/?id='+post.stream_id">{{timeSince}}</NuxtLink></span>
       </p>
 
@@ -230,6 +229,16 @@ export default {
       } else {
         return "Anon";
       }
+    },
+
+    showDomainOrFullAddress() {
+      if (this.authorDomain) {
+        return this.authorDomain;
+      } else if (this.post.creator_details.metadata) {
+        return this.post.creator_details.metadata.address;
+      }
+
+      return null;
     },
 
     showQuote() {

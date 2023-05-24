@@ -2,7 +2,7 @@
 <div class="card mb-3 border" v-if="post">
   <div class="card-body row">
     <div class="col-2 col-md-1">
-      <NuxtLink :to="'/profile/?id='+authorDomain">
+      <NuxtLink :to="'/profile/?id='+String(showDomainOrFullAddress)">
         <ProfileImage 
           class="img-fluid rounded-circle"
           :address="authorAddress" 
@@ -97,6 +97,16 @@ export default {
       } else {
         return "Anon";
       }
+    },
+
+    showDomainOrFullAddress() {
+      if (this.authorDomain) {
+        return this.authorDomain;
+      } else if (this.post.address) {
+        return this.post.address;
+      }
+
+      return null;
     },
   },
 
