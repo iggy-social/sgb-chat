@@ -32,7 +32,7 @@
       <em>
         Balance: 
         <span class="cursor-pointer hover-color" @click="setMaxInputTokenAmount">
-          {{ receiptTokenBalance }} staked tokens
+          {{ stakeTokenBalance }} staked tokens
         </span>
       </em>
     </small>
@@ -53,6 +53,10 @@
     <div v-if="withdrawalIncorrect.error" class="alert alert-warning text-center" role="alert">
       {{ withdrawalIncorrect.message }}
     </div>
+
+    <hr />
+
+    <RemoveLiquidity />
   </div>
 </template>
 
@@ -61,20 +65,25 @@ import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import WaitingToast from "~/components/WaitingToast";
+import RemoveLiquidity from '~/components/stake/RemoveLiquidity.vue';
+import { useUserStore } from '~/store/user';
 
 export default {
   name: 'StakingWithdrawal',
   props: [
-    "loadingStakingData", "lockedTimeLeft", "minDepositWei", "receiptTokenBalanceWei", "stakingContractAddress", 
-    "lpTokenAddress", "stakingTokenDecimals"
+    "loadingStakingData", "lockedTimeLeft", "minDepositWei", "lpTokenDecimals"
   ],
-  emits: ["addBalance", "clearClaimAmount"],
+  emits: ["clearClaimAmount"],
 
   data() {
     return {
       withdrawalAmount: 0,
       waitingWithdrawal: false
     }
+  },
+
+  components: {
+    RemoveLiquidity
   },
 
   computed: {
@@ -105,15 +114,11 @@ export default {
     },
 
     minDeposit() {
-      return ethers.utils.formatUnits(String(this.minDepositWei), Number(this.stakingTokenDecimals));
+      return ethers.utils.formatUnits(String(this.minDepositWei), Number(this.lpTokenDecimals));
     },
 
-    receiptTokenBalance() {
-      if (this.receiptTokenBalanceWei === null || this.receiptTokenBalanceWei === undefined || this.receiptTokenBalanceWei == 0) {
-        return 0;
-      }
-
-      return ethers.utils.formatEther(String(this.receiptTokenBalanceWei));
+    stakeTokenBalance() {
+      return ethers.utils.formatEther(this.userStore.getStakeTokenBalanceWei);
     },
 
     withdrawalAmountWei() {
@@ -134,15 +139,15 @@ export default {
       }
 
       // amount is too high
-      if (Number(this.withdrawalAmountWei) > Number(this.receiptTokenBalanceWei)) {
+      if (Number(this.withdrawalAmountWei) > Number(this.userStore.getStakeTokenBalanceWei)) {
         return {
           error: true,
           message: "The amount exceeds your staked token balance."
         };
       }
 
-      if (Number(this.withdrawalAmountWei) < Number(this.receiptTokenBalanceWei)) {
-        const remainingStakedAmountWei = Number(this.receiptTokenBalanceWei) - Number(this.withdrawalAmountWei);
+      if (Number(this.withdrawalAmountWei) < Number(this.userStore.getStakeTokenBalanceWei)) {
+        const remainingStakedAmountWei = Number(this.userStore.getStakeTokenBalanceWei) - Number(this.withdrawalAmountWei);
 
         if (Number(remainingStakedAmountWei) < Number(this.minDepositWei)) {
           return {
@@ -170,7 +175,7 @@ export default {
       ]);
 
       const stakingContract = new ethers.Contract(
-        this.stakingContractAddress,
+        this.$config.stakingContractAddress,
         stakingContractInterface,
         this.signer
       );
@@ -194,7 +199,8 @@ export default {
         const receipt = await tx.wait();
 
         if (receipt.status === 1) {
-          this.$emit("addBalance", this.withdrawalAmountWei); // add balance to (unstaked) tokens
+          this.userStore.setLpTokenBalanceWei(this.userStore.getLpTokenBalanceWei.add(this.withdrawalAmountWei));
+          this.userStore.setStakeTokenBalanceWei(this.userStore.getStakeTokenBalanceWei.sub(this.withdrawalAmountWei));
           this.$emit("clearClaimAmount"); // clear claim amount in parent component
 
           this.toast.dismiss(toastWait);
@@ -237,18 +243,20 @@ export default {
     },
 
     setMaxInputTokenAmount() {
-      this.withdrawalAmount = this.receiptTokenBalance;
+      this.withdrawalAmount = this.stakeTokenBalance;
     },
   },
 
   setup() {
     const { address, signer } = useEthers();
     const toast = useToast();
+    const userStore = useUserStore();
 
     return {
       address,
       signer,
-      toast
+      toast,
+      userStore
     }
   }
 

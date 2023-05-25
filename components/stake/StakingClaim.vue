@@ -42,7 +42,7 @@
       <li>Period length: {{ periodLengthHumanReadable }}</li>
       <li>This period rewards: {{ futureRewards }} {{ $config.tokenSymbol }} (so far)</li>
       <li>Min stake: {{ minDeposit }} {{ $config.lpTokenSymbol }}</li>
-      <li>Your stake: {{ receiptTokenBalance }} {{ $config.lpTokenSymbol }}</li>
+      <li>Your stake: {{ stakeTokenBalance }} {{ $config.lpTokenSymbol }}</li>
     </ul>
   </div>
 </template>
@@ -52,12 +52,13 @@ import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import WaitingToast from "~/components/WaitingToast";
+import { useUserStore } from '~/store/user';
 
 export default {
   name: 'StakingClaim',
   props: [
     "loadingStakingData", "claimAmountWei", "claimRewardsTotalWei", "futureRewardsWei", "lastClaimPeriod", "minDepositWei", 
-    "periodLength", "receiptTokenBalanceWei", "stakingContractAddress"
+    "periodLength"
   ],
   emits: ["clearClaimAmount", "updateLastClaimPeriod"],
 
@@ -152,12 +153,8 @@ export default {
       return `${seconds} seconds`;
     },
 
-    receiptTokenBalance() {
-      if (this.receiptTokenBalanceWei === null || this.receiptTokenBalanceWei === undefined || this.receiptTokenBalanceWei === "" || this.receiptTokenBalanceWei == 0) {
-        return 0;
-      };
-
-      return ethers.utils.formatEther(String(this.receiptTokenBalanceWei));
+    stakeTokenBalance() {
+      return ethers.utils.formatEther(this.userStore.getStakeTokenBalanceWei);
     }
   },
 
@@ -171,7 +168,7 @@ export default {
       ]);
 
       const stakingContract = new ethers.Contract(
-        this.stakingContractAddress,
+        this.$config.stakingContractAddress,
         stakingContractInterface,
         this.signer
       );
@@ -226,11 +223,13 @@ export default {
   setup() {
     const { address, signer } = useEthers();
     const toast = useToast();
+    const userStore = useUserStore();
 
     return {
       address,
       signer,
-      toast
+      toast,
+      userStore
     }
   }
 
