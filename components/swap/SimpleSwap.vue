@@ -432,7 +432,7 @@ export default {
     },
 
     setMaxInputTokenAmount() {
-      this.inputTokenAmount = this.inputTokenBalance;
+      this.inputTokenAmount = String(this.inputTokenBalance);
 
       this.getOutputAmount();
     },
