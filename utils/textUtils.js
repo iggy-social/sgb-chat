@@ -5,7 +5,7 @@ export function imgParsing(text) {
   if (!imageRegex.test(text)) { return text };
 
   return text.replace(imageRegex, function(url) {
-    return '<div></div><img class="img-fluid rounded" src="' + url + '" />';
+    return '<div></div><img class="img-fluid rounded" style="max-height: 500px;" src="' + url + '" />';
   })
 }
 
@@ -18,7 +18,7 @@ export function imgWithoutExtensionParsing(text) {
   if (!imageRegex.test(text)) { return text };
 
   return text.replace(imageRegex, function(url) {
-    return '<img class="img-fluid rounded" src="' + url + '" />';
+    return '<img class="img-fluid rounded" style="max-height: 500px;" src="' + url + '" />';
   })
 }
 
