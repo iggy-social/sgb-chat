@@ -62,6 +62,8 @@ export default defineNuxtConfig({
       iggyPostAddress: "0x99Dbf11aCd46baFBCE82506FaeB4F13E6Ea1726A",
       iggyPostMinterAddress: "0xeC5Af9F794B9f26bB62Cd951088445c95EAF428D",
       iggyPostEnumerationAddress: "0x0BF6333Fc85159663A30Ac89FD02c5031B97c5ee",
+      lpTokenAddress: "", // liquidity pool token (token to stake in the staking contract)
+      lpTokenSymbol: "LP tokens", // LP token symbol
       marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgbchat/",
       marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0x99dbf11acd46bafbce82506faeb4f13e6ea1726a_", // url + nft id
       maxImageUploadSizeMb: 1, // max image upload size in MB
@@ -84,9 +86,7 @@ export default defineNuxtConfig({
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
       punkTldAddress: "0xBDACF94dDCAB51c39c2dD50BffEe60Bb8021949a", // punk domain TLD address
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
-      showRepliesOnHomepage: true, // show replies on the homepage
-      stakingTokenAddress: "", // a token to stake address
-      stakingTokenSymbol: "LP tokens", // a token to stake symbol or name
+      showRepliesOnHomepage: true, // show replies on the homepage     
       stakingContractAddress: "",
       supportedChainId: 19,
       swapPriceImpactMaxBps: 1000, // max price impact in bips (1 bps = 0.01%, 1000bps = 10%) for the swap function

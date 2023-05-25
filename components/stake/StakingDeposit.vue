@@ -1,13 +1,13 @@
 <template>
   <div>
     <p class="text-center">
-      Stake {{ $config.stakingTokenSymbol }} to receive periodic staking rewards in {{ $config.tokenSymbol }} tokens.
+      Stake {{ $config.lpTokenSymbol }} to receive periodic staking rewards in {{ $config.tokenSymbol }} tokens.
     </p>
 
     <!-- Input field -->
     <div class="input-group mt-5">
       <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled>
-        {{ $config.stakingTokenSymbol }}
+        {{ $config.lpTokenSymbol }}
       </button>
 
       <input 
@@ -32,7 +32,7 @@
       <em>
         Balance: 
         <span class="cursor-pointer hover-color" @click="setMaxInputTokenAmount">
-          {{ stakingTokenBalance }} {{ $config.stakingTokenSymbol }}
+          {{ stakingTokenBalance }} {{ $config.lpTokenSymbol }}
         </span>
       </em>
     </small>
@@ -83,7 +83,7 @@ import WaitingToast from "~/components/WaitingToast";
 
 export default {
   name: 'StakingDeposit',
-  props: ["loadingStakingData", "minDepositWei", "maxDepositWei", "stakingContractAddress", "stakingTokenAddress", "stakingTokenAllowanceWei", "stakingTokenBalanceWei", "stakingTokenDecimals"],
+  props: ["loadingStakingData", "minDepositWei", "maxDepositWei", "stakingContractAddress", "lpTokenAddress", "stakingTokenAllowanceWei", "stakingTokenBalanceWei", "stakingTokenDecimals"],
   emits: ["clearClaimAmount", "subtractBalance", "updateAllowance"],
 
   data() {
@@ -135,7 +135,7 @@ export default {
       ]);
 
       const stakingToken = new ethers.Contract(
-        this.stakingTokenAddress,
+        this.lpTokenAddress,
         stakingTokenInterface,
         this.signer
       );

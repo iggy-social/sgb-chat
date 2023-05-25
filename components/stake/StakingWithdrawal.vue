@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="text-center">
-      Unstake {{ $config.stakingTokenSymbol }} (it will also auto-claim any remaining rewards).
+      Unstake {{ $config.lpTokenSymbol }} (it will also auto-claim any remaining rewards).
     </p>
 
     <!-- Input field -->
@@ -66,7 +66,7 @@ export default {
   name: 'StakingWithdrawal',
   props: [
     "loadingStakingData", "lockedTimeLeft", "minDepositWei", "receiptTokenBalanceWei", "stakingContractAddress", 
-    "stakingTokenAddress", "stakingTokenDecimals"
+    "lpTokenAddress", "stakingTokenDecimals"
   ],
   emits: ["addBalance", "clearClaimAmount"],
 

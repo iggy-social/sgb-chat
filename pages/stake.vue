@@ -60,7 +60,7 @@
                 :minDepositWei="minDepositWei" 
                 :maxDepositWei="maxDepositWei" 
                 :stakingContractAddress="$config.stakingContractAddress" 
-                :stakingTokenAddress="$config.stakingTokenAddress" 
+                :lpTokenAddress="$config.lpTokenAddress" 
                 :stakingTokenBalanceWei="stakingTokenBalanceWei" 
                 :stakingTokenAllowanceWei="stakingTokenAllowanceWei" 
                 :stakingTokenDecimals="stakingTokenDecimals" 
@@ -102,9 +102,9 @@
                 :lockedTimeLeft="lockedTimeLeft" 
                 :minDepositWei="minDepositWei" 
                 :stakingContractAddress="$config.stakingContractAddress" 
-                :stakingTokenAddress="$config.stakingTokenAddress" 
+                :lpTokenAddress="$config.lpTokenAddress" 
                 :stakingTokenDecimals="stakingTokenDecimals" 
-                :stakingTokenSymbol="$config.stakingTokenSymbol" 
+                :lpTokenSymbol="$config.lpTokenSymbol" 
                 :receiptTokenBalanceWei="receiptTokenBalanceWei" 
                 @addBalance="addBalance" 
                 @clearClaimAmount="clearClaimAmount" 
@@ -230,7 +230,7 @@ export default {
       ]);
 
       this.stakingToken = new ethers.Contract(
-        this.$config.stakingTokenAddress,
+        this.$config.lpTokenAddress,
         stakingTokenInterface,
         this.signer
       );
