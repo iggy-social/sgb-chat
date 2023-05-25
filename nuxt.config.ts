@@ -90,7 +90,7 @@ export default defineNuxtConfig({
       stakingContractAddress: "",
       supportedChainId: 19,
       swapPriceImpactMaxBps: 1000, // max price impact in bips (1 bps = 0.01%, 1000bps = 10%) for the swap function
-      swapRouterAddress: "0x7cAf2A1776AA716dd847C79f79D0409E29A1439c", // iggy swap router contract address
+      swapRouterAddress: "0xCF6633056DEbA1E36D4Cb1e0577C7dE58Ee5dDd7", // iggy swap router contract address
       tenorApiKey: process.env.TENOR_KEY || "",
       tldName: ".sgb",
       tokenAddress: null, // leave null if it's a native token of the chain
