@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="text-center">
-      Claim {{ $config.tokenSymbol }} rewards for the previous period.
+      Claim {{ $config.tokenSymbol }} rewards for the previous period. Make sure to visit this page once per week to claim your rewards!
     </p>
 
     <!-- Input field -->
@@ -37,13 +37,19 @@
     <h4 class="text-center">Stats</h4>
 
     <ul>
-      <li>Previous period rewards: {{ claimRewardsTotal }} {{ $config.tokenSymbol }}</li>
-      <li>Previous period end date: {{ lastPeriodDateTime }}</li>
+      <li>Your stake: {{ stakeTokenBalance }} {{ $config.lpTokenSymbol }} / {{ $config.stakeTokenSymbol }}</li>
+      <li>Previous period rewards: {{ claimRewardsTotal }} {{ $config.tokenSymbol }} (claimable now)</li>
+      <li>Current period start date: {{ lastPeriodDateTime }}</li>
       <li>Period length: {{ periodLengthHumanReadable }}</li>
-      <li>This period rewards: {{ futureRewards }} {{ $config.tokenSymbol }} (so far)</li>
+      <li>This period rewards (not claimable yet): {{ futureRewards }} {{ $config.tokenSymbol }} (so far)</li>
       <li>Min stake: {{ minDeposit }} {{ $config.lpTokenSymbol }}</li>
-      <li>Your stake: {{ stakeTokenBalance }} {{ $config.lpTokenSymbol }}</li>
     </ul>
+
+    <p>
+      <small>
+        Important: Claim your rewards once per week otherwise they will be forfeited.
+      </small>
+    </p>
   </div>
 </template>
 

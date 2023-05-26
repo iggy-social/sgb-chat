@@ -87,7 +87,8 @@ export default defineNuxtConfig({
       punkTldAddress: "0xBDACF94dDCAB51c39c2dD50BffEe60Bb8021949a", // punk domain TLD address
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
       showRepliesOnHomepage: true, // show replies on the homepage     
-      stakingContractAddress: "0xCA9749778327CD67700d3a777731a712330beB9A",
+      stakingContractAddress: "0xCA9749778327CD67700d3a777731a712330beB9A", // this is also the stake/gov token address
+      stakeTokenSymbol: "SCG", // stake token symbol (governance token symbol)
       supportedChainId: 19,
       swapPriceImpactMaxBps: 1000, // max price impact in bips (1 bps = 0.01%, 1000bps = 10%) for the swap function
       swapRouterAddress: "0xCF6633056DEbA1E36D4Cb1e0577C7dE58Ee5dDd7", // iggy swap router contract address
