@@ -60,7 +60,7 @@ export default defineNuxtConfig({
       favicon: "/img/favicon.png",
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
       iggyPostAddress: "0x99Dbf11aCd46baFBCE82506FaeB4F13E6Ea1726A",
-      iggyPostMinterAddress: "0xAc8E2aE997f9a885aD8EC3405655372a2930576a",
+      iggyPostMinterAddress: "0x2A3eAb8c5Ec441dA67E3f1935088F035BBf91E48",
       iggyPostEnumerationAddress: "0x0BF6333Fc85159663A30Ac89FD02c5031B97c5ee",
       lpTokenAddress: "0xdE533DE5e9A73934B380c70f3611B116b8DF7D0d", // liquidity pool token (token to stake in the staking contract)
       lpTokenSymbol: "LP tokens", // LP token symbol
