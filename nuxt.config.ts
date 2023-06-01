@@ -82,7 +82,7 @@ export default defineNuxtConfig({
       projectDescription: "SGB Chat is the first decentralized social network on Songbird. Brought to you by Songbird Domains.",
       projectTwitter: "https://twitter.com/SongbirdDomains",
       projectUrl: "https://sgb.chat",
-      punkMinterAddress: "0x79adce3c0fE0E298B515af87C0BF198d7073A56D", // punk domain minter contract address
+      punkMinterAddress: "0x63A0b4fb9b9C6cF1395C66862277668ae87d6a40", // punk domain minter contract address
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
       punkTldAddress: "0xBDACF94dDCAB51c39c2dD50BffEe60Bb8021949a", // punk domain TLD address
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
