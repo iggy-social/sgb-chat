@@ -180,6 +180,10 @@ export default {
     }
 
     window.addEventListener('resize', this.onWidthChange);
+
+    new bootstrap.Popover(document.body, {
+      selector: "[data-bs-toggle='popover']",
+    })
   },
 
   unmounted() {
