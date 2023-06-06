@@ -14,7 +14,7 @@
     </Head>
 
     <!-- Minted Post Image -->
-    <div class="card mb-3 border" v-if="image">
+    <div class="card mb-3 border scroll-500" v-if="image">
       <div class="card-body row">
         <p class="fs-3" @click="$router.back()">
           <i class="bi bi-arrow-left-circle cursor-pointer"></i>

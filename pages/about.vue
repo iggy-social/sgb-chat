@@ -4,7 +4,7 @@
     <Meta property="og:title" :content="'About | ' + $config.projectMetadataTitle" />
   </Head>
 
-  <div class="card border">
+  <div class="card border scroll-500">
     <div class="card-body">
       <p class="fs-3" @click="$router.back()">
         <i class="bi bi-arrow-left-circle cursor-pointer"></i>

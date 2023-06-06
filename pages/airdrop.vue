@@ -12,7 +12,7 @@
     <Meta name="twitter:description" :content="'Claim your ' + $config.chatTokenSymbol + ' token airdrop on ' + $config.projectName + '!'" />
   </Head>
 
-  <div class="card border">
+  <div class="card border scroll-500">
     <div class="card-body">
       <p class="fs-3">
         <i class="bi bi-arrow-left-circle cursor-pointer" @click="$router.back()"></i>
