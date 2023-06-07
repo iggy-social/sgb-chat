@@ -37,9 +37,9 @@
     <h4 class="text-center">Stats</h4>
 
     <ul>
-      <li>Your stake: {{ stakeTokenBalance }} {{ $config.lpTokenSymbol }} / {{ $config.stakeTokenSymbol }}</li>
+      <li>Your stake: {{ getLessDecimals(stakeTokenBalance) }} {{ $config.lpTokenSymbol }} / {{ $config.stakeTokenSymbol }}</li>
       <li>
-        Previous period rewards: {{ claimRewardsTotal }} {{ $config.tokenSymbol }}
+        Previous period rewards: {{ getLessDecimals(claimRewardsTotal) }} {{ $config.tokenSymbol }}
 
         <i 
           class="bi bi-info-circle-fill" 
@@ -50,7 +50,7 @@
       <li>Current period start date: {{ lastPeriodDateTime }}</li>
       <li>Period length: {{ periodLengthHumanReadable }}</li>
       <li>
-        This period rewards: {{ futureRewards }} {{ $config.tokenSymbol }} 
+        This period rewards: {{ getLessDecimals(futureRewards) }} {{ $config.tokenSymbol }} 
 
         <i 
           class="bi bi-info-circle-fill" 
@@ -75,6 +75,7 @@ import { useEthers } from 'vue-dapp';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import WaitingToast from "~/components/WaitingToast";
 import { useUserStore } from '~/store/user';
+import { getLessDecimals } from '~/utils/numberUtils';
 
 export default {
   name: 'StakingClaim',
