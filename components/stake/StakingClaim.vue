@@ -26,7 +26,7 @@
         type="button"
         @click="claim"
       >
-        <span v-if="loadingStakingData || waiting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span v-if="loadingStakingData || waiting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
         <span v-if="!lastPeriodUpdateNeeded">Claim</span>
         <span v-if="lastPeriodUpdateNeeded">Update Claim Period</span>
       </button>
