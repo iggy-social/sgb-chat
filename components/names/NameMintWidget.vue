@@ -28,11 +28,13 @@
       Minting price: {{ getNamePrice }} {{ $config.tokenSymbol }}
     </p>
 
-    <button v-if="isActivated" class="btn btn-outline-primary mt-2 mb-2" :disabled="paused || domainNotValid.invalid">
-      <span v-if="loadingMint || loadingData" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
-      <span v-if="loadingData">Loading data...</span>
-      <span v-else @click="mintName">Mint name</span>
-    </button>
+    <div class="text-center">
+      <button v-if="isActivated" class="btn btn-outline-primary mt-2 mb-2" :disabled="paused || domainNotValid.invalid">
+        <span v-if="loadingMint || loadingData" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
+        <span v-if="loadingData">Loading data...</span>
+        <span v-else @click="mintName">Mint username</span>
+      </button>
+    </div>
 
     <ConnectWalletButton v-if="!isActivated" class="btn btn-outline-primary mt-2 mb-2" btnText="Connect Wallet" />
     

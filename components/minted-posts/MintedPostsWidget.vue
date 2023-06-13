@@ -7,10 +7,14 @@
 
   <div class="card-body sidebar-card-body">
     <div class="row">
-      <div class="col-12 mb-4" v-for="id in randomNumbers" :key="id">
+      <div class="col-12" v-for="id in randomNumbers" :key="id">
         <MintedPostImage :id="id" @click="$emit('closeRightSidebar')" />
       </div>
     </div>
+  </div>
+
+  <div class="card-footer bg-light text-body-secondary text-center">
+    <a :href="$config.marketplaceCollectionUrl" class="btn btn-outline-primary mb-3" target="_blank">See all minted posts</a>
   </div>
 </div>
 </template>
