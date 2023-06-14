@@ -15,3 +15,16 @@ jobs:
             git@bitbucket.org:punk-domains/sgb-chat.git
           ssh_private_key:                              # <-- use 'secrets' to pass credential information.
             ${{ secrets.BITBUCKET_SSH_PRIVATE_KEY }}
+
+  to_gitlab:
+    runs-on: ubuntu-latest
+    steps:                                              # <-- must use actions/checkout before mirroring!
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url:
+            git@gitlab.com:iggy-social/sgb-chat.git
+          ssh_private_key:                              # <-- use 'secrets' to pass credential information.
+            ${{ secrets.BITBUCKET_SSH_PRIVATE_KEY }}
