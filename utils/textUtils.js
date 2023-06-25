@@ -1,3 +1,17 @@
+export function getImageFromText(text) {
+  let imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
+  let imageLinks = text.match(imageRegex);
+
+  if (!imageLinks) { 
+    imageRegex = /(http|https|ipfs):\/\/\S+\?.img/;
+    imageLinks = text.match(imageRegex);
+  };
+
+  if (!imageLinks) { return "" };
+
+  return imageLinks[0];
+}
+
 export function imgParsing(text) {
   const imageRegex = /(?:https?:\/\/(?:www\.)?)?(?:[-\w]+\.)+[^\s]+\.(?:jpe?g|gif|png|img)/gi;
   //const imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
@@ -20,6 +34,10 @@ export function imgWithoutExtensionParsing(text) {
   return text.replace(imageRegex, function(url) {
     return '<img class="img-fluid rounded" style="max-height: 500px;" src="' + url + '" />';
   })
+}
+
+export function textLengthWithoutBlankCharacters(text) {
+  return text.replace(/\s/g, '').replace(/[^\x00-\x7F]/g, "").trim().length;
 }
 
 export function urlParsing(text) {

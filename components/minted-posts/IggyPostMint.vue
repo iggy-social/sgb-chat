@@ -38,6 +38,7 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import WaitingToast from "~/components/WaitingToast";
 import sanitizeHtml from 'sanitize-html';
 import { useUserStore } from '~/store/user';
+import { getImageFromText, textLengthWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: "IggyPostMint",
@@ -46,6 +47,7 @@ export default {
   data() {
     return {
       postPrice: null,
+      textImage: null,
       textPreview: null,
       waitingMint: false
     }
@@ -65,10 +67,15 @@ export default {
       if (sanitizedText.length > 100) {
         this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "").substring(0, 97) + "...";
       } else if (sanitizedText.length === 0) {
-        this.textPreview = "No text";
+        this.textPreview = "";
       } else {
         this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "");
       }
+
+      if (textLengthWithoutBlankCharacters(sanitizedText) === 0) {
+        this.textPreview = "";
+      }
+      this.textImage = getImageFromText(this.parsedText);
     },
 
     async fetchChatTokenBalance() {
@@ -104,7 +111,7 @@ export default {
         this.waitingMint = true;
 
         const iggyPostMinterInterface = new ethers.utils.Interface([
-          "function mint(string memory _postId, address _author, address _nftReceiver, address _referrer, string memory _textPreview, uint256 _quantity) external payable returns(uint256 tokenId)"
+          "function mint(string memory _postId, address _author, address _nftReceiver, address _referrer, string memory _textPreview, string memory _image, uint256 _quantity) external payable returns(uint256 tokenId)"
         ]);
 
         const iggyMinterContract = new ethers.Contract(this.$config.iggyPostMinterAddress, iggyPostMinterInterface, this.signer);
@@ -119,6 +126,7 @@ export default {
             this.address, // NFT receiver
             ethers.constants.AddressZero, // @todo: enable referrals
             String(this.textPreview), // text preview
+            String(this.textImage),
             1, // quantity
             {
               value: postPriceWei

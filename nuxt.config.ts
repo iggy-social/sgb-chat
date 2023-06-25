@@ -59,13 +59,13 @@ export default defineNuxtConfig({
       domainRequiredToPost: true,
       favicon: "/img/favicon.png",
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
-      iggyPostAddress: "0x99Dbf11aCd46baFBCE82506FaeB4F13E6Ea1726A",
-      iggyPostMinterAddress: "0x11608f93Ec226E173754262c04F98Df3Bfaad7Db",
-      iggyPostEnumerationAddress: "0x0BF6333Fc85159663A30Ac89FD02c5031B97c5ee",
+      iggyPostAddress: "0xE33F27496A9cE75313f6d1FA2BA95657Fc904387",
+      iggyPostMinterAddress: "0x1C8666e706C03EDB1c0D04a48b0B7762fc645cD4",
+      iggyPostEnumerationAddress: "0xE2AfE33f16519e31c6FFE5eEb333A0887a44D2BC",
       lpTokenAddress: "0xdE533DE5e9A73934B380c70f3611B116b8DF7D0d", // liquidity pool token (token to stake in the staking contract)
       lpTokenSymbol: "LP tokens", // LP token symbol
-      marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgbchat/",
-      marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0x99dbf11acd46bafbce82506faeb4f13e6ea1726a_", // url (append nft id to it)
+      marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgb-chat-posts/",
+      marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387", // url (append nft id to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
       orbisTest: false, // if true, test context will be used instead of the production one
