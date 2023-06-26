@@ -66,6 +66,16 @@
         Important: Claim your rewards once per week otherwise they will be forfeited.
       </small>
     </p>
+
+    <!-- START @TODO: check if needed -->
+    <GenericNftDrop 
+      title="Claim the NFT for Early Stakers" 
+      description="Early stakers can claim this free commemorative NFT. One NFT per address. Hurry up, limited time only!"
+      :claimersData="claimers" 
+      merkleClaimerAddress="0x484cCFE329E4dbdB0C594d2401400D4Df3AaeDE9" 
+      nftImage="https://bafybeic3fpbvtqj6kqpu77vy56efkasgbaviguc3qm4jgy3dy7fuk7fire.ipfs.w3s.link/early-staker-nft-sgb-chat.png"
+    />
+    <!-- // END @TODO: check if needed -->
   </div>
 </template>
 
@@ -76,6 +86,8 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import WaitingToast from "~/components/WaitingToast";
 import { useUserStore } from '~/store/user';
 import { getLessDecimals } from '~/utils/numberUtils';
+import GenericNftDrop from "~/components/merkle/genericNftDrop"; // @TODO: check if needed
+import earlyStakers from "~/assets/merkle/earlyStakers.json"; // @TODO: check if needed
 
 export default {
   name: 'StakingClaim',
@@ -87,8 +99,18 @@ export default {
 
   data() {
     return {
+      claimers: [],
       waiting: false
     }
+  },
+
+  components: {
+    GenericNftDrop, // @TODO: check if needed
+    WaitingToast
+  },
+
+  created() {
+    this.claimers = earlyStakers; // @TODO: check if needed
   },
 
   computed: {
