@@ -78,7 +78,7 @@ export default defineNuxtConfig({
       previewImageStake: "/img/cover-stake.png",
       profileMintedPostIdsMax: 36, // max number of minted post ids to show in the profile page
       projectMetadataTitle: "SGB Chat - Web3 Social on Songbird",
-      projectName: "SGB Chat (beta)",
+      projectName: "SGB Chat",
       projectDescription: "SGB Chat is the first decentralized social network on Songbird. Brought to you by Songbird Domains.",
       projectTwitter: "https://twitter.com/SongbirdDomains",
       projectUrl: "https://sgb.chat",

@@ -71,15 +71,9 @@
 
       <hr />
 
-      <h5>Beta test</h5>
+      <h5>Feedback</h5>
 
       <p class="text-break mt-3">
-        SGB Chat is still in beta. This means that many features are still missing, but will be added over time. 
-        There may also be bugs and other issues.
-      </p>
-
-      <p class="text-break mt-3">
-        What we need from you at this point is to try out SGB Chat and provide us with feedback. 
         Feel free to post ideas, features suggestions, rants directly in the SGB Chat. 
         Or you can drop by 
         <a target="_blank" href="https://discord.gg/8dSrwrAQeu">our Discord</a> 
