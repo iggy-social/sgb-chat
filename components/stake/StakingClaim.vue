@@ -37,9 +37,9 @@
     <h4 class="text-center">Stats</h4>
 
     <ul>
-      <li>Your stake: {{ getLessDecimals(stakeTokenBalance) }} {{ $config.lpTokenSymbol }} / {{ $config.stakeTokenSymbol }}</li>
+      <li>Your stake: {{ getLessDecimals(stakeTokenBalance) }} {{ $config.lpTokenSymbol }} ({{ $config.stakeTokenSymbol }} tokens)</li>
       <li>
-        Previous period rewards: {{ getLessDecimals(claimRewardsTotal) }} {{ $config.tokenSymbol }}
+        Previous period rewards (total): {{ getLessDecimals(claimRewardsTotal) }} {{ $config.tokenSymbol }}
 
         <i 
           class="bi bi-info-circle-fill" 
@@ -47,10 +47,8 @@
           data-bs-content="Claimable now. Note that this is a total number for all stakers together."
         ></i>
       </li>
-      <li>Current period start date: {{ lastPeriodDateTime }}</li>
-      <li>Period length: {{ periodLengthHumanReadable }}</li>
       <li>
-        This period rewards: {{ getLessDecimals(futureRewards) }} {{ $config.tokenSymbol }} 
+        Current period rewards (so far): {{ getLessDecimals(futureRewards) }} {{ $config.tokenSymbol }} 
 
         <i 
           class="bi bi-info-circle-fill" 
@@ -58,12 +56,14 @@
           data-bs-content="Accrued rewards so far for all stakers together. Not claimable yet. Will be claimable in the next period."
         ></i>
       </li>
-      <li>Min stake: {{ minDeposit }} {{ $config.lpTokenSymbol }}</li>
+      <li>Period length: {{ periodLengthHumanReadable }}</li>
+      <li>Current period start date: {{ lastPeriodDateTime }}</li>
+      
     </ul>
 
     <p>
       <small>
-        Important: Claim your rewards once per week otherwise they will be forfeited.
+        Important: Claim your rewards once per week, otherwise they will be forfeited.
       </small>
     </p>
 

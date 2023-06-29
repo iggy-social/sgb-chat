@@ -1,7 +1,8 @@
 <template>
   <div>
     <p class="text-center">
-      Stake {{ $config.lpTokenSymbol }} to receive periodic staking rewards in {{ $config.tokenSymbol }} tokens.
+      Stake {{ $config.lpTokenSymbol }} to receive periodic staking rewards in {{ $config.tokenSymbol }} tokens 
+      (min deposit: {{ minDeposit }} {{ $config.lpTokenSymbol }}).
     </p>
 
     <!-- Input field -->
@@ -132,6 +133,14 @@ export default {
 
     lpTokenBalance() {
       return ethers.utils.formatUnits(this.userStore.getLpTokenBalanceWei, this.lpTokenDecimals);
+    },
+
+    minDeposit() {
+      if (this.minDepositWei === null || this.minDepositWei === undefined || this.minDepositWei === "" || this.minDepositWei == 0) {
+        return 0;
+      };
+
+      return ethers.utils.formatEther(String(this.minDepositWei));
     },
   },
 
