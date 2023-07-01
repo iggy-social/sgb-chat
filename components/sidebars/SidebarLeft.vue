@@ -65,6 +65,11 @@
             </NuxtLink>
           </li>
           <li class="nav-item p-1" @click="closeLeftSidebar">
+            <a class="nav-link" href="https://snapshot.org/#/sgbchat.eth" target="_blank">
+              <i class="bi bi-box2"></i> Governance <small><i class="bi bi-box-arrow-up-right ms-1"></i></small>
+            </a>
+          </li>
+          <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/about') ? 'active' : ''" aria-current="page" to="/about">
               <i class="bi bi-patch-question"></i> About
             </NuxtLink>
