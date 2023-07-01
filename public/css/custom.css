@@ -264,6 +264,14 @@
   width: auto;
 }
 
+.muted-text {
+  font-size: 14px;
+}
+
+.muted-text a {
+  text-decoration: none;
+}
+
 .nav {
   --bs-link-color: #495057;
 }

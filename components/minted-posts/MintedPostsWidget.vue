@@ -14,7 +14,10 @@
   </div>
 
   <div class="card-footer bg-light text-body-secondary text-center">
-    <a :href="$config.marketplaceCollectionUrl" class="btn btn-outline-primary mb-3" target="_blank">See all minted posts</a>
+    <a :href="$config.marketplaceCollectionUrl" class="btn btn-outline-primary mb-3" target="_blank">
+      See all minted posts
+      <i class="bi bi-box-arrow-up-right ms-1"></i>
+    </a>
   </div>
 </div>
 </template>

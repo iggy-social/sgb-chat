@@ -6,56 +6,81 @@
         <i class="bi bi-arrow-left-circle cursor-pointer"></i>
       </p>
 
-      <h3 class="mb-3 mt-3">{{ domain }}</h3>
+      <div class="row">
+        <div class="col-md-3 mt-3">
+          <ProfileImage :key="orbisImage" v-if="uAddress" class="img-fluid img-thumbnail rounded-circle col-6 col-md-12" :address="uAddress" :domain="domain" :image="orbisImage" />
+        </div>
 
-      <ProfileImage :key="orbisImage" v-if="uAddress" class="img-fluid img-thumbnail rounded-circle w-25" :address="uAddress" :domain="domain" :image="orbisImage" />
+        <div class="col-md-9 mt-3">
+          <h3 class="mb-3">{{ domain }}</h3>
 
-      <div class="mt-2" v-if="isCurrentUser">
-        <button 
-          v-if="$config.web3storageKey === ''"
-          :disabled="waitingDataLoad" 
-          class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#changeImageModal"
-        >
-          <span v-if="waitingDataLoad" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
-          <i class="bi bi-person-circle"></i>
-          Change image
-        </button>
+          <!-- Data -->
+          <div class="mt-4 muted-text" style="font-size: 14px;">
 
-        <!-- Upload IMG button -->
-        <Web3StorageImageUpload 
-          v-if="$config.web3storageKey !== '' && userStore.getIsConnectedToOrbis"  
-          @insertImage="insertImage"
-          buttonText="Change image"
-          cls="btn btn-primary me-2 mt-2"
-          icon="bi bi-person-circle"
-        />
+            <p class="me-4">
+              <i class="bi bi-wallet me-1"></i>
+              {{ balanceEth }} {{ $config.tokenSymbol }}
+            </p>
 
-        <button class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#chatSettingsModal">
-          <i class="bi bi-gear-fill"></i>
-          Settings
-        </button>
+            <p class="me-4">
+              <i class="bi bi-wallet me-1"></i>
+              {{ balanceChatToken }} {{ $config.chatTokenSymbol }}
+            </p>
 
-        <button 
-          :disabled="waitingSetEmail" 
-          class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#setEmailModal"
-        >
-          <span v-if="waitingSetEmail" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
-          <i class="bi bi-envelope-at-fill"></i>
-          Email notifications
-        </button>
+            <p class="me-4">
+              <i class="bi bi-box-arrow-up-right me-2"></i>
+              <a :href="$config.blockExplorerBaseUrl+'/address/'+uAddress" target="_blank" style="text-decoration: none;">
+                {{ shortenAddress(uAddress) }}
+              </a>
+            </p>
+          </div>
+          <!-- END Data -->
+
+          <!-- Buttons -->
+          <div class="mt-2" v-if="isCurrentUser">
+            <button 
+              v-if="$config.web3storageKey === ''"
+              :disabled="waitingDataLoad" 
+              class="btn btn-primary mt-2 me-2" data-bs-toggle="modal" data-bs-target="#changeImageModal"
+            >
+              <span v-if="waitingDataLoad" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
+              <i class="bi bi-person-circle"></i>
+              Change image
+            </button>
+
+            <!-- Upload IMG button -->
+            <Web3StorageImageUpload 
+              v-if="$config.web3storageKey !== '' && userStore.getIsConnectedToOrbis"  
+              @insertImage="insertImage"
+              buttonText="Change image"
+              cls="btn btn-primary me-2 mt-2 col-8 col-md-4"
+              icon="bi bi-person-circle"
+            />
+
+            <button 
+              :disabled="waitingSetEmail" 
+              class="btn btn-primary mt-2 me-2 col-8 col-md-4" 
+              data-bs-toggle="modal" data-bs-target="#setEmailModal"
+            >
+              <span v-if="waitingSetEmail" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
+              <i class="bi bi-envelope-at-fill"></i>
+              Email notifications
+            </button>
+
+            <button class="btn btn-primary mt-2 me-2 col-8 col-md-3" data-bs-toggle="modal" data-bs-target="#chatSettingsModal">
+              <i class="bi bi-gear-fill"></i>
+              Settings
+            </button>
+          </div>
+          <!-- END Buttons -->
+
+        </div>
       </div>
 
-      <div class="mt-2">
-        <a v-if="uAddress" class="btn btn-outline-primary mt-2 me-2" :href="$config.blockExplorerBaseUrl+'/address/'+uAddress" target="_blank">
-          {{ shortenAddress(uAddress) }} <i class="bi bi-box-arrow-up-right"></i>
-        </a>
+      
 
-        <button class="btn btn-outline-primary mt-2 me-2 disabled">{{ balanceEth }} {{ $config.tokenSymbol }}</button>
-
-        <button v-if="$config.chatTokenAddress" class="btn btn-outline-primary mt-2 disabled">
-          {{ balanceChatToken }} {{ $config.chatTokenSymbol }}
-        </button>
-      </div>
+      
+      
 
       <!--
       <p class="text-break mt-3">Followers: {{ followers }}</p>
