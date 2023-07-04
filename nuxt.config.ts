@@ -67,6 +67,7 @@ export default defineNuxtConfig({
       marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgb-chat-posts/",
       marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387", // url (append nft id to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
+      newsletterLink: "https://zcmp.eu/Onz",
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
       orbisTest: false, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context
@@ -86,6 +87,7 @@ export default defineNuxtConfig({
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
       punkTldAddress: "0xBDACF94dDCAB51c39c2dD50BffEe60Bb8021949a", // punk domain TLD address
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
+      rpcCustom: process.env.RPC_CUSTOM || "", // Custom RPC URL
       showRepliesOnHomepage: true, // show replies on the homepage     
       stakingContractAddress: "0xCA9749778327CD67700d3a777731a712330beB9A", // this is also the stake/gov token address
       stakeTokenSymbol: "SCG", // stake token symbol (governance token symbol)

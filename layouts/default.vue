@@ -119,7 +119,7 @@ import { useSiteStore } from '~/store/site';
 import { useUserStore } from '~/store/user';
 import ResolverAbi from "~/assets/abi/ResolverAbi.json";
 import resolvers from "~/assets/data/resolvers.json";
-import rpcs from "~/assets/data/rpcs.json";
+import { getRpcs } from "~/utils/rpcUtils";
 import NavbarDesktop from "~/components/navbars/NavbarDesktop.vue";
 import NavbarMobile from "~/components/navbars/NavbarMobile.vue";
 import SidebarLeft from "~/components/sidebars/SidebarLeft.vue";
@@ -342,7 +342,7 @@ export default {
 
     const coinbaseConnector = new CoinbaseWalletConnector({
 			appName: config.projectName,
-			jsonRpcUrl: rpcs[String(config.supportedChainId)],
+			jsonRpcUrl: getRpcs()[String(config.supportedChainId)],
 		});
 
 		const mmConnector = new MetaMaskConnector({
@@ -351,7 +351,7 @@ export default {
 
 		const wcConnector = new WalletConnectConnector({
 			qrcode: true,
-			rpc: rpcs,
+			rpc: getRpcs(),
 		});
     
     return { 

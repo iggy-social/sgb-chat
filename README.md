@@ -17,13 +17,27 @@ What's included:
 
 Create a `.env` file from `.env.example`.
 
+> Make sure to also enter these vars in your hosting settings!
+
 ## Hosting
 
-This template does not work properly on GitHub Pages. Use Netlify or Vercel instead (make sure to use the `npm run generate` command instead of `npm run build` there).
+We recommend to use Netlify for hosting the site. Netlify allows you to easily deploy the site from this repo (or from a fork of this repository).
 
-## GIFs
+Make sure to use the the `npm run generate` command instead of `npm run build` for build instructions on Netlify.
+
+If you want to use optional features such as GIFs and image upload, make sure to enter proper environment variables (see `.env.example`).
+
+## GIFs (Tenor)
 
 If you want to have GIF search implemented, create your own Tenor API Key on Google Cloud Console. Follow the instructions here: https://developers.google.com/tenor/guides/quickstart. 
+
+Then enter the key in environment variables (`TENOR_KEY`).
+
+## Image upload (Web3 Storage)
+
+To support image uploads on IPFS please create an API key on Web3 Storage: https://web3.storage/ 
+
+Then enter the key in environment variables (`WEB3_STORAGE_KEY`).
 
 ## Customize
 

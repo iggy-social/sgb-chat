@@ -74,7 +74,7 @@ export default {
     WaitingToast
   },
 
-  created() {
+  mounted() {
     this.fetchDomainData();
   },
 

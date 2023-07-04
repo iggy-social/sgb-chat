@@ -113,7 +113,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="deletePost">Delete</button>
+          <button type="button" class="btn btn-primary" @click="deletePost" :disabled="waitingDeletePost">
+            <span v-if="waitingDeletePost" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Delete
+          </button>
         </div>
       </div>
     </div>
@@ -157,7 +160,8 @@ export default {
       quotePost: null,
       quoteLimit: 200,
       replyText: null,
-      showFullText: false
+      showFullText: false,
+      waitingDeletePost: false
     }
   },
 
@@ -312,6 +316,8 @@ export default {
 
     async deletePost() {
       if (this.userStore.getIsConnectedToOrbis) {
+        this.waitingDeletePost = true;
+
         let res = await this.$orbis.deletePost(
           String(this.post.stream_id)
         );
@@ -321,12 +327,15 @@ export default {
           this.toast("Post deleted successfully", {type: "success"});
           this.$emit("removePost", this.post.stream_id);
           document.getElementById('closeDeleteModal'+this.post.stream_id).click();
+          this.waitingDeletePost = false;
         } else {
           this.toast("Error deleting post", {type: "error"});
           console.log("Error posting via Orbis to Ceramic: ", res);
+          this.waitingDeletePost = false;
         }
       } else {
         this.toast("Please sign into chat to be able to delete your post.", {type: "error"});
+        this.waitingDeletePost = false;
       }
     },
 
