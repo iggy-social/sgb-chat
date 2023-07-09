@@ -14,7 +14,7 @@
 
   <ChatPost v-if="post" :post="post" />
 
-  <ChatFeed v-if="post" :id="post.stream_id" :master="post.master" />
+  <ChatFeed v-if="post" :id="post.stream_id" :master="post.master" :masterPost="post" />
 </div>
 </template>
 

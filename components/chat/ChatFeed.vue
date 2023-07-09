@@ -122,7 +122,8 @@ export default {
     "byDid", // if looking for posts by a specific user (user's DID)
     "hideCommentBox", // if true, we'll hide the comment box
     "id", // id (optional) is the post id that this component looks for replies to
-    "master", // if there's a master post, we'll show it at the top
+    "master", // master stream ID, if there's a master post, we'll show it at the top
+    "masterPost", // master post object (if it exists)
     "showQuotedPost" // if true, we'll show the quoted posts (for any post that has a quote)
   ],
 
@@ -276,8 +277,8 @@ export default {
         }
 
         // if post has tags, add them to the options
-        if (this.post?.content?.tags) {
-          options["tags"] = this.post.content.tags;
+        if (this.masterPost?.content?.tags) {
+          options["tags"] = this.masterPost.content.tags;
         }
 
       } else {
@@ -432,7 +433,7 @@ export default {
     async removePost(streamId) {
       // callback hook for ChatPost component
       // listens for delete event and removes post from feed
-      this.orbisPosts = this.orbisPosts.filter((post) => post.stream_id !== streamId);
+      this.orbisPosts = this.orbisPosts.filter((p) => p.stream_id !== streamId);
     }
   },
 
