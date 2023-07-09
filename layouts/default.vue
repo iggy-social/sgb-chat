@@ -148,17 +148,6 @@ export default {
   mounted() {
     this.isMounted = true;
 
-    // connect to wallet if user was connected before
-    if (!this.isActivated) {
-			if (localStorage.getItem("connected") == "metamask") {
-				this.connectMetaMask();
-			} else if (localStorage.getItem("connected") == "walletconnect") {
-				this.connectWalletConnect();
-			} else if (localStorage.getItem("connected") == "coinbase") {
-				this.connectCoinbase();
-			}
-		}
-
     // set color mode
     document.documentElement.setAttribute("data-bs-theme", this.siteStore.getColorMode);
 
@@ -181,6 +170,18 @@ export default {
 
     window.addEventListener('resize', this.onWidthChange);
 
+    // connect to wallet if user was connected before
+    if (!this.isActivated) {
+			if (localStorage.getItem("connected") == "metamask") {
+				this.connectMetaMask();
+			} else if (localStorage.getItem("connected") == "walletconnect") {
+				this.connectWalletConnect();
+			} else if (localStorage.getItem("connected") == "coinbase") {
+				this.connectCoinbase();
+			}
+		}
+
+    // enable popovers everywhere
     new bootstrap.Popover(document.body, {
       selector: "[data-bs-toggle='popover']",
     })

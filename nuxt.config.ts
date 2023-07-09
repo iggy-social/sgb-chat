@@ -68,6 +68,12 @@ export default defineNuxtConfig({
       marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387", // url (append nft id to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
       newsletterLink: "https://zcmp.eu/Onz",
+      orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)
+        { "slug": "all", "title": "All posts" }, // not a real tag, just denotes the absence of a tag
+        { "slug": "general", "title": "General" },
+        { "slug": "nfts", "title": "NFTs" },
+        { "slug": "governance", "title": "Governance" },
+      ],
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
       orbisTest: false, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context

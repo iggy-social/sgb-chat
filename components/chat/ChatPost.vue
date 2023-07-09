@@ -202,8 +202,12 @@ export default {
 
   computed: {
     getOrbisContext() {
-      if (this.$config.orbisTest) {
-        return this.$config.orbisTestContext;
+      if (this.post?.context) {
+        return this.post.context;
+      } else if (this.post?.content.context) {
+        return this.post.content.context;
+      } else if (this.post?.context_details.context_id) {
+        return this.post.context_details.context_id;
       } else {
         return this.$config.orbisContext;
       }
@@ -423,6 +427,7 @@ export default {
 
     async replyPost() {
       if (this.userStore.getIsConnectedToOrbis) {
+
         const options = {
           master: this.post.master, // the main post in the thread
           reply_to: this.post.stream_id, // important: reply_to needs to be filled out even if the reply is directly to the master post
@@ -430,20 +435,25 @@ export default {
           context: this.getOrbisContext
         }
 
-        // post on Orbis & Ceramic
-      let res = await this.$orbis.createPost(options);
+        // if post has tags, add them to the options
+        if (this.post?.content?.tags) {
+          options["tags"] = this.post.content.tags;
+        }
 
-      /** Check if posting is successful or not */
-      if (res.status == 200) {
-        // success
-        this.toast("Reply successfully posted", {type: "success"});
-        this.$emit("insertReply", res.doc, this.post.stream_id, this.replyText, this.parsedText, this.post.creator_details.metadata.address);
-        document.getElementById('closeReplyModal'+this.post.stream_id).click();
-        this.replyText = null;
-      } else {
-        console.log("Error posting via Orbis to Ceramic: ", res);
-        this.toast(res.result, {type: "error"});
-      }
+        // post on Orbis & Ceramic
+        let res = await this.$orbis.createPost(options);
+
+        /** Check if posting is successful or not */
+        if (res.status == 200) {
+          // success
+          this.toast("Reply successfully posted", {type: "success"});
+          this.$emit("insertReply", res.doc, this.post.stream_id, this.replyText, this.parsedText, this.post.creator_details.metadata.address);
+          document.getElementById('closeReplyModal'+this.post.stream_id).click();
+          this.replyText = null;
+        } else {
+          console.log("Error posting via Orbis to Ceramic: ", res);
+          this.toast(res.result, {type: "error"});
+        }
 
       } else {
         this.toast("Please sign into chat to be able to reply to a post.", {type: "error"});

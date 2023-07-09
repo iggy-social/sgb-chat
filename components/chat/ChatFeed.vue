@@ -1,6 +1,6 @@
 <template>
   <div class="scroll-500">
-    <div class="card mb-3 border" v-if="!hideCommentBox">
+    <div class="card mb-2 border" v-if="!hideCommentBox">
       <div class="card-body">
         <div class="form-group mt-2 mb-2">
           <textarea 
@@ -67,6 +67,22 @@
       </div>
     </div>
 
+    <div class="d-flex justify-content-end mb-2">
+      <div class="btn-group">
+        <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {{ getSelectedTagObject.title }}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <span 
+            v-for="(tagObject, index) in $config.orbisCategories"
+            :key="tagObject.slug"
+            class="dropdown-item cursor-pointer"
+            @click="changeTag(index)"
+          >{{ tagObject.title }}</span>
+        </ul>
+      </div>
+    </div>
+
     <div v-if="orbisPosts">
       <ChatPost 
         @insertReply="insertReply" 
@@ -91,6 +107,7 @@
 import { useEthers } from 'vue-dapp';
 import ChatPost from "~/components/chat/ChatPost.vue";
 import { useToast } from "vue-toastification/dist/index.mjs";
+import { useChatStore } from '~/store/chat';
 import { useSiteStore } from '~/store/site';
 import { useUserStore } from '~/store/user';
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
@@ -157,6 +174,14 @@ export default {
       }
     },
 
+    getSelectedTagObject() {
+      if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.$config.orbisCategories.length) {
+        return this.$config.orbisCategories[this.chatStore.getSelectedTagIndex];
+      } else {
+        return this.$config.orbisCategories[0];
+      }
+    },
+
     hasDomainOrNotRequired() {
       if (this.$config.domainRequiredToPost) {
         if (this.userStore.getDefaultDomain) {
@@ -188,6 +213,17 @@ export default {
   },
 
   methods: {
+    changeTag(index) {
+      this.chatStore.setSelectedTagIndex(index);
+
+      // reset posts and page counter
+      this.orbisPosts = [];
+      this.pageCounter = 0;
+
+      // fetch posts
+      this.getOrbisPosts();
+    },
+
     async checkConnectionToOrbis() {
       const isConn = await this.$orbis.isConnected();
       this.userStore.setIsConnectedToOrbis(isConn);
@@ -243,6 +279,11 @@ export default {
           body: this.postText, 
           context: this.getOrbisContext
         }
+      }
+
+      // add tags
+      if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.$config.orbisCategories.length) {
+        options["tags"] = [this.$config.orbisCategories[this.chatStore.getSelectedTagIndex]];
       }
 
       // post on Orbis & Ceramic
@@ -306,6 +347,11 @@ export default {
       if (this.byDid) {
         options["did"] = this.byDid;
         options["only_master"] = false;
+      }
+
+      // search by tag (unless it's all posts)
+      if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.$config.orbisCategories.length) {
+        options["tag"] = this.$config.orbisCategories[this.chatStore.getSelectedTagIndex].slug;
       }
 
       let { data, error } = await this.$orbis.getPosts(
@@ -387,10 +433,11 @@ export default {
   setup() {
     const { address, chainId, isActivated, signer } = useEthers();
     const toast = useToast();
+    const chatStore = useChatStore();
     const siteStore = useSiteStore();
     const userStore = useUserStore();
 
-    return { address, chainId, isActivated, signer, toast, siteStore, userStore }
+    return { address, chainId, isActivated, signer, toast, chatStore, siteStore, userStore }
   },
 }
 </script>
