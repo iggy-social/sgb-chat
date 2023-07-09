@@ -274,16 +274,22 @@ export default {
           body: this.postText, 
           context: this.getOrbisContext
         }
+
+        // if post has tags, add them to the options
+        if (this.post?.content?.tags) {
+          options["tags"] = this.post.content.tags;
+        }
+
       } else {
         options = {
           body: this.postText, 
           context: this.getOrbisContext
         }
-      }
 
-      // add tags
-      if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.$config.orbisCategories.length) {
-        options["tags"] = [this.$config.orbisCategories[this.chatStore.getSelectedTagIndex]];
+        // add tags
+        if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.$config.orbisCategories.length) {
+          options["tags"] = [this.$config.orbisCategories[this.chatStore.getSelectedTagIndex]];
+        }
       }
 
       // post on Orbis & Ceramic
