@@ -279,6 +279,8 @@ export default {
         // if post has tags, add them to the options
         if (this.masterPost?.content?.tags) {
           options["tags"] = this.masterPost.content.tags;
+        } else {
+          options["tags"] = [this.$config.orbisCategories[1]]; // default to "General" tag
         }
 
       } else {
@@ -290,6 +292,8 @@ export default {
         // add tags
         if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.$config.orbisCategories.length) {
           options["tags"] = [this.$config.orbisCategories[this.chatStore.getSelectedTagIndex]];
+        } else {
+          options["tags"] = [this.$config.orbisCategories[1]]; // default to "General" tag
         }
       }
 
