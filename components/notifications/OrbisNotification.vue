@@ -28,7 +28,7 @@
         </span>
       </p>
 
-      <p class="mb-0 cursor-pointer" @click="openPostDetails">
+      <p class="mb-0 cursor-pointer text-break" @click="openPostDetails">
         {{ getNotificationContent }}
       </p>
     </div>
