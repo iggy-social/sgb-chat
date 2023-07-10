@@ -50,7 +50,7 @@
       </button>
     </div>
 
-    <div v-if="withdrawalIncorrect.error" class="alert alert-warning text-center" role="alert">
+    <div v-if="withdrawalIncorrect.error" class="alert alert-warning text-center text-dark" role="alert">
       {{ withdrawalIncorrect.message }}
     </div>
 
