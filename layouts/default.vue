@@ -302,7 +302,13 @@ export default {
 
     async fetchUserDomain() {
       if (this.chainId === this.$config.supportedChainId) {
-        const userDomain = await this.getDomainName(this.address);
+        let userDomain;
+
+        if (this.signer) {
+          userDomain = await this.getDomainName(this.address, this.signer);
+        } else {
+          userDomain = await this.getDomainName(this.address);
+        }
 
         if (userDomain) {
           this.userStore.setDefaultDomain(userDomain+this.$config.tldName);

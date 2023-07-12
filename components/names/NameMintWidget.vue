@@ -257,7 +257,13 @@ export default {
 
     async fetchUserDomain() {
       if (this.isActivated) {
-        const userDomain = await this.getDomainName(this.address);
+        let userDomain;
+
+        if (this.signer) {
+          userDomain = await this.getDomainName(this.address, this.signer);
+        } else {
+          userDomain = await this.getDomainName(this.address);
+        }
 
         if (userDomain) {
           this.userStore.setDefaultDomain(userDomain+this.$config.tldName);
