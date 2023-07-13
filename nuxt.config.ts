@@ -71,7 +71,7 @@ export default defineNuxtConfig({
       orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)
         { "slug": "all", "title": "All posts" }, // not a real tag, just denotes the absence of a tag
         { "slug": "general", "title": "General" },
-        { "slug": "nfts", "title": "NFTs" },
+        { "slug": "nfts", "title": "Memes & NFTs" },
         { "slug": "governance", "title": "Governance" },
       ],
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
