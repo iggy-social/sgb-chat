@@ -67,14 +67,14 @@
       </small>
     </p>
 
-    <!-- START @TODO: check if needed -->
+    <!-- START @TODO: check if needed 
     <GenericNftDrop 
       title="Claim the NFT for Early Stakers" 
       description="Early stakers can claim this free commemorative NFT. One NFT per address. Hurry up, limited time only!"
       :claimersData="claimers" 
       merkleClaimerAddress="0x484cCFE329E4dbdB0C594d2401400D4Df3AaeDE9" 
       nftImage="https://bafybeic3fpbvtqj6kqpu77vy56efkasgbaviguc3qm4jgy3dy7fuk7fire.ipfs.w3s.link/early-staker-nft-sgb-chat.png"
-    />
+    /> -->
     <!-- // END @TODO: check if needed -->
   </div>
 </template>
