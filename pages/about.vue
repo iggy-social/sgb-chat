@@ -34,9 +34,28 @@
 
       <hr />
 
-      <h5>$CHIRP token</h5>
+      <h5>SGB Chat Rules</h5>
+
+      <ol class="mt-4">
+        <li>Be respectful: Treat others with kindness and avoid offensive language or personal attacks. No hate speech and no racism.</li>
+        <li>Avoid spamming: Refrain from posting multiple identical or irrelevant messages and excessive self-promotion.</li>
+        <li>Use appropriate language and content: Keep your language and content suitable for a diverse audience on SGB Chat.</li>
+        <li>Give credit and cite sources: Acknowledge and attribute the original authors or sources of information when sharing on SGB Chat.</li>
+        <li>Keep personal information confidential: Personal information that comes up in the conversation should be kept confidential.</li>
+      </ol>
 
       <p>
+        SGB Chat rules were confirmed by the governance 
+        <a href="https://snapshot.org/#/sgbchat.eth/proposal/0xec7e7ce2a0fc739ec1bb33b0d9ce68aa2f20adffbe1e024621beed9e33959c1f" target="_blank">
+          via Snapshot on 21 July 2023
+        </a>.
+      </p>
+
+      <hr />
+
+      <h5>$CHIRP token</h5>
+
+      <p class="mt-4">
         $CHIRP is the official token of Sgb.Chat, designed to reward and empower active contributors.
       </p>
 
