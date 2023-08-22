@@ -12,6 +12,10 @@
     <Meta name="twitter:description" :content="'Claim your ' + $config.chatTokenSymbol + ' token airdrop on ' + $config.projectName + '!'" />
   </Head>
 
+  <div v-if="isLoading" class="loading-image">
+    <img src="/img/sgb-chat-logo-2.png" class="loading-spinner" /> 
+  </div>
+
   <div class="card border scroll-500">
     <div class="card-body">
       <p class="fs-3">
@@ -79,6 +83,8 @@ import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
 import AirdropDomainHolders from '~/components/airdrop/AirdropDomainHolders.vue';
 import AirdropPostMinters from '~/components/airdrop/AirdropPostMinters.vue';
+
+import { ref, onMounted } from 'vue'
 
 export default {
   name: 'Airdrop',
@@ -156,8 +162,10 @@ export default {
 
   setup() {
     const { address, signer } = useEthers();
+    const isLoading = ref(true);
+     onMounted(() => { isLoading.value = false; });
 
-    return { address, signer }
+    return { address, signer, isLoading }
   },
 
   watch: {
