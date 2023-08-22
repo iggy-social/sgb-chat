@@ -417,7 +417,7 @@
 }
 
 .loading-spinner {
-  max-width: 100px; /* edit */
+  max-width: 300px; /* edit */
   animation: breathe 2s infinite; /* edit */
 }
 
