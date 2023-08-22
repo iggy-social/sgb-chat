@@ -10,11 +10,16 @@
     <Meta name="twitter:description" :content="'Check out this profile on ' + $config.projectName + '!'" />
   </Head>
 
+  <div v-if="isLoading" class="loading-image">
+    <img src="/img/sgb-chat-logo-2.png" class="loading-spinner" /> 
+  </div>
   <PunkProfile class="mt-1" />
 </template>
 
 <script>
 import PunkProfile from '~/components/profile/PunkProfile.vue'
+
+import { ref, onMounted } from 'vue'
 
 export default {
   name: "Profile",
@@ -24,7 +29,10 @@ export default {
   },
 
   setup() {
+    const isLoading = ref(true);
+     onMounted(() => { isLoading.value = false; });
 
+     return { isLoading }
   }
 }
 </script>
