@@ -12,6 +12,10 @@
     <Meta name="twitter:description" :content="'Stake and earn ' + $config.tokenSymbol + ' on ' + $config.projectName + '!'" />
   </Head>
 
+  <div v-if="isLoading" class="loading-image">
+    <img src="/img/sgb-chat-logo-2.png" class="loading-spinner" /> 
+  </div>
+
   <div class="card border scroll-500">
     <div class="card-body">
       <p class="fs-3">
@@ -116,6 +120,8 @@ import StakingClaim from '~/components/stake/StakingClaim.vue';
 import StakingDeposit from '~/components/stake/StakingDeposit.vue';
 import StakingWithdrawal from '~/components/stake/StakingWithdrawal.vue';
 import { useUserStore } from '~/store/user';
+
+import { ref, onMounted } from 'vue'
 
 export default {
   name: 'Stake',
@@ -285,7 +291,10 @@ export default {
     const { address, signer } = useEthers();
     const userStore = useUserStore();
 
-    return { address, signer, userStore };
+    const isLoading = ref(true);
+     onMounted(() => { isLoading.value = false; });
+
+    return { address, signer, userStore, isLoading };
   },
 
   watch: {
