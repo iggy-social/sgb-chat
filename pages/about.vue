@@ -4,6 +4,10 @@
     <Meta property="og:title" :content="'About | ' + $config.projectMetadataTitle" />
   </Head>
 
+  <div v-if="isLoading" class="loading-image">
+    <img src="/img/sgb-chat-logo-2.png" class="loading-spinner" /> 
+  </div>
+
   <div class="card border scroll-500">
     <div class="card-body">
       <p class="fs-3" @click="$router.back()">
@@ -111,7 +115,18 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
+
 export default {
-  name: 'About'
+  name: 'About',
+
+  setup() {
+    const isLoading = ref(true);
+     onMounted(() => { isLoading.value = false; });
+
+     return { isLoading }
+  }
+
 }
+
 </script>
