@@ -1,6 +1,6 @@
 <template>
   <div v-if="isLoading" class="loading-image">
-    <img src="/img/logo.png" class="loading-spinner" /> 
+    <img src="/img/sgb-chat-logo-2.png" class="loading-spinner" /> 
   </div>
   <ChatFeed class="mt-1" :showQuotedPost="$config.showRepliesOnHomepage" />
 </template>
