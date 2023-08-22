@@ -4,6 +4,10 @@
     <Meta property="og:title" :content="'Notifications | ' + $config.projectMetadataTitle" />
   </Head>
 
+  <div v-if="isLoading" class="loading-image">
+    <img src="/img/sgb-chat-logo-2.png" class="loading-spinner" /> 
+  </div>
+
   <div class="card border">
     <div class="card-body">
       <p class="fs-3" @click="$router.back()">
@@ -41,6 +45,8 @@
 import { useNotificationsStore } from '~/store/notifications';
 import OrbisNotification from '~~/components/notifications/OrbisNotification.vue';
 import { useToast } from "vue-toastification/dist/index.mjs";
+
+import { ref, onMounted } from 'vue'
 
 export default {
   name: 'Notifications',
@@ -85,7 +91,10 @@ export default {
     const notificationsStore = useNotificationsStore();
     const toast = useToast();
 
-    return { notificationsStore, toast }
+    const isLoading = ref(true);
+     onMounted(() => { isLoading.value = false; });
+
+    return { notificationsStore, toast, isLoading }
   },
 }
 </script>
