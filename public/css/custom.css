@@ -401,6 +401,35 @@
   color: #0f1110;
 }
 
+/* css: index.vue in .loading-image..+.loading-spinner  */
+.loading-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #222529; /* edit */
+  backdrop-filter: blur(20px); /* edit */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+.loading-spinner {
+  max-width: 100px; /* edit */
+  animation: breathe 2s infinite; /* edit */
+}
+
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+}
+
 
 
 .w-30 {
