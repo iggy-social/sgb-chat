@@ -42,8 +42,9 @@
               type="button"
               @click="getData"
             >
-              <span v-if="waitingData" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              Load Key Data
+              <span v-if="waitingData" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <span v-if="!domainName">Unlock Chat</span>
+              <span v-if="domainName">Unlock {{ domainName }}'s Chat</span>
             </button>
           </div>
 
