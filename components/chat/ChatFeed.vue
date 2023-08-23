@@ -96,7 +96,8 @@
         v-for="post in orbisPosts" 
         :key="post.stream_id"
         :showQuotedPost="showQuotedPost" 
-        :post="post" />
+        :post="post"
+        :orbisContext="getOrbisContext" />
     </div>
 
     <div class="d-flex justify-content-center mb-3" v-if="waitingLoadPosts">
@@ -133,6 +134,7 @@ export default {
     "id", // id (optional) is the post id that this component looks for replies to
     "master", // master stream ID, if there's a master post, we'll show it at the top
     "masterPost", // master post object (if it exists)
+    "orbisContext",
     "showQuotedPost" // if true, we'll show the quoted posts (for any post that has a quote)
   ],
 
@@ -178,11 +180,7 @@ export default {
     },
 
     getOrbisContext() {
-      if (this.$config.orbisTest) {
-        return this.$config.orbisTestContext;
-      } else {
-        return this.$config.orbisContext;
-      }
+      return this.orbisContext;
     },
 
     getSelectedTagObject() {

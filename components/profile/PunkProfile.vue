@@ -220,7 +220,7 @@
 
         <!-- Posts Tab -->
         <div v-if="currentTab === 'posts' && uDid">
-          <ChatFeed :byDid="uDid" :hideCommentBox="true" />
+          <ChatFeed :byDid="uDid" :hideCommentBox="true" :orbisContext="getOrbisContext" />
         </div>
 
         <!-- Mints Tab -->
@@ -312,6 +312,14 @@ export default {
         return Number(bal).toFixed(2)
       } else {
         return Number(bal).toFixed(4)
+      }
+    },
+
+    getOrbisContext() {
+      if (this.$config.orbisTest) {
+        return this.$config.orbisTestContext;
+      } else {
+        return this.$config.orbisContext;
       }
     },
 

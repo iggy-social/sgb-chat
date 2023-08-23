@@ -49,6 +49,11 @@
 
             </NuxtLink>
           </li>
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.keysAddress">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/keys') ? 'active' : ''" aria-current="page" to="/keys">
+              <i class="bi bi-key"></i> Friend Keys
+            </NuxtLink>
+          </li>
           <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.swapRouterAddress">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/swap') ? 'active' : ''" aria-current="page" to="/swap">
               <i class="bi bi-arrow-down-up"></i> Swap

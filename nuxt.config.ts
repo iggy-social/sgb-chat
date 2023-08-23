@@ -62,6 +62,8 @@ export default defineNuxtConfig({
       iggyPostAddress: "0xE33F27496A9cE75313f6d1FA2BA95657Fc904387",
       iggyPostMinterAddress: "0x1C8666e706C03EDB1c0D04a48b0B7762fc645cD4",
       iggyPostEnumerationAddress: "0xE2AfE33f16519e31c6FFE5eEb333A0887a44D2BC",
+      keysAddress: "0xEdE68a694E4730F997dcA54A9C9f817D86605FF5", // PunkKey contract address 
+      keysContext: "kjzl6cwe1jw14aizx9mc4mnwpfa16b05ibzpc4pbie57podvb3dgvy9vay8muf4",
       lpTokenAddress: "0xdE533DE5e9A73934B380c70f3611B116b8DF7D0d", // liquidity pool token (token to stake in the staking contract)
       lpTokenSymbol: "LP tokens", // LP token symbol
       marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgb-chat-posts/",

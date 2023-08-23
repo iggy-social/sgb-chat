@@ -54,7 +54,7 @@
     </div>
   
     <!-- orbis post which has been minted -->
-    <ChatPost v-if="post" :post="post" :showQuotedPost="true" />
+    <ChatPost v-if="post" :post="post" :showQuotedPost="true" :orbisContext="getOrbisContext" />
   </div>
 </template>
 
@@ -83,6 +83,14 @@ export default {
   },
 
   computed: {
+    getOrbisContext() {
+      if (this.$config.orbisTest) {
+        return this.$config.orbisTestContext;
+      } else {
+        return this.$config.orbisContext;
+      }
+    },
+    
     getPostAuthor() {
       if (this.post) {
         return this.post.creator_details.metadata.address;

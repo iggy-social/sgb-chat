@@ -142,7 +142,7 @@ import { imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } fr
 export default {
   name: "ChatPost",
   emits: ["insertReply", "removePost"],
-  props: ["post", "showQuotedPost"],
+  props: ["orbisContext", "post", "showQuotedPost"],
 
   components: {
     ChatQuote,
@@ -209,7 +209,7 @@ export default {
       } else if (this.post?.context_details.context_id) {
         return this.post.context_details.context_id;
       } else {
-        return this.$config.orbisContext;
+        return this.orbisContext;
       }
     },
 
