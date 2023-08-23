@@ -6,19 +6,31 @@
       <!-- Mint/register a domain name -->
       <NameMintWidget />
 
-      <!-- Playlist -->
+      <!-- Playlist 
       <div class="card m-2 bg-light">
         <div class="card-header bg-light">SGB Chat Playlist</div>
         <div class="card-body sidebar-card-body">
           <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX3b9hbbPi5hD?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
       </div>
+      -->
 
       <!-- Swap tokens -->
       <SimpleSwapWidget v-if="$config.swapRouterAddress" />
 
       <!-- Random minted post(s) -->
       <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
+
+      <!-- Newsletter -->
+      <div v-if="$config.newsletterLink" class="card m-2 bg-light">
+        <div class="card-header bg-light">{{ $config.projectName }} Newsletter</div>
+        <div class="card-body sidebar-card-body">
+          <a class="btn btn-outline-primary mt-2 mb-2" target="_blank" :href="$config.newsletterLink">
+            Join our newsletter!
+            <i class="bi bi-box-arrow-up-right ms-1"></i>
+          </a>
+        </div>
+      </div>
       
     </div>
   </div>
