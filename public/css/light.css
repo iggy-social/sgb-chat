@@ -120,3 +120,7 @@
   --bs-breakpoint-xxl: 1400px;
   --bs-white-black-toggle: #000;
 }
+
+[data-bs-theme=light] .bg-mode {
+  background-color: var(--bs-mode) !important;
+}

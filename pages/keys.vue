@@ -10,13 +10,13 @@
         <i class="bi bi-arrow-left-circle cursor-pointer"></i>
       </p>
 
-      <h3 class="mb-2 mt-3 text-center">Get a Friend Key and unlock a chat</h3>
+      <h3 class="mb-2 mt-3 text-center">Get a Friend Key and unlock a chat room</h3>
 
       <div class="d-flex justify-content-center">
         <div class="col-12 col-lg-8">
 
           <p class="text-break text-center mt-3 mb-4">
-            Search for a domain and get its Friend Key to unlock a chat with the domain holder.
+            Search for a domain and get its Friend Key to unlock a chat room with the domain holder and other key holders.
           </p>
 
           <!-- Search domain input field -->
@@ -34,8 +34,12 @@
             </button>
           </div>
 
+          <div v-if="!isActivated" class="d-flex justify-content-center mt-4">
+            <ConnectWalletButton v-if="!isActivated" class="btn btn-outline-primary" btnText="Connect wallet" />
+          </div>
+
           <!-- Get Data button -->
-          <div v-if="!showBuySellButtons" class="d-flex justify-content-center mt-4">
+          <div v-if="isActivated && !showBuySellButtons" class="d-flex justify-content-center mt-4">
             <button 
               :disabled="waitingData || !domainName"
               class="btn btn-outline-primary" 
@@ -49,7 +53,7 @@
           </div>
 
           <!-- Buy & Sell buttons -->
-          <div v-if="showBuySellButtons && !domainNotExists" class="d-flex justify-content-center mt-4 mb-4">
+          <div v-if="isActivated && showBuySellButtons && !domainNotExists" class="d-flex justify-content-center mt-4 mb-4">
 
             <button 
               :disabled="waitingBuy || !domainName"
@@ -74,6 +78,23 @@
             </button>
 
           </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- KeysList -->
+  <div v-if="!domainNotExists && !showBuySellButtons && !buyKeyToChat && !isKeyHolder" class="card border mt-3 scroll-500">
+    <div class="card-body">
+
+      <h3 class="mb-4 mt-3 text-center">Popular Keys List</h3>
+
+      <div class="d-flex justify-content-center">
+        <div class="col-12 col-lg-8">
+
+          <KeysList />
 
         </div>
       </div>
@@ -193,6 +214,8 @@ import { useEthers } from 'vue-dapp';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import WaitingToast from "~/components/WaitingToast";
 import ChatFeed from "~/components/chat/ChatFeed.vue";
+import KeysList from "~/components/keys/KeysList.vue";
+import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 
 export default {
   name: 'Keys',
@@ -214,7 +237,9 @@ export default {
   },
 
   components: {
-    ChatFeed
+    ChatFeed,
+    ConnectWalletButton,
+    KeysList
   },
 
   computed: {
@@ -528,11 +553,12 @@ export default {
   },
 
   setup() {
-    const { address, signer } = useEthers();
+    const { address, isActivated, signer } = useEthers();
     const toast = useToast();
 
     return {
       address,
+      isActivated,
       signer,
       toast
     }

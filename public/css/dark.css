@@ -63,6 +63,10 @@
   background-color: var(--bs-light) !important;
 }
 
+[data-bs-theme=dark] .bg-mode {
+  background-color: var(--bs-mode) !important;
+}
+
 [data-bs-theme=dark] .navbar {
   --bs-navbar-color: var(--bs-gray-600);
   --bs-navbar-hover-color: var(--bs-primary);
