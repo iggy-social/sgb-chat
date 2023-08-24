@@ -387,11 +387,6 @@
   width: 100vw;
 }
 
-.table, .table td, .table th, .table tr {
-  --bs-table-bg: var(--bs-mode) !important;
-  background-color: var(--bs-mode) !important;
-}
-
 .tech-stack {
   max-height: 30px;
 }

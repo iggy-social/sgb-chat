@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import SimpleSwap from '~~/components/swap/SimpleSwap.vue';
+import SimpleSwap from '~/components/swap/SimpleSwap.vue';
 
 export default {
   name: "SimpleSwapWidget",

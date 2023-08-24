@@ -15,6 +15,9 @@
       </div>
       -->
 
+      <!-- Keys list -->
+      <KeysListWidget v-if="$config.keysAddress" />
+
       <!-- Swap tokens -->
       <SimpleSwapWidget v-if="$config.swapRouterAddress" />
 
@@ -42,12 +45,14 @@ import { useSidebarStore } from '~/store/sidebars';
 import MintedPostsWidget from '~/components/minted-posts/MintedPostsWidget.vue';
 import NameMintWidget from '~/components/names/NameMintWidget.vue';
 import SimpleSwapWidget from '~/components/swap/SimpleSwapWidget.vue';
+import KeysListWidget from '~/components/keys/KeysListWidget.vue';
 
 export default {
     name: "SidebarRight",
     props: ["rSidebar", "isMobile"],
 
     components: { 
+      KeysListWidget,
       MintedPostsWidget,
       NameMintWidget,
       SimpleSwapWidget

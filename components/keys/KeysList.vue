@@ -1,17 +1,17 @@
 <template>
   <div>
 
-    <table class="table bg-mode text-center">
+    <table class="table bg-transparent text-center">
       <thead>
         <tr>
-          <th scope="col">Domain</th>
-          <th scope="col">Key price</th>
+          <th class="bg-transparent" scope="col">Domain</th>
+          <th class="bg-transparent" scope="col">Key price</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="domain in domainObjects" :key="domain.name">
-          <td>{{ domain.name }}{{ $config.tldName }}</td>
-          <td>{{ domain.price }} {{ $config.tokenSymbol }}</td>
+          <td class="bg-transparent">{{ domain.name }}{{ $config.tldName }}</td>
+          <td class="bg-transparent">{{ domain.price }} {{ $config.tokenSymbol }}</td>
         </tr>
       </tbody>
     </table>
