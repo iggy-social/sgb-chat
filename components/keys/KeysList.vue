@@ -97,7 +97,7 @@ export default {
       }
 
       // filter from the highest price to the lowest
-      tempDomainObjects.sort((a, b) => (a.price < b.price) ? 1 : -1);
+      tempDomainObjects.sort((a, b) => (Number(a.price) < Number(b.price)) ? 1 : -1);
 
       this.domainObjects = tempDomainObjects;
       this.waiting = false;
