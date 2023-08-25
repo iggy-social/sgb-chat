@@ -32,7 +32,7 @@ export default {
 
   data() {
     return {
-      selectedDomains: ["techie", "tekr", "iggy"],
+      selectedDomains: ["techie", "tekr", "iggy", "santa🎅", "clare2045"],
       domainObjects: [],
       waiting: false
     }
