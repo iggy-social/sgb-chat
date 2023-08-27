@@ -423,14 +423,17 @@ export default {
               const response = await $fetch(fetcherService).catch((error) => error.data);
 
               console.log("response: ", response);
+              console.log("response data: ", response["data"]);
 
-              this.linkPreview = response.data;
+              if (response?.data) {
+                this.linkPreview = response["data"];
 
-              console.log("linkPreview: ", this.linkPreview);
+                console.log("linkPreview: ", this.linkPreview);
 
-              // store link preview in localStorage
-              if (this.linkPreview?.title) {
-                localStorage.setItem(this.firstLink, JSON.stringify(this.linkPreview));
+                // store link preview in localStorage
+                if (this.linkPreview?.title) {
+                  localStorage.setItem(this.firstLink, JSON.stringify(this.linkPreview));
+                }
               }
               
             } catch (e) {
