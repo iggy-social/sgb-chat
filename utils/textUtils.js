@@ -1,13 +1,4 @@
 export function findFirstUrl(text) {
-  if (
-    url.startsWith("https://www.youtube.com") || 
-    url.startsWith("http://www.youtube.com") ||
-    url.startsWith("https://youtu.be") || 
-    url.startsWith("http://youtu.be")
-  ) {
-    // ignore youtube embeds
-    return null;
-  } 
 
   let urlRegex;
 
@@ -21,7 +12,19 @@ export function findFirstUrl(text) {
   const match = text.match(urlRegex);
 
   if (match) {
-    return match[0];
+    const url = match[0];
+
+    if (
+      url.startsWith("https://www.youtube.com") || 
+      url.startsWith("http://www.youtube.com") ||
+      url.startsWith("https://youtu.be") || 
+      url.startsWith("http://youtu.be")
+    ) {
+      // ignore youtube embeds
+      return null;
+    } 
+
+    return url;
   }
   
   return null;
