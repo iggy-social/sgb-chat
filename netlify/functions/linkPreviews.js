@@ -1,10 +1,17 @@
 exports.handler = async function (event, context) {
+  const metascraper = require('metascraper')([
+    require('metascraper-description')(),
+    require('metascraper-image')(),
+    require('metascraper-title')()
+  ])
+
   const url = event.queryStringParameters.url;
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url); 
     const html = await response.text();
     
+    /*
     const metaDescription = html.match(/<meta name="description" content="([^"]+)"/g);
     
     // get image from meta tags
@@ -18,10 +25,22 @@ exports.handler = async function (event, context) {
         url: ogImage[0].match(/content="([^"]+)"/)[1] 
       }
     };
+    */
+
+    const metadata = await metascraper({ html, url });
+
+    const finalMetadata = {
+      "url": url,
+      "title": metadata.title,
+      "description": metadata.description,
+      "image": { 
+        url: metadata.image
+      }
+    };
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ data: metadata }),
+      body: JSON.stringify({ data: finalMetadata }),
     };
     
     //return metadata;
@@ -33,6 +52,5 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({ error }),
     };
   }
-
   
 };

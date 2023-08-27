@@ -63,16 +63,19 @@
       </p>
 
       <!-- link preview -->
-      <div v-if="linkPreview?.title">
-        <a target="_blank" :href="linkPreview.url" class="text-decoration-none">
-          <div class="card">
-            <img :src="linkPreview.image.url" class="card-img-top" alt="...">
-            <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
-              <h5 class="card-title text-break">{{linkPreview.title}}</h5>
-              <p class="card-text text-break">{{linkPreview.description}}</p>
-            </div>
+      <div v-if="linkPreview?.title" class="row">
+        
+          <div class="card col-md-8">
+            <a target="_blank" :href="linkPreview.url" class="text-decoration-none text-reset">
+              <img :src="linkPreview.image.url" class="card-img-top" alt="..." />
+
+              <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
+                <h5 class="card-title text-break">{{linkPreview.title}}</h5>
+                <p class="card-text text-break text-reset">{{linkPreview.description}}</p>
+              </div>
+            </a>
           </div>
-        </a>
+        
       </div>
       <!-- END link preview -->
 
