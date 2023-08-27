@@ -1,4 +1,14 @@
 export function findFirstUrl(text) {
+  if (
+    url.startsWith("https://www.youtube.com") || 
+    url.startsWith("http://www.youtube.com") ||
+    url.startsWith("https://youtu.be") || 
+    url.startsWith("http://youtu.be")
+  ) {
+    // ignore youtube embeds
+    return null;
+  } 
+
   let urlRegex;
 
   try {

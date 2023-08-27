@@ -420,7 +420,10 @@ export default {
               this.linkPreview = response.data;
 
               // store link preview in localStorage
-              localStorage.setItem(this.firstLink, JSON.stringify(this.linkPreview));
+              if (this.linkPreview?.title) {
+                localStorage.setItem(this.firstLink, JSON.stringify(this.linkPreview));
+              }
+              
             } catch (e) {
               console.log("Error fetching link preview: ", e);
             }
