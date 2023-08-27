@@ -64,6 +64,7 @@ export default defineNuxtConfig({
       iggyPostEnumerationAddress: "0xE2AfE33f16519e31c6FFE5eEb333A0887a44D2BC",
       keysAddress: "0xEdE68a694E4730F997dcA54A9C9f817D86605FF5", // PunkKey contract address 
       keysContext: "kjzl6cwe1jw14aizx9mc4mnwpfa16b05ibzpc4pbie57podvb3dgvy9vay8muf4",
+      linkPreviews: "netlify", // "netlify" or "microlink" (or leave empty for no link previews)
       lpTokenAddress: "0xdE533DE5e9A73934B380c70f3611B116b8DF7D0d", // liquidity pool token (token to stake in the staking contract)
       lpTokenSymbol: "LP tokens", // LP token symbol
       marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgb-chat-posts/",
@@ -77,7 +78,7 @@ export default defineNuxtConfig({
         { "slug": "governance", "title": "Governance" },
       ],
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
-      orbisTest: false, // if true, test context will be used instead of the production one
+      orbisTest: true, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context
       previewImage: "/img/cover.png",
       previewImageAirdrop: "/img/cover-airdrop.png",

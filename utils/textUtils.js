@@ -1,3 +1,22 @@
+export function findFirstUrl(text) {
+  let urlRegex;
+
+  try {
+    urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|img|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\"\')])', 'g');
+  } catch (error) {
+    // fallback to simplified regex (without lookbehinds) in case of an old browser or Safari
+    urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|img|gif|pdf|docx))[^\s]+)/g;
+  }
+
+  const match = text.match(urlRegex);
+
+  if (match) {
+    return match[0];
+  }
+  
+  return null;
+}
+
 export function getImageFromText(text) {
   let imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
   let imageLinks = text.match(imageRegex);
