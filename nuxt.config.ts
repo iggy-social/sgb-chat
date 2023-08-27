@@ -78,7 +78,7 @@ export default defineNuxtConfig({
         { "slug": "governance", "title": "Governance" },
       ],
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
-      orbisTest: true, // if true, test context will be used instead of the production one
+      orbisTest: false, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context
       previewImage: "/img/cover.png",
       previewImageAirdrop: "/img/cover-airdrop.png",
