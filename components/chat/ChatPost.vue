@@ -420,10 +420,23 @@ export default {
 
           if (fetcherService) {
             try {
-              const response = await $fetch(fetcherService).catch((error) => error.data);
+              const resp = await $fetch(fetcherService).catch((error) => error.data);
+
+              console.log("resp type: ", typeof(resp));
+
+              let response = resp;
+
+              if (typeof(resp) === "string") {
+                response = JSON.parse(resp);
+              }
 
               console.log("response: ", response);
               console.log("response data: ", response["data"]);
+
+              if (response?.error) {
+                console.log("Error fetching link preview: ", response["error"]);
+                return;
+              }
 
               if (response?.data) {
                 this.linkPreview = response["data"];
