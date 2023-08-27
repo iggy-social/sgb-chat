@@ -397,12 +397,15 @@ export default {
 
     async fetchLinkPreview() {
       if (this.$config.linkPreviews) {
-        console.log("first link: ", this.firstLink);
+        const thisAppUrl = window.location.origin;
+        const firstLinkHttps = this.firstLink.replace("http://", "https://");
+
+        if (firstLinkHttps.startsWith(thisAppUrl.replace("http://", "https://"))) {
+          return;
+        }
 
         // check in localStorage if link preview is already stored (key is the link)
         const storedLinkPreviewString = localStorage.getItem(this.firstLink);
-
-        console.log("storedLinkPreviewString: ", storedLinkPreviewString);
 
         if (storedLinkPreviewString) {
           this.linkPreview = JSON.parse(storedLinkPreviewString);
@@ -410,10 +413,7 @@ export default {
           let fetcherService;
 
           if (this.$config.linkPreviews === "netlify") {
-            fetcherService = window.location.origin + "/.netlify/functions/linkPreviews?url=" + this.firstLink;
-
-            console.log("fetcherService: ", fetcherService);
-
+            fetcherService = thisAppUrl + "/.netlify/functions/linkPreviews?url=" + this.firstLink;
           } else if (this.$config.linkPreviews === "microlink") {
             fetcherService = "https://api.microlink.io/?url=" + this.firstLink;
           }
@@ -422,16 +422,11 @@ export default {
             try {
               const resp = await $fetch(fetcherService).catch((error) => error.data);
 
-              console.log("resp type: ", typeof(resp));
-
               let response = resp;
 
               if (typeof(resp) === "string") {
                 response = JSON.parse(resp);
               }
-
-              console.log("response: ", response);
-              console.log("response data: ", response["data"]);
 
               if (response?.error) {
                 console.log("Error fetching link preview: ", response["error"]);
@@ -440,8 +435,6 @@ export default {
 
               if (response?.data) {
                 this.linkPreview = response["data"];
-
-                console.log("linkPreview: ", this.linkPreview);
 
                 // store link preview in localStorage
                 if (this.linkPreview?.title) {
