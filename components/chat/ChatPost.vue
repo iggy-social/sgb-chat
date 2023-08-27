@@ -402,6 +402,8 @@ export default {
         // check in localStorage if link preview is already stored (key is the link)
         const storedLinkPreviewString = localStorage.getItem(this.firstLink);
 
+        console.log("storedLinkPreviewString: ", storedLinkPreviewString);
+
         if (storedLinkPreviewString) {
           this.linkPreview = JSON.parse(storedLinkPreviewString);
         } else {
@@ -409,15 +411,22 @@ export default {
 
           if (this.$config.linkPreviews === "netlify") {
             fetcherService = window.location.origin + "/.netlify/functions/linkPreviews?url=" + this.firstLink;
+
+            console.log("fetcherService: ", fetcherService);
+
           } else if (this.$config.linkPreviews === "microlink") {
             fetcherService = "https://api.microlink.io/?url=" + this.firstLink;
           }
 
           if (fetcherService) {
             try {
-              const response = await $fetch(fetcherService).catch((error) => error.data)
+              const response = await $fetch(fetcherService).catch((error) => error.data);
+
+              console.log("response: ", response);
 
               this.linkPreview = response.data;
+
+              console.log("linkPreview: ", this.linkPreview);
 
               // store link preview in localStorage
               if (this.linkPreview?.title) {
