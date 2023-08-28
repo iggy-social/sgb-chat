@@ -117,6 +117,8 @@
               <li>techie{{ $config.tldName }}</li>
               <li>tekr{{ $config.tldName }}</li>
               <li>MyCryptoPlayground{{ $config.tldName }}</li>
+              <li>nidz{{ $config.tldName }}</li>
+              <li>DigitalMcDuck{{ $config.tldName }}</li>
             </ul>
           </p>
 

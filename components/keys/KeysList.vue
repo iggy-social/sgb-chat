@@ -10,8 +10,8 @@
       </thead>
       <tbody>
         <tr v-for="domain in domainObjects" :key="domain.name">
-          <td class="bg-transparent">{{ domain.name }}{{ $config.tldName }}</td>
-          <td class="bg-transparent">{{ domain.price }} {{ $config.tokenSymbol }}</td>
+          <td class="bg-transparent text-break">{{ domain.name }}{{ $config.tldName }}</td>
+          <td class="bg-transparent text-nowrap">{{ domain.price }} {{ $config.tokenSymbol }}</td>
         </tr>
       </tbody>
     </table>
@@ -32,7 +32,7 @@ export default {
 
   data() {
     return {
-      selectedDomains: ["techie", "tekr", "chocopuffs", "clare2045", "nidz"],
+      selectedDomains: ["techie", "tekr", "chocopuffs", "MyCryptoPlayground", "clare2045", "nidz", "DigitalMcDuck"],
       domainObjects: [],
       waiting: false
     }
@@ -86,20 +86,17 @@ export default {
         provider
       );
 
-      let tempDomainObjects = [];
-
       for (let i = 0; i < this.selectedDomains.length; i++) {
         const domainName = this.selectedDomains[i];
 
         const priceWei = await keysContract.getBuyPriceAfterFee(domainName, 1);
 
-        tempDomainObjects.push({ name: domainName, price: this.formatPrice(priceWei) });
+        this.domainObjects.push({ name: domainName, price: this.formatPrice(priceWei) });
       }
 
       // filter from the highest price to the lowest
-      tempDomainObjects.sort((a, b) => (Number(a.price) < Number(b.price)) ? 1 : -1);
+      this.domainObjects.sort((a, b) => (Number(a.price) < Number(b.price)) ? 1 : -1);
 
-      this.domainObjects = tempDomainObjects;
       this.waiting = false;
     }
   },

@@ -15,11 +15,18 @@
   </template>
   
   <script>
+  import { useEthers } from 'vue-dapp';
   import KeysList from '~/components/keys/KeysList.vue';
   
   export default {
     name: "KeysListWidget",
   
-    components: { KeysList }
+    components: { KeysList },
+
+    setup() {
+    const { isActivated } = useEthers();
+
+    return { isActivated }
+  },
   }
   </script>
