@@ -7,7 +7,7 @@
 
   <div class="card-body sidebar-card-body">
     <div class="row">
-      <div class="col-12" v-for="id in randomNumbers" :key="id">
+      <div :class="getImageColumnWidth" v-for="id in randomNumbers" :key="id">
         <MintedPostImage :id="id" @click="$emit('closeRightSidebar')" />
       </div>
     </div>
@@ -47,6 +47,14 @@ export default {
   },
 
   computed: {
+    getImageColumnWidth() {
+      if (this.$config.randomPostsNumber === 1) {
+        return "col-12"
+      } else {
+        return "col-12 mt-4"
+      }
+    },
+
     getWidgetTitle() {
       if (this.$config.randomPostsNumber === 1) {
         return "Random Minted Post"
@@ -76,13 +84,15 @@ export default {
 
       const counter = await iggyContract.counter();
 
-      // generate unique random numbers between 1 and (counter-1)
-      this.randomNumbers = [];
+      if (Number(counter) > 1) {
+        // generate unique random numbers between 1 and (counter-1)
+        this.randomNumbers = [];
 
-      while (this.randomNumbers.length < this.numberOfPosts) {
-        const randomNumber = Math.floor(Math.random() * (counter - 1)) + 1;
-        if (!this.randomNumbers.includes(randomNumber)) {
-          this.randomNumbers.push(randomNumber);
+        while (this.randomNumbers.length < this.numberOfPosts) {
+          const randomNumber = Math.floor(Math.random() * (counter - 1)) + 1;
+          if (!this.randomNumbers.includes(randomNumber)) {
+            this.randomNumbers.push(randomNumber);
+          }
         }
       }
       

@@ -10,8 +10,6 @@
   --bs-nav-pills-link-active-bg: #D27F97 !important;
   --bs-link-color: #D27F97;
   --bs-link-hover-color: #c86e88;
-  --bs-link-color-rgb: 210, 127, 151;
-  --bs-link-hover-color-rgb: 200, 110, 136;
   --bs-blue: #1d3b53;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
@@ -113,6 +111,15 @@
   --bs-breakpoint-xl: 1200px;
   --bs-breakpoint-xxl: 1400px;
   --bs-table-bg: var(--bs-mode) !important;
+}
+
+a {
+  color: var(--bs-link-color);
+  text-decoration: var(--bs-link-decoration);
+}
+
+a:hover {
+  color: var(--bs-link-hover-color);
 }
 
 .bg-mode {
@@ -392,7 +399,7 @@
 }
 
 .Vue-Toastification__toast--info.custom-toast-bg {
-  background-color: #D27F97;
+  background-color: var(--bs-primary);
 }
 
 .Vue-Toastification__toast--warning.custom-toast-bg {
