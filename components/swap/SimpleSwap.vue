@@ -186,12 +186,17 @@
 
     </div>
 
+    <p class="text-center mt-4" v-if="poweredBy">
+      <small>
+        <em>Powered by {{ poweredBy }}.</em>
+      </small>
+    </p>
+
   </div>
 </template>
 
 <script>
 import { useEthers } from 'vue-dapp';
-import tokens from '~/assets/data/tokens.json';
 import wrappedNativeTokens from "~/assets/data/wrappedNativeTokens.json";
 import { getTokenAllowance, getTokenBalance } from '~/utils/balanceUtils';
 import { getOutputTokenAmount, getPriceImpactBps } from '~/utils/simpleSwapUtils';
@@ -203,7 +208,7 @@ import { useSiteStore } from '~/store/site';
 
 export default {
   name: 'SimpleSwap',
-  props: ["swapId", "outputPlaceholder", "routerAddress"],
+  props: ["outputPlaceholder", "poweredBy", "routerAddress", "swapId", "tokens"],
 
   data() {
     return {
@@ -231,10 +236,10 @@ export default {
   },
 
   mounted() {
-    this.tokenList = tokens.tokens;
+    this.tokenList = this.tokens.tokens;
 
-    this.selectInputToken(tokens.tokens[0]);
-    this.selectOutputToken(tokens.tokens[1]);
+    this.selectInputToken(this.tokens.tokens[0]);
+    this.selectOutputToken(this.tokens.tokens[1]);
 
     if (this.outputPlaceholder) {
       this.outputText = this.outputPlaceholder;

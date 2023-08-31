@@ -18,6 +18,7 @@
             <SimpleSwap 
               :routerAddress="$config.swapRouterAddress" 
               swapId="SwapPage1" 
+              :tokens="tokens"
             />
           </div>
         </div>
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+import tokens from '~/assets/data/tokens.json';
 import SimpleSwap from '~~/components/swap/SimpleSwap.vue';
 
 export default {
@@ -36,5 +38,9 @@ export default {
   components: {
     SimpleSwap,
   },
+
+  setup() {
+    return { tokens };
+  }
 }
 </script>

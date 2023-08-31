@@ -19,7 +19,11 @@
       <KeysListWidget v-if="$config.keysAddress" />
 
       <!-- Swap tokens -->
-      <SimpleSwapWidget v-if="$config.swapRouterAddress" />
+      <SimpleSwapWidget 
+        v-if="$config.swapRouterAddress" 
+        :routerAddress="$config.swapRouterAddress" 
+        :tokens="tokens" 
+        title="Swap tokens" />
 
       <!-- Random minted post(s) -->
       <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
@@ -41,6 +45,7 @@
 </template>
 
 <script>
+import tokens from '~/assets/data/tokens.json';
 import { useSidebarStore } from '~/store/sidebars';
 import MintedPostsWidget from '~/components/minted-posts/MintedPostsWidget.vue';
 import NameMintWidget from '~/components/names/NameMintWidget.vue';
@@ -70,7 +75,7 @@ export default {
 
     setup() {
         const sidebarStore = useSidebarStore();
-        return { sidebarStore };
+        return { sidebarStore, tokens };
     }
 }
 </script>
