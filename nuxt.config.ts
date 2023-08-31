@@ -68,7 +68,7 @@ export default defineNuxtConfig({
       lpTokenAddress: "0xdE533DE5e9A73934B380c70f3611B116b8DF7D0d", // liquidity pool token (token to stake in the staking contract)
       lpTokenSymbol: "LP tokens", // LP token symbol
       marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgb-chat-posts/",
-      marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387", // url (append nft id to it)
+      marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387_", // url (append nft id to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
       newsletterLink: "https://zcmp.eu/Onz",
       orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)

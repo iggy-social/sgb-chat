@@ -18,6 +18,21 @@
         <p>
           Minting price: {{ postPrice }} {{ $config.tokenSymbol }}
         </p>
+
+        <!-- Show replies on home feed -->
+        <div class="form-check">
+          <input 
+            class="form-check-input" 
+            type="checkbox" 
+            id="flexCheckChecked" 
+            v-model="makePost"
+          >
+
+          <label class="form-check-label" for="flexCheckChecked">
+            Make a post about the minting
+          </label>
+        </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" @click="mintPost" :disabled="!isActivated">
@@ -46,6 +61,7 @@ export default {
 
   data() {
     return {
+      makePost: true,
       postPrice: null,
       textImage: null,
       textPreview: null,
@@ -55,6 +71,20 @@ export default {
 
   created() {
     this.createTextPreview();
+  },
+
+  computed: {
+    getOrbisContext() {
+      if (this.post?.context) {
+        return this.post.context;
+      } else if (this.post?.content.context) {
+        return this.post.content.context;
+      } else if (this.post?.context_details.context_id) {
+        return this.post.context_details.context_id;
+      } else {
+        return this.$config.orbisContext;
+      }
+    }
   },
 
   methods: {
@@ -159,6 +189,39 @@ export default {
               type: "success",
               onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
             });
+
+            // make a post about the minting
+            if (this.makePost && this.userStore.getIsConnectedToOrbis) {
+              const iggyEnumInterface = new ethers.utils.Interface([
+                "function getMintedPostIdsArray(address) external view returns (uint256[] memory)"
+              ]);
+
+              const iggyEnumContract = new ethers.Contract(this.$config.iggyPostEnumerationAddress, iggyEnumInterface, this.signer);
+
+              const mintedIds = await iggyEnumContract.getMintedPostIdsArray(this.address);
+              const lastMintedId = mintedIds[mintedIds.length - 1];
+
+              const options = {
+                reply_to: this.post.stream_id, // important: reply_to needs to be filled out even if the reply is directly to the master post
+                body: "I have minted your post as NFT. <br /><br />" + this.$config.marketplaceNftItemUrl + String(lastMintedId), 
+                context: this.getOrbisContext
+              }
+
+              if (this.post.master) {
+                options["master"] = this.post.master;
+              } else {
+                options["master"] = this.post.stream_id;
+              }
+
+              // if post has tags, add them to the options
+              if (this.post?.content?.tags) {
+                options["tags"] = this.post.content.tags;
+              }
+
+              // post on Orbis (shoot and forget)
+              await this.$orbis.createPost(options);
+            }
+
           } else {
             this.waitingMint = false;
             this.toast.dismiss(toastWait);
