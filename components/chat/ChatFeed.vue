@@ -9,7 +9,7 @@
         </button>
         <ul class="dropdown-menu">
           <span 
-            v-for="(tagObject, index) in $config.orbisCategories"
+            v-for="(tagObject, index) in filteredCategories"
             :key="tagObject.slug"
             class="dropdown-item cursor-pointer"
             @click="changeTag(index)"
@@ -101,7 +101,7 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
           <span 
-            v-for="(tagObject, index) in $config.orbisCategories"
+            v-for="(tagObject, index) in filteredCategories"
             :key="tagObject.slug"
             class="dropdown-item cursor-pointer"
             @click="changeTag(index)"
@@ -201,15 +201,19 @@ export default {
       }
     },
 
+    filteredCategories() {
+      return this.$config.orbisCategories.filter((c) => c.slug !== "all"); // filter out "All" category
+    },
+
     getOrbisContext() {
       return this.orbisContext;
     },
 
     getSelectedTagObject() {
-      if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.$config.orbisCategories.length) {
-        return this.$config.orbisCategories[this.chatStore.getSelectedTagIndex];
+      if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.filteredCategories.length) {
+        return this.filteredCategories[this.chatStore.getSelectedTagIndex];
       } else {
-        return this.$config.orbisCategories[0];
+        return this.filteredCategories[0];
       }
     },
 
@@ -245,12 +249,12 @@ export default {
 
   methods: {
     insertEmoji(emoji) {
-  if (!this.postText) {
-    this.postText = emoji;
-  } else {
-    this.postText += emoji;
-  }
-},
+      if (!this.postText) {
+        this.postText = emoji;
+      } else {
+        this.postText += emoji;
+      }
+    },
 
     changeTag(index) {
       this.chatStore.setSelectedTagIndex(index);
@@ -328,8 +332,8 @@ export default {
         }
 
         // add tags
-        if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.$config.orbisCategories.length) {
-          options["tags"] = [this.$config.orbisCategories[this.chatStore.getSelectedTagIndex]];
+        if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.filteredCategories.length) {
+          options["tags"] = [this.filteredCategories[this.chatStore.getSelectedTagIndex]];
         } else {
           options["tags"] = [this.$config.orbisCategories[1]]; // default to "General" tag
         }
@@ -399,8 +403,14 @@ export default {
       }
 
       // search by tag (unless it's all posts)
-      if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.$config.orbisCategories.length) {
-        options["tag"] = this.$config.orbisCategories[this.chatStore.getSelectedTagIndex].slug;
+      if (
+        this.filteredCategories[0].slug === "all" &&
+        this.chatStore.getSelectedTagIndex > 0 && 
+        this.chatStore.getSelectedTagIndex < this.filteredCategories.length
+      ) {
+        options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
+      } else {
+        options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
       }
 
       let { data, error } = await this.$orbis.getPosts(
