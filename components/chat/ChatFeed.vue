@@ -2,7 +2,7 @@
   <div class="scroll-500">
 
     <!-- Categories / Tags Big Button -->
-    <div v-if="!id" class="d-grid gap-2 mb-2">
+    <div v-if="!id && !hideCommentBox" class="d-grid gap-2 mb-2">
       <div class="btn-group dropdown-center">
         <button class="btn btn-primary btn-block dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           {{ getSelectedTagObject.title }}
@@ -397,15 +397,17 @@ export default {
           only_master: this.showOnlyMasterPosts // only get master posts (not replies), or all posts
         }
 
-        // search by tag (unless it's all posts)
-        if (
-          this.filteredCategories[0].slug === "all" &&
-          this.chatStore.getSelectedTagIndex > 0 && 
-          this.chatStore.getSelectedTagIndex < this.filteredCategories.length
-        ) {
-          options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
-        } else {
-          options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
+        // search by tag/category (except on the Profile page where comment box is hidden)
+        if (!this.hideCommentBox) {
+          if (
+            this.filteredCategories[0].slug === "all" &&
+            this.chatStore.getSelectedTagIndex > 0 && 
+            this.chatStore.getSelectedTagIndex < this.filteredCategories.length
+          ) {
+            options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
+          } else {
+            options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
+          }
         }
       }
 
