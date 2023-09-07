@@ -1,6 +1,6 @@
 <template>
 <div class="col col-lg-auto px-0 mt-1">
-  <div id="sidebar1" class="collapse collapse-horizontal sticky-lg-top">
+  <div id="sidebar1" class="collapse collapse-horizontal">
     <div class="sidebar-nav list-group border-0 rounded-0 text-sm-start min-vh-100">
       <div class="card m-2 p-2 bg-light">
 
@@ -19,24 +19,49 @@
             {{ userStore.getDefaultDomain }}
           </h6>
 
+          <!--
           <button v-if="userStore.getChatTokenBalanceWei > 0 && $config.chatTokenAddress" class="btn btn-outline-primary btn-sm mt-2 mb-2 disabled">
             {{ userStore.getChatTokenBalance }} {{ $config.chatTokenSymbol }}
           </button>
+          -->
 
           <hr />
         </div>
 
         <ul class="nav nav-pills flex-column">
+
+          <ul class="list-group">
+            <NuxtLink 
+              to="/"
+              class="list-group-item cursor-pointer hover-color bg-light border-0" 
+              :class="(chatStore.getSelectedTagIndex === index && $route.path === '/') ? 'active' : ''"
+              v-for="(tagObject, index) in filteredCategories"
+              :key="tagObject.slug" 
+              @click="selectTagIndex(index)"
+            >
+              {{ tagObject.title }}
+            </NuxtLink>
+          </ul>
+
+          <hr />
+
+          <!-- Home 
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path === '/' ? 'active' : ''" aria-current="page" to="/">
               <i class="bi bi-house"></i> Home
             </NuxtLink>
           </li>
+          -->
+
+          <!-- Profile 
           <li v-if="isActivated" class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/profile') ? 'active' : ''" aria-current="page" to="/profile">
               <i class="bi bi-person"></i> Profile
             </NuxtLink>
           </li>
+          -->
+
+          <!-- Notifications -->
           <li v-if="isActivated" class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/notifications') ? 'active' : ''" aria-current="page" to="/notifications">
               <i class="bi bi-bell"></i> Notifications
@@ -49,36 +74,106 @@
 
             </NuxtLink>
           </li>
-          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.keysAddress">
-            <NuxtLink class="nav-link" :class="$route.path.startsWith('/keys') ? 'active' : ''" aria-current="page" to="/keys">
-              <i class="bi bi-key"></i> Friend Keys
-            </NuxtLink>
-          </li>
-          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.swapRouterAddress">
-            <NuxtLink class="nav-link" :class="$route.path.startsWith('/swap') ? 'active' : ''" aria-current="page" to="/swap">
-              <i class="bi bi-arrow-down-up"></i> Swap
-            </NuxtLink>
-          </li>
-          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.airdropClaimDomainsAddress || $config.airdropPostMintersAddress">
-            <NuxtLink class="nav-link" :class="$route.path.startsWith('/airdrop') ? 'active' : ''" aria-current="page" to="/airdrop">
-              <i class="bi bi-gift"></i> Airdrop
-            </NuxtLink>
-          </li>
+
+          <!-- Stake & Earn -->
           <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.stakingContractAddress">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/stake') ? 'active' : ''" aria-current="page" to="/stake">
               <i class="bi bi-cash-stack"></i> Stake & Earn
             </NuxtLink>
           </li>
+
+          <!-- Swap -->
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.swapRouterAddress">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/swap') ? 'active' : ''" aria-current="page" to="/swap">
+              <i class="bi bi-arrow-down-up"></i> Swap
+            </NuxtLink>
+          </li>
+          
+          <!-- Friend Keys -->
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.keysAddress">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/keys') ? 'active' : ''" aria-current="page" to="/keys">
+              <i class="bi bi-key"></i> Friend Keys
+            </NuxtLink>
+          </li>
+
+          <!-- Airdrop 
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.airdropClaimDomainsAddress || $config.airdropPostMintersAddress">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/airdrop') ? 'active' : ''" aria-current="page" to="/airdrop">
+              <i class="bi bi-gift"></i> Airdrop
+            </NuxtLink>
+          </li>
+          -->
+
+          <!-- Governance 
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <a class="nav-link" href="https://snapshot.org/#/sgbchat.eth" target="_blank">
               <i class="bi bi-box2"></i> Governance <small><i class="bi bi-box-arrow-up-right ms-1"></i></small>
             </a>
           </li>
+          -->
+
+          <!-- About          
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/about') ? 'active' : ''" aria-current="page" to="/about">
               <i class="bi bi-patch-question"></i> About
             </NuxtLink>
           </li>
+          --> 
+
+          <!-- More -->
+          <li class="nav-item p-1 dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+              <i class="bi bi-three-dots"></i> More
+            </a>
+
+            <ul class="dropdown-menu">
+
+              <!-- Airdrop -->
+              <li class="pt-1 pb-1" @click="closeLeftSidebar" v-if="$config.airdropClaimDomainsAddress || $config.airdropPostMintersAddress">
+                <NuxtLink class="dropdown-item" :class="$route.path.startsWith('/airdrop') ? 'active' : ''" aria-current="page" to="/airdrop">
+                  <i class="bi bi-gift"></i> Airdrop
+                </NuxtLink>
+              </li>
+
+              <!-- Profile -->
+              <li class="pt-1 pb-1" @click="closeLeftSidebar">
+                <NuxtLink class="dropdown-item" :class="$route.path.startsWith('/profile') ? 'active' : ''" aria-current="page" to="/profile">
+                  <i class="bi bi-person"></i> Profile
+                </NuxtLink>
+              </li>
+
+              <!-- Notifications 
+              <li class="pt-1 pb-1">
+                <NuxtLink class="dropdown-item" :class="$route.path.startsWith('/notifications') ? 'active' : ''" aria-current="page" to="/notifications">
+                  <i class="bi bi-bell"></i> Notifications
+
+                  <span 
+                    class="badge text-bg-secondary" 
+                    v-if="!notificationsStore.getLoadingNotifications && notificationsStore.getUnreadNotificationsCount > 0">
+                    {{ notificationsStore.getUnreadNotificationsCount }}
+                  </span>
+
+                </NuxtLink>
+              </li>
+              -->
+
+              <!-- Governance -->
+              <li class="pt-1 pb-1" @click="closeLeftSidebar">
+                <a class="dropdown-item" href="https://snapshot.org/#/sgbchat.eth" target="_blank">
+                  <i class="bi bi-box2"></i> Governance <small><i class="bi bi-box-arrow-up-right ms-1"></i></small>
+                </a>
+              </li>
+
+              <!-- About -->
+              <li class="pt-1 pb-1" @click="closeLeftSidebar">
+                <NuxtLink class="dropdown-item" :class="$route.path.startsWith('/about') ? 'active' : ''" aria-current="page" to="/about">
+                  <i class="bi bi-patch-question"></i> About
+                </NuxtLink>
+              </li>
+
+            </ul>
+          </li>
+
         </ul>
       </div>
       
@@ -90,6 +185,7 @@
 <script>
 import { useEthers } from 'vue-dapp';
 import { useNotificationsStore } from '~/store/notifications';
+import { useChatStore } from '~/store/chat';
 import { useSidebarStore } from '~/store/sidebars';
 import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
@@ -101,6 +197,12 @@ export default {
   components: {
     ProfileImage
   },
+
+  computed: {
+    filteredCategories() {
+      return this.$config.orbisCategories.filter((c) => c.slug !== "all"); // filter out "All" category
+    },
+  },
   
   methods: {
     closeLeftSidebar() {
@@ -109,16 +211,23 @@ export default {
         this.sidebarStore.setLeftSidebar(false);
         this.sidebarStore.setMainContent(true);
       }
+    },
+
+    selectTagIndex(index) {
+      this.chatStore.setSelectedTagIndex(index);
+      this.closeLeftSidebar();
     }
   },
 
   setup() {
-    const sidebarStore = useSidebarStore();
     const { address, isActivated } = useEthers();
+
+    const chatStore = useChatStore();
     const notificationsStore = useNotificationsStore();
+    const sidebarStore = useSidebarStore();
     const userStore = useUserStore();
 
-    return { address, isActivated, notificationsStore, sidebarStore, userStore }
+    return { address, chatStore, isActivated, notificationsStore, sidebarStore, userStore }
   },
 }
 </script>

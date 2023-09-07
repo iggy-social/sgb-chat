@@ -217,6 +217,10 @@ export default {
       }
     },
 
+    getTagFromChatStore() {
+      return this.chatStore.getSelectedTagIndex;
+    },
+
     hasDomainOrNotRequired() {
       if (this.$config.domainRequiredToPost) {
         if (this.userStore.getDefaultDomain) {
@@ -258,13 +262,6 @@ export default {
 
     changeTag(index) {
       this.chatStore.setSelectedTagIndex(index);
-
-      // reset posts and page counter
-      this.orbisPosts = [];
-      this.pageCounter = 0;
-
-      // fetch posts
-      this.getOrbisPosts();
     },
 
     async checkConnectionToOrbis() {
@@ -501,5 +498,16 @@ export default {
 
     return { address, chainId, isActivated, signer, toast, chatStore, siteStore, userStore }
   },
+
+  watch: {
+    getTagFromChatStore() {
+      // reset posts and page counter
+      this.orbisPosts = [];
+      this.pageCounter = 0;
+
+      // fetch posts
+      this.getOrbisPosts();
+    }
+  }
 }
 </script>
