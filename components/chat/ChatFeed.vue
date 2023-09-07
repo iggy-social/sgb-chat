@@ -2,7 +2,7 @@
   <div class="scroll-500">
 
     <!-- Categories / Tags Big Button -->
-    <div class="d-grid gap-2 mb-2">
+    <div v-if="!id" class="d-grid gap-2 mb-2">
       <div class="btn-group dropdown-center">
         <button class="btn btn-primary btn-block dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           {{ getSelectedTagObject.title }}
@@ -94,7 +94,7 @@
 
     <!-- Categories / Tags Small Button -->
     <!--
-    <div class="d-flex justify-content-end mb-2">
+    <div v-if="!id" class="d-flex justify-content-end mb-2">
       <div class="btn-group">
         <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           {{ getSelectedTagObject.title }}
@@ -386,6 +386,7 @@ export default {
         options = {
           master: this.id, // master is the post ID
           context: this.getOrbisContext, // context is the group ID
+          tag: this.masterPost.content.tags[0].slug, // tag is the tag of the master post
           only_master: false // only get master posts (not replies), or all posts
         }
       } else {
@@ -395,22 +396,22 @@ export default {
           context: this.getOrbisContext, // context is the group ID
           only_master: this.showOnlyMasterPosts // only get master posts (not replies), or all posts
         }
+
+        // search by tag (unless it's all posts)
+        if (
+          this.filteredCategories[0].slug === "all" &&
+          this.chatStore.getSelectedTagIndex > 0 && 
+          this.chatStore.getSelectedTagIndex < this.filteredCategories.length
+        ) {
+          options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
+        } else {
+          options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
+        }
       }
 
       if (this.byDid) {
         options["did"] = this.byDid;
         options["only_master"] = false;
-      }
-
-      // search by tag (unless it's all posts)
-      if (
-        this.filteredCategories[0].slug === "all" &&
-        this.chatStore.getSelectedTagIndex > 0 && 
-        this.chatStore.getSelectedTagIndex < this.filteredCategories.length
-      ) {
-        options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
-      } else {
-        options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
       }
 
       let { data, error } = await this.$orbis.getPosts(
