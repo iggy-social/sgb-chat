@@ -73,9 +73,13 @@ export default defineNuxtConfig({
       newsletterLink: "https://zcmp.eu/Onz",
       orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)
         { "slug": "all", "title": "All posts" }, // not a real tag, just denotes the absence of a tag
-        { "slug": "general", "title": "General" },
+        { "slug": "general", "title": "General discussion" },
+        { "slug": "shill", "title": "Shill & discuss projects" },
         { "slug": "nfts", "title": "Memes & NFTs" },
         { "slug": "governance", "title": "Governance" },
+        { "slug": "food", "title": "Food & recipes" },
+        { "slug": "movie", "title": "Movies & series" },
+        { "slug": "music", "title": "Music" },
       ],
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
       orbisTest: false, // if true, test context will be used instead of the production one

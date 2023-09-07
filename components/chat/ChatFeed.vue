@@ -1,5 +1,24 @@
 <template>
   <div class="scroll-500">
+
+    <!-- Categories / Tags Big Button -->
+    <div class="d-grid gap-2 mb-2">
+      <div class="btn-group dropdown-center">
+        <button class="btn btn-primary btn-block dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {{ getSelectedTagObject.title }}
+        </button>
+        <ul class="dropdown-menu">
+          <span 
+            v-for="(tagObject, index) in $config.orbisCategories"
+            :key="tagObject.slug"
+            class="dropdown-item cursor-pointer"
+            @click="changeTag(index)"
+          >{{ tagObject.title }}</span>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Post/Comment Input Box -->
     <div class="card mb-2 border" v-if="!hideCommentBox">
       <div class="card-body">
         <div class="form-group mt-2 mb-2">
@@ -73,6 +92,8 @@
       </div>
     </div>
 
+    <!-- Categories / Tags Small Button -->
+    <!--
     <div class="d-flex justify-content-end mb-2">
       <div class="btn-group">
         <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -88,6 +109,7 @@
         </ul>
       </div>
     </div>
+    -->
 
     <div v-if="orbisPosts">
       <ChatPost 
