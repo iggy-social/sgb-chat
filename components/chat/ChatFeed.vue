@@ -2,7 +2,7 @@
   <div class="scroll-500">
 
     <!-- Categories / Tags Big Button -->
-    <div v-if="!id && !hideCommentBox" class="d-grid gap-2 mb-2">
+    <div v-if="!id && !allPosts" class="d-grid gap-2 mb-2">
       <div class="btn-group dropdown-center">
         <button class="btn btn-primary btn-block dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           {{ getSelectedTagObject.title }}
@@ -151,6 +151,7 @@ import 'emoji-mart-vue-fast/css/emoji-mart.css'
 export default {
   name: "ChatFeed",
   props: [
+    "allPosts", // show all posts (all tags/categories)
     "byDid", // if looking for posts by a specific user (user's DID)
     "hideCommentBox", // if true, we'll hide the comment box
     "id", // id (optional) is the post id that this component looks for replies to
@@ -395,7 +396,7 @@ export default {
         }
 
         // search by tag/category (except on the Profile page where comment box is hidden)
-        if (!this.hideCommentBox) {
+        if (!this.allPosts) {
           if (
             this.filteredCategories[0].slug === "all" &&
             this.chatStore.getSelectedTagIndex > 0 && 

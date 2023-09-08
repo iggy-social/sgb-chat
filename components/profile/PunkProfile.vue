@@ -220,7 +220,7 @@
 
         <!-- Posts Tab -->
         <div v-if="currentTab === 'posts' && uDid">
-          <ChatFeed :byDid="uDid" :hideCommentBox="true" :orbisContext="getOrbisContext" />
+          <ChatFeed :byDid="uDid" :hideCommentBox="true" :allPosts="true" :orbisContext="getOrbisContext" />
         </div>
 
         <!-- Mints Tab -->
