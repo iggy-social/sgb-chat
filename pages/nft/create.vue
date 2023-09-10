@@ -6,11 +6,16 @@
 
   <div class="card border scroll-500">
     <div class="card-body">
+
       <p class="fs-3" @click="$router.back()">
         <i class="bi bi-arrow-left-circle cursor-pointer"></i>
       </p>
 
       <h3 class="mb-4 mt-3">Create NFT Collection</h3>
+
+      <p class="mb-4" v-if="createPrice">
+        Price for creating a collection is {{ createPrice }} {{ $config.tokenSymbol }}.
+      </p>
 
       <!-- Collection Name -->
       <div class="mb-4">
@@ -49,8 +54,7 @@
             v-if="isActivated && $config.web3storageKey !== ''"  
             @insertImage="insertImage"
             buttonText="Upload"
-            cls="btn btn-outline-secondary rounded-end-2"
-            type="button" id="button-addon2"
+            cls="btn btn-outline-secondary rounded-end-2" 
           />
         </div>
         <div id="cImageHelp" class="form-text">Even if you want a generative PFP collection, put a single preview image for now and you will change it to a metadata link later.</div>
@@ -102,7 +106,32 @@
         />
         <div id="ratioHelp" class="form-text">Leave at {{ $config.nftDefaultRatio }} unless you know what you're doing.</div>
       </div>
-      
+
+      <!-- Buttons div -->
+      <div class="d-flex justify-content-center mt-5 mb-5">
+
+        <!-- Create Collection button -->
+        <button 
+          :disabled="waitingCreate || !fieldsValid"
+          v-if="isActivated && !launchpadPaused"
+          class="btn btn-primary" 
+          type="button"
+          @click="createCollection" 
+        >
+          <span v-if="waitingData || waitingCreate" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Create NFT Collection for {{ createPrice }} {{ $config.tokenSymbol }}
+        </button>
+
+        <!-- Paused button -->
+        <button :disabled="true" v-if="isActivated && launchpadPaused" class="btn btn-primary">
+          Paused
+        </button>
+
+        <!-- Connect Wallet button -->
+        <ConnectWalletButton v-if="!isActivated" class="btn btn-primary" btnText="Connect wallet" />
+        
+      </div>
+
     </div>
   </div>
 </template>
@@ -112,6 +141,7 @@
 import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
 import { useToast } from "vue-toastification/dist/index.mjs";
+import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import Web3StorageImageUpload from "~/components/storage/Web3StorageImageUpload.vue";
 
 export default {
@@ -125,14 +155,16 @@ export default {
       cSymbol: null,
       launchpadPaused: null,
       nftName: null,
-      createPrice: null,
+      createPriceWei: null,
       ratio: null,
       uniqueId: null,
+      waitingCreate: false,
       waitingData: false
     }
   },
 
   components: {
+    ConnectWalletButton,
     Web3StorageImageUpload
   },
 
@@ -141,7 +173,124 @@ export default {
     this.fetchData();
   },
 
+  computed: {
+    createPrice() {
+      if (!this.createPriceWei) return null;
+
+      const price = Number(ethers.utils.formatEther(this.createPriceWei));
+
+      if (price > 1) {
+        return price.toFixed(0);
+      } else if (price > 0.1) {
+        return price.toFixed(4);
+      } else if (price > 0.01) {
+        return price.toFixed(5);
+      } else if (price > 0.001) {
+        return price.toFixed(6);
+      } else if (price > 0.0001) {
+        return price.toFixed(7);
+      } else if (price > 0.00001) {
+        return price.toFixed(8);
+      } else if (price > 0.000001) {
+        return price.toFixed(9);
+      } else {
+        return price;
+      }
+    },
+
+    fieldsValid() {
+      return this.cName && this.cSymbol && this.cImage && this.cDescription && this.nftName && this.ratio;
+    },
+  },
+
   methods: {
+    async createCollection() {
+      this.waitingCreate = true;
+
+      //return this.$router.push({ path: '/nft/collection', query: { id: this.address } });
+
+      if (this.signer) {
+        // create launchpad contract object
+        const launchpadInterface = new ethers.utils.Interface([
+          `function launch(
+              address contractOwner_,
+              string memory mdDescription_,
+              string memory mdImage_,
+              string memory mdName_,
+              string memory name_,
+              string memory symbol_,
+              string calldata uniqueId_, // to easily find the NFT contract address
+              uint256 ratio // ratio of price increase per token minted for bonding curve (in wei)
+            ) external payable`,
+            "function getNftContractAddress(string calldata _uniqueId) external view returns(address)"
+        ]);
+
+        const launchpadContract = new ethers.Contract(
+          this.$config.nftLaunchpadBondingAddress,
+          launchpadInterface,
+          this.signer
+        );
+
+        try {
+          const tx = await launchpadContract.launch(
+            this.address, // contract owner
+            this.cDescription, // collection description
+            this.cImage, // collection image
+            this.nftName, // NFT name
+            this.cName, // collection name
+            this.cSymbol, // collection symbol
+            this.uniqueId, // unique ID to easily find the NFT contract address
+            ethers.utils.parseEther(String(this.ratio)), // bonding curve ratio
+            { value: this.createPriceWei } // price for creating collection
+          );
+
+          const toastWait = this.toast(
+            {
+              component: WaitingToast,
+              props: {
+                text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+              }
+            },
+            {
+              type: "info",
+              onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            }
+          );
+
+          const receipt = await tx.wait();
+
+          if (receipt.status === 1) {
+            this.toast.dismiss(toastWait);
+
+            this.toast("You have successfully created an NFT collection!", {
+              type: "success",
+              onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            });
+
+            // after successful launch, fetch the collection address and redirect to the collection page
+            const nftContractAddress = await launchpadContract.getNftContractAddress(this.uniqueId);
+            this.$router.push({ path: '/nft/collection', query: { id: nftContractAddress } });
+
+            this.waitingCreate = false;
+          } else {
+            this.toast.dismiss(toastWait);
+            this.waitingCreate = false;
+            this.toast("Transaction has failed.", {
+              type: "error",
+              onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            });
+            console.log(receipt);
+          }
+        } catch (e) {
+          console.error(e);
+          this.toast(e.message, {type: "error"});
+          this.waitingCreate = false;
+        }
+      }
+
+      this.waitingCreate = false;
+    },
+
     async fetchData() {
       this.waitingData = true;
 
@@ -180,7 +329,7 @@ export default {
       }
 
       // get price for creating collection
-      this.createPrice = await launchpadContract.price();
+      this.createPriceWei = await launchpadContract.price();
 
       this.waitingData = false;
     },
