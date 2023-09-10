@@ -71,8 +71,8 @@ export default defineNuxtConfig({
       marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387_", // url (append nft id to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
       newsletterLink: "https://zcmp.eu/Onz",
-      nftDefaultRatio: 6969, // default ratio for the NFT price bonding curve
-      nftLaunchpadBondingAddress: "0x979F82Eb62702B4B1f84Bc3E85f4E596d5aEE3D2", // NFT launchpad with bonding curve contract address
+      nftDefaultRatio: 31337, // default ratio for the NFT price bonding curve
+      nftLaunchpadBondingAddress: "0xB30979406EBC8145141dEa9C07D56945B08131EB", // NFT launchpad with bonding curve contract address
       orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)
         { "slug": "all", "title": "All posts" }, // not a real tag, just denotes the absence of a tag (always keep it here)
         { "slug": "general", "title": "General discussion" },

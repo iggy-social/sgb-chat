@@ -142,6 +142,7 @@ import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
+import WaitingToast from "~/components/WaitingToast";
 import Web3StorageImageUpload from "~/components/storage/Web3StorageImageUpload.vue";
 
 export default {
@@ -165,6 +166,7 @@ export default {
 
   components: {
     ConnectWalletButton,
+    WaitingToast,
     Web3StorageImageUpload
   },
 
@@ -219,8 +221,8 @@ export default {
               string memory mdName_,
               string memory name_,
               string memory symbol_,
-              string calldata uniqueId_, // to easily find the NFT contract address
-              uint256 ratio // ratio of price increase per token minted for bonding curve (in wei)
+              string calldata uniqueId_, 
+              uint256 ratio_
             ) external payable`,
             "function getNftContractAddress(string calldata _uniqueId) external view returns(address)"
         ]);
