@@ -1,7 +1,7 @@
 <template>
   <Head>
-    <Title>NFT Launchpad | {{ $config.projectMetadataTitle }}</Title>
-    <Meta property="og:title" :content="'NFT Launchpad | ' + $config.projectMetadataTitle" />
+    <Title>Edit NFT Collection | {{ $config.projectMetadataTitle }}</Title>
+    <Meta property="og:title" :content="'Edit NFT Collection | ' + $config.projectMetadataTitle" />
   </Head>
 
   <div class="card border scroll-500">
@@ -10,10 +10,10 @@
         <i class="bi bi-arrow-left-circle cursor-pointer"></i>
       </p>
 
-      <h3 class="mb-3 mt-3">NFT Launchpad</h3>
+      <h3 class="mb-3 mt-3">Edit NFT Collection</h3>
 
       <p class="text-break mt-3">
-        ...
+        Collection ID: {{ $route.query.id }}
       </p>
     </div>
   </div>
@@ -21,6 +21,6 @@
 
 <script>
 export default {
-  name: 'Nft'
-}
+  name: 'EditNftCollection'
+};
 </script>

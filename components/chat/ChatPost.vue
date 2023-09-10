@@ -40,7 +40,7 @@
         
           <div class="card col-md-6">
             <a target="_blank" :href="linkPreview.url" class="text-decoration-none text-reset">
-              <img :src="linkPreview.image.url" class="card-img-top" alt="..." />
+              <img :src="linkPreview.image.url" class="card-img-top" />
 
               <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
                 <h5 class="card-title text-break">{{linkPreview.title}}</h5>
