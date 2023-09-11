@@ -6,7 +6,7 @@
 
   <div class="card border scroll-500">
     <div class="card-body">
-      <p class="fs-3" @click="$router.back()">
+      <p class="fs-3" @click="$router.push({ path: '/nft' })">
         <i class="bi bi-arrow-left-circle cursor-pointer"></i>
       </p>
 
@@ -89,12 +89,23 @@
 
     </div>
   </div>
+
+  <!-- Chat feed -->
+  <ChatFeed 
+    v-if="$config.nftOrbisContext" 
+    :key="cAddress"
+    :allPosts="true" 
+    class="mt-3" 
+    :showQuotedPost="$config.showRepliesOnHomepage" 
+    :orbisContext="$config.nftOrbisContext+':'+cAddress" 
+  />
 </template>
 
 <script>
 import { ethers } from 'ethers';
 import { useEthers, shortenAddress } from 'vue-dapp';
 import { useToast } from "vue-toastification/dist/index.mjs";
+import ChatFeed from "~/components/chat/ChatFeed.vue";
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import WaitingToast from "~/components/WaitingToast";
 
@@ -119,6 +130,7 @@ export default {
   },
 
   components: {
+    ChatFeed,
     ConnectWalletButton,
     WaitingToast
   },
@@ -343,7 +355,7 @@ export default {
           } catch (e) {
             this.userTokenId = null;
           }
-          
+
           this.cSupply = await nftContract.totalSupply();
 
           this.waitingSell = false;
