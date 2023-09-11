@@ -26,7 +26,7 @@
           <img :src="nft.image" class="card-img-top" :alt="nft.name">
           <div class="card-body border border-secondary rounded-bottom-3">
             <p class="card-text mb-1"><strong>{{ nft.name }}</strong></p>
-            <small class="card-text">{{ formatPrice(nft.price) }} SGB</small>
+            <small class="card-text">{{ formatPrice(nft.price) }} {{ $config.tokenSymbol }}</small>
           </div>
         </NuxtLink>
       </div>
@@ -115,6 +115,10 @@ export default {
     },
 
     formatPrice(priceWei) {
+      if (priceWei === null) {
+        return null;
+      }
+
       const price = Number(ethers.utils.formatEther(priceWei));
 
       if (price > 100) {

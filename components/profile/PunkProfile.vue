@@ -76,12 +76,7 @@
 
         </div>
       </div>
-
       
-
-      
-      
-
       <!--
       <p class="text-break mt-3">Followers: {{ followers }}</p>
       <p class="text-break mt-3">Following: {{ following }}</p>
