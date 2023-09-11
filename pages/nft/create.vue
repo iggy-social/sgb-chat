@@ -13,6 +13,10 @@
 
       <h3 class="mb-4 mt-3">Create NFT Collection</h3>
 
+      <div class="d-flex justify-content-center mb-3" v-if="waitingData">
+        <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+      </div>
+
       <p class="mb-4" v-if="createPrice">
         Price for creating a collection is {{ createPrice }} {{ $config.tokenSymbol }}.
       </p>

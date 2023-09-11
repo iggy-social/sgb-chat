@@ -10,15 +10,27 @@
         <i class="bi bi-arrow-left-circle cursor-pointer"></i>
       </p>
 
-      <h3 class="mb-3 mt-3">NFT Launchpad (work in progress)</h3>
+      <h3 class="mb-4 mt-3">
+        NFT Launchpad
+        <NuxtLink class="btn btn-outline-primary btn-sm" to="/nft/create">
+          <i class="bi bi-plus-circle"></i> Create
+        </NuxtLink>
+      </h3>
 
-      <NuxtLink class="btn btn-outline-primary btn-sm" to="/nft/create">
-        <i class="bi bi-plus-circle"></i> Create
-      </NuxtLink>
+      <div class="d-flex justify-content-center mb-3" v-if="waitingData">
+        <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+      </div>
 
-      <p class="text-break mt-3">
-        {{ lastNfts }}
-      </p>
+      <div class="row">
+        <NuxtLink v-for="nft in lastNfts" :key="nft.address" class="col-md-3 card text-decoration-none" :to="'/nft/collection?id=' + nft.address">
+          <img :src="nft.image" class="card-img-top" :alt="nft.name">
+          <div class="card-body border border-secondary rounded-bottom-3">
+            <p class="card-text mb-1"><strong>{{ nft.name }}</strong></p>
+            <small class="card-text">{{ formatPrice(nft.price) }} SGB</small>
+          </div>
+        </NuxtLink>
+      </div>
+
     </div>
   </div>
 </template>
@@ -69,13 +81,62 @@ export default {
       );
 
       // get last NFTs
-      const lNfts = await launchpadContract.getLastNftContracts(5);
+      const lNfts = await launchpadContract.getLastNftContracts(4);
       console.log('lastNfts', lNfts);
 
-      this.lastNfts = lNfts;
+      const nftInterface = new ethers.utils.Interface([
+        "function collectionPreview() public view returns (string memory)",
+        "function getMintPrice() public view returns (uint256)",
+        "function name() public view returns (string memory)"
+      ]);
+
+      // for loop to get NFTs data (price, name & image)
+      for (let i = 0; i < lNfts.length; i++) {
+        const nftContract = new ethers.Contract(lNfts[i], nftInterface, provider);
+
+        // get collection name
+        const cName = await nftContract.name();
+
+        // get price
+        const mintPriceWei = await nftContract.getMintPrice();
+
+        // get image
+        const cImage = await nftContract.collectionPreview();
+
+        this.lastNfts.push({
+          address: lNfts[i],
+          image: cImage,
+          name: cName,
+          price: mintPriceWei
+        });
+      }
 
       this.waitingData = false;
-    }
+    },
+
+    formatPrice(priceWei) {
+      const price = Number(ethers.utils.formatEther(priceWei));
+
+      if (price > 100) {
+        return price.toFixed(0);
+      } else if (price > 1) {
+        return price.toFixed(2);
+      } else if (price > 0.1) {
+        return price.toFixed(4);
+      } else if (price > 0.01) {
+        return price.toFixed(5);
+      } else if (price > 0.001) {
+        return price.toFixed(6);
+      } else if (price > 0.0001) {
+        return price.toFixed(7);
+      } else if (price > 0.00001) {
+        return price.toFixed(8);
+      } else if (price > 0.000001) {
+        return price.toFixed(9);
+      } else {
+        return price;
+      }
+    },
   },
 
   setup() {

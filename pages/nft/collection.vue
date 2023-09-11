@@ -13,6 +13,10 @@
       <h3 class="mb-3 mt-3" v-if="!cName">NFT Collection Details</h3>
       <h3 class="mb-3 mt-3" v-if="cName">Collection: {{ cName }}</h3>
 
+      <div class="d-flex justify-content-center mb-3" v-if="waitingData">
+        <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+      </div>
+
       <p class="text-break mt-3">Collection address: {{ cAddress }}</p>
       <p class="text-break mt-3">Collection description: {{ cDescription }}</p>
 
@@ -64,6 +68,7 @@ export default {
       }
 
       const nftInterface = new ethers.utils.Interface([
+        "function collectionPreview() public view returns (string memory)",
         "function getBurnPrice() public view returns (uint256)",
         "function getMintPrice() public view returns (uint256)",
         "function metadataAddress() public view returns (address)"
@@ -75,14 +80,14 @@ export default {
       this.mdAddress = await nftContract.metadataAddress();
 
       const metadataInterface = new ethers.utils.Interface([
-        "function collectionPreviews(address) public view returns (string memory)",
         "function descriptions(address) public view returns (string memory)",
         "function names(address) public view returns (string memory)"
       ]);
       
       const metadataContract = new ethers.Contract(this.mdAddress, metadataInterface, provider);
 
-      this.cImage = await metadataContract.collectionPreviews(this.cAddress);
+      // get collection details
+      this.cImage = await nftContract.collectionPreview();
       this.cDescription = await metadataContract.descriptions(this.cAddress);
       this.cName = await metadataContract.names(this.cAddress);
       
