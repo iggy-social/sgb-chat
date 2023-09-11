@@ -50,6 +50,7 @@
               <a :href="$config.blockExplorerBaseUrl+'/address/'+cAddress" target="_blank" style="text-decoration: none;">
                 {{ shortenAddress(cAddress) }}
               </a>
+              <span v-if="getUsernameOrShortAddress"> by {{ getUsernameOrShortAddress }}</span>
             </p>
           </div>
           <!-- END Data -->
@@ -108,6 +109,7 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import ChatFeed from "~/components/chat/ChatFeed.vue";
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import WaitingToast from "~/components/WaitingToast";
+import { getDomainName } from '~/utils/domainUtils';
 
 export default {
   name: 'NftCollection',
@@ -115,6 +117,8 @@ export default {
   data() {
     return {
       cAddress: null,
+      cAuthorAddress: null,
+      cAuthorDomain: null,
       cDescription: null,
       cImage: null,
       cName: null,
@@ -143,7 +147,27 @@ export default {
     }
   },
 
+  computed: {
+    getUsernameOrShortAddress() {
+      if (this.cAuthorAddress) {
+        if (this.cAuthorDomain) {
+          if (this.cAuthorDomain.endsWith(this.$config.tldName)) {
+            return this.cAuthorDomain
+          } else {
+            return this.cAuthorDomain + this.$config.tldName;
+          }
+        } else {
+          return shortenAddress(this.cAuthorAddress);
+        }
+      }
+
+      return null;
+    }
+  },
+
   methods: {
+    getDomainName,
+
     async buyNft() {
       this.waitingBuy = true;
 
@@ -230,6 +254,17 @@ export default {
       }
     },
 
+    async fetchUserDomain() {
+      if (this.cAuthorAddress) {
+        const userDomain = await this.getDomainName(this.cAuthorAddress);
+
+        if (userDomain) {
+          this.cAuthorDomain = userDomain;
+          sessionStorage.setItem(String(this.cAuthorAddress).toLowerCase(), userDomain+this.$config.tldName);
+        }
+      }
+    },
+
     formatPrice(priceWei) {
       if (priceWei === null) {
         return null;
@@ -274,6 +309,7 @@ export default {
         "function getBurnPrice() public view returns (uint256)",
         "function getMintPrice() public view returns (uint256)",
         "function metadataAddress() public view returns (address)",
+        "function owner() public view returns (address)",
         "function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256)",
         "function totalSupply() public view returns (uint256)"
       ]);
@@ -303,9 +339,17 @@ export default {
         this.userTokenId = null;
       }
 
-      this.cSupply = await nftContract.totalSupply();
-      
       this.waitingData = false;
+
+      this.cSupply = await nftContract.totalSupply();
+      this.cAuthorAddress = await nftContract.owner();
+      
+      // get username from session storage
+      this.cAuthorDomain = sessionStorage.getItem(String(this.cAuthorAddress).toLowerCase());
+
+      if (!this.cAuthorDomain) {
+        this.fetchUserDomain();
+      }
     },
 
     async sellNft() {

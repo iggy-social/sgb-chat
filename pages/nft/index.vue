@@ -22,11 +22,13 @@
       </div>
 
       <div class="row">
-        <NuxtLink v-for="nft in lastNfts" :key="nft.address" class="col-md-3 card text-decoration-none" :to="'/nft/collection?id=' + nft.address">
-          <img :src="nft.image" class="card-img-top" :alt="nft.name">
-          <div class="card-body border border-secondary rounded-bottom-3">
-            <p class="card-text mb-1"><strong>{{ nft.name }}</strong></p>
-            <small class="card-text">{{ formatPrice(nft.price) }} {{ $config.tokenSymbol }}</small>
+        <NuxtLink v-for="nft in lastNfts" :key="nft.address" class="col-md-3 text-decoration-none" :to="'/nft/collection?id=' + nft.address">
+          <div class="card border">
+            <img :src="nft.image" class="card-img-top" :alt="nft.name">
+            <div class="card-body rounded-bottom-3">
+              <p class="card-text mb-1"><strong>{{ nft.name }}</strong></p>
+              <small class="card-text">{{ formatPrice(nft.price) }} {{ $config.tokenSymbol }}</small>
+            </div>
           </div>
         </NuxtLink>
       </div>
@@ -82,7 +84,6 @@ export default {
 
       // get last NFTs
       const lNfts = await launchpadContract.getLastNftContracts(4);
-      console.log('lastNfts', lNfts);
 
       const nftInterface = new ethers.utils.Interface([
         "function collectionPreview() public view returns (string memory)",
