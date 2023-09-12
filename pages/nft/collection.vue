@@ -162,6 +162,14 @@ export default {
       }
 
       return null;
+    },
+
+    isCurrentAddressOwner() {
+      if (this.cAuthorAddress && this.address) {
+        return String(this.cAuthorAddress).toLowerCase() === String(this.address).toLowerCase();
+      }
+
+      return false;
     }
   },
 
@@ -296,6 +304,14 @@ export default {
     async getCollectionDetails() {
       this.waitingData = true;
 
+      let collection;
+
+      const collectionFromStorage = sessionStorage.getItem(String(this.cAddress+"-collection").toLowerCase());
+
+      if (collectionFromStorage) {
+        collection = JSON.parse(collectionFromStorage);
+      }
+
       // fetch provider from hardcoded RPCs
       let provider = this.$getFallbackProvider(this.$config.supportedChainId);
 
@@ -316,8 +332,11 @@ export default {
 
       const nftContract = new ethers.Contract(this.cAddress, nftInterface, provider);
 
-      // get metadata address
-      this.mdAddress = await nftContract.metadataAddress();
+      if (collection?.mdAddress) {
+        this.mdAddress = collection.mdAddress;
+      } else {
+        this.mdAddress = await nftContract.metadataAddress();
+      }
 
       const metadataInterface = new ethers.utils.Interface([
         "function descriptions(address) public view returns (string memory)",
@@ -329,9 +348,27 @@ export default {
       // get collection details
       this.priceBuyWei = await nftContract.getMintPrice();
       this.priceSellWei = await nftContract.getBurnPrice();
-      this.cImage = await nftContract.collectionPreview();
-      this.cDescription = await metadataContract.descriptions(this.cAddress);
-      this.cName = await metadataContract.names(this.cAddress);
+
+      // get image
+      if (collection?.image) {
+        this.cImage = collection.image;
+      } else {
+        this.cImage = await nftContract.collectionPreview();
+      }
+
+      // get description
+      if (collection?.description) {
+        this.cDescription = collection.description;
+      } else {
+        this.cDescription = await metadataContract.descriptions(this.cAddress);
+      }
+
+      // get name
+      if (collection?.name) {
+        this.cName = collection.name;
+      } else {
+        this.cName = await metadataContract.names(this.cAddress);
+      }
 
       try {
         this.userTokenId = await nftContract.tokenOfOwnerByIndex(this.address, 0);
@@ -342,7 +379,14 @@ export default {
       this.waitingData = false;
 
       this.cSupply = await nftContract.totalSupply();
-      this.cAuthorAddress = await nftContract.owner();
+
+      // get author address
+      if (collection?.authorAddress) {
+        this.cAuthorAddress = collection.authorAddress;
+        this.cAuthorDomain = collection.authorDomain;
+      } else {
+        this.cAuthorAddress = await nftContract.owner();
+      }
       
       // get username from session storage
       this.cAuthorDomain = sessionStorage.getItem(String(this.cAuthorAddress).toLowerCase());
@@ -350,6 +394,19 @@ export default {
       if (!this.cAuthorDomain) {
         this.fetchUserDomain();
       }
+
+      // create collection object, JSON.stringify it and save it to session storage
+      collection = {
+        address: this.cAddress,
+        authorAddress: this.cAuthorAddress,
+        authorDomain: this.cAuthorDomain,
+        description: this.cDescription,
+        image: this.cImage,
+        mdAddress: this.mdAddress,
+        name: this.cName
+      };
+
+      sessionStorage.setItem(String(this.cAddress+"-collection").toLowerCase(), JSON.stringify(collection));
     },
 
     async sellNft() {
