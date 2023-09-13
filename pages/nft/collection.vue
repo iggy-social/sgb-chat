@@ -2,6 +2,14 @@
   <Head>
     <Title>NFT Collection Details | {{ $config.projectMetadataTitle }}</Title>
     <Meta property="og:title" :content="'NFT Collection Details | ' + $config.projectMetadataTitle" />
+
+    <Meta name="description" :content="'Check this NFT collection on ' + $config.projectName + '!'" />
+
+    <Meta property="og:image" :content="$config.projectUrl+$config.previewImageNftCollection" />
+    <Meta property="og:description" :content="'Check this NFT collection on ' + $config.projectName + '!'" />
+
+    <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImageNftCollection" />
+    <Meta name="twitter:description" :content="'Check this NFT collection on ' + $config.projectName + '!'" />
   </Head>
 
   <div class="card border">

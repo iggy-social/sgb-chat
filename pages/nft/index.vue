@@ -2,6 +2,14 @@
   <Head>
     <Title>NFT Launchpad | {{ $config.projectMetadataTitle }}</Title>
     <Meta property="og:title" :content="'NFT Launchpad | ' + $config.projectMetadataTitle" />
+
+    <Meta name="description" :content="'Check out these awesome NFT collections on ' + $config.projectName + '!'" />
+
+    <Meta property="og:image" :content="$config.projectUrl+$config.previewImageNftLaunchpad" />
+    <Meta property="og:description" :content="'Check out these awesome NFT collections on ' + $config.projectName + '!'" />
+
+    <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImageNftLaunchpad" />
+    <Meta name="twitter:description" :content="'Check out these awesome NFT collections on ' + $config.projectName + '!'" />
   </Head>
 
   <div class="card border scroll-500">

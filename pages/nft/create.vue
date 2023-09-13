@@ -2,6 +2,14 @@
   <Head>
     <Title>Create NFT Collection | {{ $config.projectMetadataTitle }}</Title>
     <Meta property="og:title" :content="'Create NFT Collection | ' + $config.projectMetadataTitle" />
+
+    <Meta name="description" :content="'Create your very own NFT collection on ' + $config.projectName + '!'" />
+
+    <Meta property="og:image" :content="$config.projectUrl+$config.previewImageNftCreate" />
+    <Meta property="og:description" :content="'Create your very own NFT collection on ' + $config.projectName + '!'" />
+
+    <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImageNftCreate" />
+    <Meta name="twitter:description" :content="'Create your very own NFT collection on ' + $config.projectName + '!'" />
   </Head>
 
   <div class="card border scroll-500">
