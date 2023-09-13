@@ -75,8 +75,8 @@
             </NuxtLink>
           </li>
 
-          <!-- NFT Launchpad (TODO: REMOVE v-if user domain!!!) -->
-          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.nftLaunchpadBondingAddress && (userStore.getDefaultDomain == 'techie.sgb' || userStore.getDefaultDomain == 'tekr.sgb')">
+          <!-- NFT Launchpad -->
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.nftLaunchpadBondingAddress">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/nft') ? 'active' : ''" aria-current="page" to="/nft">
               <i class="bi bi-rocket-takeoff"></i> NFT Launchpad
             </NuxtLink>
