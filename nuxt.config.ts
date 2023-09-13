@@ -72,7 +72,7 @@ export default defineNuxtConfig({
       maxImageUploadSizeMb: 1, // max image upload size in MB
       newsletterLink: "https://zcmp.eu/Onz",
       nftDefaultRatio: 6969, // default ratio for the NFT price bonding curve
-      nftLaunchpadBondingAddress: "0x8793834eDd8aDD064066aB5afF84792FD70F5E29", // NFT launchpad with bonding curve contract address
+      nftLaunchpadBondingAddress: "0xF48D3812ceD80bC78C8553d7C3b702b0F0d63903", // NFT launchpad with bonding curve contract address
       nftOrbisContext: "kjzl6cwe1jw149y24iu6qrmo2x5yl2rmcxoegmey9y19faclcwaiivjganh5iz5", // Orbis context for NFT collection pages
       orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)
         { "slug": "all", "title": "All posts" }, // not a real tag, just denotes the absence of a tag (always keep it here)
