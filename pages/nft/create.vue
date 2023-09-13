@@ -156,6 +156,7 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import WaitingToast from "~/components/WaitingToast";
 import Web3StorageImageUpload from "~/components/storage/Web3StorageImageUpload.vue";
+import { useUserStore } from '~/store/user';
 
 export default {
   name: 'NftCreate',
@@ -283,6 +284,9 @@ export default {
 
             // after successful launch, fetch the collection address and redirect to the collection page
             const nftContractAddress = await launchpadContract.getNftContractAddress(this.uniqueId);
+
+            this.makeOrbisPost(nftContractAddress);
+
             this.$router.push({ path: '/nft/collection', query: { id: nftContractAddress } });
 
             this.waitingCreate = false;
@@ -351,13 +355,42 @@ export default {
     insertImage(imageUrl) {
       this.cImage = imageUrl.replace("?.img", "");
     },
+
+    async makeOrbisPost(nftContractAddress) {
+      if (this.userStore.getIsConnectedToOrbis) {
+        try {
+          if (
+            !String(this.cImage).toLowerCase().endsWith("?.img") &&
+            !String(this.cImage).toLowerCase().endsWith(".png") &&
+            !String(this.cImage).toLowerCase().endsWith(".jpg") &&
+            !String(this.cImage).toLowerCase().endsWith(".jpeg") &&
+            !String(this.cImage).toLowerCase().endsWith(".gif") &&
+            !String(this.cImage).toLowerCase().endsWith(".webp")
+          ) {
+            this.cImage = this.cImage + "?.img";
+          }
+
+          const options = {
+            body: "I have launched a new NFT collection:" + this.cName + " <br /><br /> " + this.cImage + " <br /><br /> " + this.$config.projectUrl + "/nft/collection?id=" + nftContractAddress, 
+            context: this.$config.orbisContext,
+            tags: [{ "slug": "nfts", "title": "Memes & NFTs" }]
+          }
+
+          // post on Orbis (shoot and forget)
+          await this.$orbis.createPost(options);
+        } catch (e) {
+          console.log(e);
+        }
+      } 
+    }
   },
 
   setup() {
     const { address, chainId, isActivated, signer } = useEthers();
+    const userStore = useUserStore();
     const toast = useToast();
 
-    return { address, chainId, isActivated, signer, toast }
+    return { address, chainId, isActivated, signer, toast, userStore }
   },
 }
 </script>
