@@ -78,7 +78,7 @@ export default defineNuxtConfig({
         { "slug": "all", "title": "All posts", "hidden": false }, // not a real tag, just denotes the absence of a tag (always keep it here)
         { "slug": "general", "title": "General discussion", "hidden": false },
         { "slug": "shill", "title": "Shill & discuss projects", "hidden": false },
-        { "slug": "nfts", "title": "Memes & NFTs", "hidden": false },
+        { "slug": "nfts", "title": "Memes & NFTs", "hidden": false }, // keep this category for the purpose of the NFT launchpad
         { "slug": "governance", "title": "Governance", "hidden": false },
         { "slug": "food", "title": "Food & recipes", "hidden": true },
         { "slug": "movie", "title": "Movies & series", "hidden": false },

@@ -122,6 +122,10 @@
         :orbisContext="getOrbisContext" />
     </div>
 
+    <div class="d-flex justify-content-center mt-5 mb-4" v-if="orbisPosts.length === 0 && !waitingLoadPosts">
+      <p>No posts yet. Be the first to post!</p>
+    </div>
+
     <div class="d-flex justify-content-center mb-3" v-if="waitingLoadPosts">
       <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
     </div>
