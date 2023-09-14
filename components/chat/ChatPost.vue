@@ -53,7 +53,7 @@
       <!-- END link preview -->
 
       <!-- Minted Post Image -->
-      <div v-if="post?.content?.data" class="row mt-2">
+      <div v-if="customDataType === 'mintedPost'" class="row mt-2">
         <div class="col-10 col-sm-8 col-md-4">
           <MintedPostImage :id="getMintedPostTokenId" />
         </div>
@@ -182,6 +182,7 @@ export default {
       alreadyLiked: false,
       authorAddress: null,
       authorDomain: null,
+      customDataType: null,
       firstLink: null,
       linkPreview: null,
       parsedText: null,
@@ -208,6 +209,11 @@ export default {
       this.showFullText = true;
     }
 
+    // check if there is custom data attached to a post
+    if (this.post?.content?.data) {
+      this.customDataType = this.post.content.data?.type;
+    }
+
     // create quote post object
     if (this.post.reply_to_details) {
       this.quotePost = {
@@ -231,7 +237,7 @@ export default {
 
   computed: {
     getMintedPostTokenId() {
-      if (this.post?.content?.data?.nftTokenId) {
+      if (this.customDataType === "mintedPost") {
         return String(this.post.content.data.nftTokenId);
       }
 

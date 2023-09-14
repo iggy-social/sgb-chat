@@ -371,9 +371,21 @@ export default {
           }
 
           const options = {
-            body: "I have launched a new NFT collection: " + this.cName + " <br /><br /> " + this.cImage + " <br /><br /> Check it out here: " + this.$config.projectUrl + "/nft/collection/?id=" + nftContractAddress, 
+            body: "I have launched a new NFT collection: " + this.cName + " <br /><br />Check it out here 👇", 
             context: this.$config.orbisContext,
-            tags: [{ "slug": "nfts", "title": "Memes & NFTs" }]
+            tags: [{ "slug": "nfts", "title": "Memes & NFTs" }],
+            data: {
+              type: "nftCollectionCreated",
+              authorAddress: String(this.address),
+              collectionAddress: String(nftContractAddress),
+              collectionDescription: this.cDescription,
+              collectionImage: this.cImage.replace("?.img", ""),
+              collectionName: this.cName,
+              collectionRatio: this.ratio,
+              collectionSymbol: this.cSymbol,
+              collectionUniqueId: this.uniqueId,
+              pricePaidWei: this.createPriceWei
+            }
           }
 
           // post on Orbis (shoot and forget)
