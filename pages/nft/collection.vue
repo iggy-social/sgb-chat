@@ -106,9 +106,28 @@
     </div>
   </div>
 
+  <!-- Alert to buy an NFT to chat -->
+  <div v-if="!userTokenId" class="card border mt-3 scroll-500">
+    <div class="card-body">
+
+      <h5 class="mb-2 mt-3 text-center">Buy an NFT to see the chat</h5>
+
+      <div class="d-flex justify-content-center">
+        <div class="col-12 col-lg-8">
+
+          <p class="text-break text-center mt-3 mb-4">
+            This NFT's chat is open only for NFT holders. Buy an NFT to see the chat and talk with the NFT creator and other NFT holders.
+          </p>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Chat feed -->
   <ChatFeed 
-    v-if="$config.nftOrbisContext" 
+    v-if="$config.nftOrbisContext && userTokenId" 
     :key="cAddress"
     :allPosts="true" 
     class="mt-3 scroll-500" 
@@ -440,6 +459,7 @@ export default {
         "function getBurnPrice() public view returns (uint256)",
         "function getMintPrice() public view returns (uint256)",
         "function metadataAddress() public view returns (address)",
+        "function name() public view returns (string memory)",
         "function owner() public view returns (address)",
         "function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256)",
         "function totalSupply() public view returns (uint256)"
@@ -482,7 +502,7 @@ export default {
       if (collection?.name) {
         this.cName = collection.name;
       } else {
-        this.cName = await metadataContract.names(this.cAddress);
+        this.cName = await nftContract.name();
       }
 
       try {
