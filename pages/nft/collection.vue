@@ -27,7 +27,7 @@
 
       <div class="row">
 
-        <div class="col-md-3 text-center mb-3">
+        <div class="col-md-5 text-center mb-3">
           <img :src="cImage" class="img-fluid img-thumbnail rounded col-12" />
 
           <div v-if="isCurrentAddressOwner" class="d-flex justify-content-center mt-3">
@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <div class="col-md-9">
+        <div class="col-md-7">
           <!--
           <h3 class="mb-3">Collection: {{ cName }}</h3>
           -->

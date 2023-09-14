@@ -52,6 +52,23 @@
       </div>
       <!-- END link preview -->
 
+      <!-- New NFT collection created -->
+      <div v-if="customDataType === 'nftCollectionCreated'" class="row mt-3 mb-3">
+        
+          <div class="card col-md-6">
+            <NuxtLink :to="'/nft/collection?id='+post.content.data.collectionAddress" class="text-decoration-none text-reset">
+              <img :src="post.content.data.collectionImage" class="card-img-top" />
+
+              <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
+                <h5 class="card-title text-break">{{ post.content.data.collectionName }}</h5>
+                <p class="card-text text-break text-reset">{{ getNftCollectionDescription }}</p>
+              </div>
+            </NuxtLink>
+          </div>
+        
+      </div>
+      <!-- New NFT collection created -->
+
       <!-- Minted Post Image -->
       <div v-if="customDataType === 'mintedPost'" class="row mt-2">
         <div class="col-10 col-sm-8 col-md-4">
@@ -239,6 +256,22 @@ export default {
     getMintedPostTokenId() {
       if (this.customDataType === "mintedPost") {
         return String(this.post.content.data.nftTokenId);
+      }
+
+      return null;
+    },
+
+    getNftCollectionDescription() {
+      if (this.customDataType === "nftCollectionCreated") {
+        
+        // if description length is too long, shorten it and attach "..."
+        const maxLength = 100;
+
+        if (this.post.content.data.collectionDescription.length > maxLength) {
+          return this.post.content.data.collectionDescription.substring(0, maxLength) + "...";
+        } else {
+          return this.post.content.data.collectionDescription;
+        }
       }
 
       return null;
