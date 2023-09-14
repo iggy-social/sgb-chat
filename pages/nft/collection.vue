@@ -19,7 +19,7 @@
       </p>
 
       <h3 class="mb-3 mt-3" v-if="!cName">NFT Collection Details</h3>
-      <h3 class="mb-3 mt-3" v-if="cName">Collection: {{ cName }}</h3>
+      <h3 class="mb-3 mt-3" v-if="cName">{{ cName }}</h3>
 
       <div class="d-flex justify-content-center mb-3" v-if="waitingData">
         <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
