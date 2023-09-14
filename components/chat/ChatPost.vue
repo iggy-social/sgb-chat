@@ -52,6 +52,13 @@
       </div>
       <!-- END link preview -->
 
+      <!-- Minted Post Image -->
+      <div v-if="post?.content?.data" class="row mt-2">
+        <div class="col-10 col-sm-8 col-md-4">
+          <MintedPostImage :id="getMintedPostTokenId" />
+        </div>
+      </div>
+
       <!-- quoted post (replied) -->
       <ChatQuote class="mt-3 mb-3" :post="quotePost" v-if="showQuote" />
 
@@ -153,7 +160,8 @@ import resolvers from "~/assets/data/resolvers.json";
 import { useToast } from "vue-toastification/dist/index.mjs";
 import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
-import IggyPostMint from "~~/components/minted-posts/IggyPostMint.vue";
+import IggyPostMint from "~/components/minted-posts/IggyPostMint.vue";
+import MintedPostImage from '~/components/minted-posts/MintedPostImage.vue';
 import ChatQuote from "~/components/chat/ChatQuote.vue";
 import { findFirstUrl, imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } from '~/utils/textUtils';
 
@@ -164,8 +172,9 @@ export default {
 
   components: {
     ChatQuote,
-    ProfileImage,
-    IggyPostMint
+    IggyPostMint,
+    MintedPostImage,
+    ProfileImage
   },
 
   data() {
@@ -221,6 +230,14 @@ export default {
   },
 
   computed: {
+    getMintedPostTokenId() {
+      if (this.post?.content?.data?.nftTokenId) {
+        return String(this.post.content.data.nftTokenId);
+      }
+
+      return null;
+    },
+
     getOrbisContext() {
       if (this.post?.context) {
         return this.post.context;
