@@ -203,7 +203,19 @@ export default {
     },
 
     filteredCategories() {
-      return this.$config.orbisCategories.filter((c) => c.slug !== "all"); // filter out "All" category
+      let cats = [];
+      
+      for (let i = 0; i < this.$config.orbisCategories.length; i++) {
+        // exclude categories that are marked as hidden
+        if (this.$config.orbisCategories[i].hidden === false) {
+          cats.push({
+            slug: this.$config.orbisCategories[i].slug,
+            title: this.$config.orbisCategories[i].title
+          });
+        }
+      }
+
+      return cats;
     },
 
     getOrbisContext() {
@@ -320,7 +332,7 @@ export default {
         if (this.masterPost?.content?.tags) {
           options["tags"] = this.masterPost.content.tags;
         } else {
-          options["tags"] = [this.$config.orbisCategories[1]]; // default to "General" tag
+          options["tags"] = [{ "slug": "general", "title": "General discussion" }]; // default to "General" tag
         }
 
       } else {
@@ -333,7 +345,8 @@ export default {
         if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.filteredCategories.length) {
           options["tags"] = [this.filteredCategories[this.chatStore.getSelectedTagIndex]];
         } else {
-          options["tags"] = [this.$config.orbisCategories[1]]; // default to "General" tag
+          this.changeTag(0); // change tag selection to 0 (tag may be out of bounds)
+          options["tags"] = [{ "slug": "general", "title": "General discussion" }]; // default to "General" tag
         }
       }
 
@@ -397,14 +410,15 @@ export default {
 
         // search by tag/category (except on the Profile page where comment box is hidden)
         if (!this.allPosts) {
-          if (
-            this.filteredCategories[0].slug === "all" &&
-            this.chatStore.getSelectedTagIndex > 0 && 
-            this.chatStore.getSelectedTagIndex < this.filteredCategories.length
-          ) {
+
+          if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.filteredCategories.length) {
             options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
           } else {
-            options["tag"] = this.filteredCategories[this.chatStore.getSelectedTagIndex].slug;
+            this.changeTag(0);
+
+            if (this.filteredCategories[0].slug !== "all") {
+              options["tag"] = this.filteredCategories[0].slug;
+            }
           }
         }
       }

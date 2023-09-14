@@ -206,9 +206,23 @@ export default {
   },
 
   computed: {
+
     filteredCategories() {
-      return this.$config.orbisCategories.filter((c) => c.slug !== "all"); // filter out "All" category
+      let cats = [];
+      
+      for (let i = 0; i < this.$config.orbisCategories.length; i++) {
+        // exclude categories that are marked as hidden
+        if (this.$config.orbisCategories[i].hidden === false) {
+          cats.push({
+            slug: this.$config.orbisCategories[i].slug,
+            title: this.$config.orbisCategories[i].title
+          });
+        }
+      }
+
+      return cats;
     },
+    
   },
   
   methods: {

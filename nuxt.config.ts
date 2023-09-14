@@ -75,15 +75,15 @@ export default defineNuxtConfig({
       nftLaunchpadBondingAddress: "0xF48D3812ceD80bC78C8553d7C3b702b0F0d63903", // NFT launchpad with bonding curve contract address
       nftOrbisContext: "kjzl6cwe1jw149y24iu6qrmo2x5yl2rmcxoegmey9y19faclcwaiivjganh5iz5", // Orbis context for NFT collection pages
       orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)
-        { "slug": "all", "title": "All posts" }, // not a real tag, just denotes the absence of a tag (always keep it here)
-        { "slug": "general", "title": "General discussion" },
-        { "slug": "shill", "title": "Shill & discuss projects" },
-        { "slug": "nfts", "title": "Memes & NFTs" },
-        { "slug": "governance", "title": "Governance" },
-        { "slug": "food", "title": "Food & recipes" },
-        { "slug": "movie", "title": "Movies & series" },
-        { "slug": "music", "title": "Music" },
-        { "slug": "random", "title": "Random" },
+        { "slug": "all", "title": "All posts", "hidden": false }, // not a real tag, just denotes the absence of a tag (always keep it here)
+        { "slug": "general", "title": "General discussion", "hidden": false },
+        { "slug": "shill", "title": "Shill & discuss projects", "hidden": false },
+        { "slug": "nfts", "title": "Memes & NFTs", "hidden": false },
+        { "slug": "governance", "title": "Governance", "hidden": false },
+        { "slug": "food", "title": "Food & recipes", "hidden": true },
+        { "slug": "movie", "title": "Movies & series", "hidden": false },
+        { "slug": "music", "title": "Music", "hidden": false },
+        { "slug": "random", "title": "Random", "hidden": false },
       ],
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
       orbisTest: false, // if true, test context will be used instead of the production one
