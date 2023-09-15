@@ -19,7 +19,6 @@
           Minting price: {{ postPrice }} {{ $config.tokenSymbol }}
         </p>
 
-        <!-- Show replies on home feed -->
         <div class="form-check">
           <input 
             class="form-check-input" 

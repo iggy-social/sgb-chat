@@ -117,8 +117,6 @@ import { useNotificationsStore } from '~/store/notifications';
 import { useSidebarStore } from '~/store/sidebars';
 import { useSiteStore } from '~/store/site';
 import { useUserStore } from '~/store/user';
-import ResolverAbi from "~/assets/abi/ResolverAbi.json";
-import resolvers from "~/assets/data/resolvers.json";
 import { getRpcs } from "~/utils/rpcUtils";
 import NavbarDesktop from "~/components/navbars/NavbarDesktop.vue";
 import NavbarMobile from "~/components/navbars/NavbarMobile.vue";

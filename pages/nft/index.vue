@@ -14,18 +14,22 @@
 
 <div class="card border scroll-500">
   <div class="card-body">
-    <p class="fs-3" @click="$router.back()">
+
+    <p v-if="!hideBackButton" class="fs-3" @click="$router.back()">
       <i class="bi bi-arrow-left-circle cursor-pointer"></i>
     </p>
 
-    <h3 class="mb-4 mt-3">
-      NFT Launchpad
-      <NuxtLink class="btn btn-outline-primary btn-sm" to="/nft/create">
-        <i class="bi bi-plus-circle"></i> Create
-      </NuxtLink>
-      <button class="btn btn-outline-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#searchModal">
-        <i class="bi bi-search"></i> Find
-      </button>
+    <h3 class="d-flex flex-row flex-wrap mt-3">
+      <div class="mb-3 me-auto">NFT Launchpad</div>
+      
+      <div class="mb-3">
+        <NuxtLink class="btn btn-outline-primary btn-sm" to="/nft/create">
+          <i class="bi bi-plus-circle"></i> Create
+        </NuxtLink>
+        <button class="btn btn-outline-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#searchModal">
+          <i class="bi bi-search"></i> Find
+        </button>
+      </div>
     </h3>
 
     <div class="d-flex justify-content-center mb-3" v-if="waitingData">
@@ -101,6 +105,7 @@ import { useEthers } from 'vue-dapp';
 
 export default {
   name: 'Nft',
+  props: ["hideBackButton"],
 
   data() {
     return {
