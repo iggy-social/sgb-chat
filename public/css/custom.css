@@ -113,6 +113,13 @@
   --bs-table-bg: var(--bs-mode) !important;
 }
 
+.alert-primary {
+  --bs-alert-color: var(--bs-primary);
+  --bs-alert-bg: transparent;
+  --bs-alert-border-color: var(--bs-primary);
+  --bs-alert-link-color: var(--bs-primary);
+}
+
 a {
   color: var(--bs-link-color);
   text-decoration: var(--bs-link-decoration);
