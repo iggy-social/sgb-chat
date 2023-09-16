@@ -57,6 +57,8 @@ export default defineNuxtConfig({
       chatTokenImage: "https://bafybeig2a6e7oe5rjajcrfmvi5vsnhbrh6dnqfll2edm2og3efcrrueup4.ipfs.w3s.link/chirp.png", // chat token image
       chatTokenSymbol: "CHIRP", // chat token symbol or name
       domainRequiredToPost: true,
+      expiryCollections: 1000 * 60 * 60 * 24 * 7, // must be in milliseconds (0 means no expiration)
+      expiryUsernames: 1000 * 60 * 60 * 24 * 7, // must be in milliseconds (0 means no expiration)
       favicon: "/img/favicon.png",
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
       iggyPostAddress: "0xE33F27496A9cE75313f6d1FA2BA95657Fc904387",

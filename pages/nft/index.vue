@@ -102,6 +102,7 @@
 <script>
 import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
+import { fetchCollection, storeCollection } from '~/utils/storageUtils';
 
 export default {
   name: 'Nft',
@@ -246,12 +247,11 @@ export default {
       for (let i = 0; i < inputArray.length; i++) {
         const nftContract = new ethers.Contract(inputArray[i], nftInterface, provider);
 
-        // fetch collection object from session storage
-        const collectionString = sessionStorage.getItem(String(inputArray[i]).toLowerCase()+"-collection");
-        let collection;
+        // fetch collection object from storage
+        let collection = fetchCollection(window, inputArray[i]);
         
-        if (collectionString) {
-          collection = JSON.parse(collectionString);
+        if (!collection) {
+          collection = {};
         }
 
         // get collection name
@@ -261,6 +261,7 @@ export default {
           cName = collection.name;
         } else {
           cName = await nftContract.name();
+          collection["name"] = cName;
         }
 
         // get price
@@ -273,7 +274,11 @@ export default {
           cImage = collection.image;
         } else {
           cImage = await nftContract.collectionPreview();
+          collection["image"] = cImage;
         }
+
+        // store collection object in storage
+        storeCollection(window, inputArray[i], collection);
 
         outputArray.push({
           address: inputArray[i],
