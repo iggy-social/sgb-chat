@@ -56,7 +56,7 @@
       <div v-if="customDataType === 'nftCollectionCreated' && collection" class="row mt-3 mb-3">
         
           <div class="card col-md-6">
-            <NuxtLink :to="'/nft/collection?id='+collection?.address" class="text-decoration-none text-reset">
+            <NuxtLink :to="'/nft/collection?id='+collection.address" class="text-decoration-none text-reset">
               <img :src="collection?.image" class="card-img-top" />
 
               <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
@@ -235,15 +235,15 @@ export default {
       this.collection = fetchCollection(window, this.post.content.data.collectionAddress);
       
       if (!this.collection) {
-        this.collection = {
-          address: this.post.content.data.collectionAddress,
-          name: this.post.content.data.collectionName,
-          description: this.post.content.data.collectionDescription,
-          image: this.post.content.data.collectionImage
-        }
-
-        storeCollection(window, this.post.content.data.collectionAddress, this.collection);
+        this.collection = {};
       }
+
+      this.collection["address"] = this.post.content.data.collectionAddress;
+      this.collection["name"] = this.post.content.data.collectionName;
+      this.collection["description"] = this.post.content.data.collectionDescription;
+      this.collection["image"] = this.post.content.data.collectionImage;
+
+      storeCollection(window, this.post.content.data.collectionAddress, this.collection);
     }
 
     // create quote post object
@@ -501,6 +501,9 @@ export default {
           description: null,
           image: collectionImage
         }
+      } else {
+        // sometimes the collection object does not have the address property
+        this.collection["address"] = cAddress;
       }
     },
 
