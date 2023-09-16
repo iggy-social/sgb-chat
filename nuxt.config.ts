@@ -84,8 +84,8 @@ export default defineNuxtConfig({
         { "slug": "nfts", "title": "Memes & NFTs", "hidden": false }, // keep this category for the purpose of the NFT launchpad
         { "slug": "governance", "title": "Governance", "hidden": false },
         { "slug": "food", "title": "Food & recipes", "hidden": true },
-        { "slug": "movie", "title": "Movies & series", "hidden": false },
-        { "slug": "music", "title": "Music", "hidden": false },
+        { "slug": "movie", "title": "Movies & Music", "hidden": false },
+        { "slug": "music", "title": "Music", "hidden": true },
         { "slug": "random", "title": "Random", "hidden": false },
       ],
       orbisContext: "kjzl6cwe1jw14a064memywn3fhuks5w3m2xfole8vrj202suz4xq8o9yfhso6hf", // production context
@@ -105,7 +105,7 @@ export default defineNuxtConfig({
       projectName: "SGB Chat",
       projectDescription: "SGB Chat is the first decentralized social network on Songbird. Brought to you by Songbird Domains.",
       projectTwitter: "https://twitter.com/SongbirdDomains",
-      projectUrl: "https://sgb.chat",
+      projectUrl: "https://sgb.chat", // without trailing slash!
       punkMinterAddress: "0xcE6BFf80F9f79f9d471b365F527c36592C2c15E5", // punk domain minter contract address
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
       punkTldAddress: "0xBDACF94dDCAB51c39c2dD50BffEe60Bb8021949a", // punk domain TLD address
