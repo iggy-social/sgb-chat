@@ -6,7 +6,7 @@
   
       <KeysList />
 
-      <div v-if="!isActivated" class="d-flex justify-content-center mt-4">
+      <div class="d-flex justify-content-center mt-4">
         <NuxtLink class="btn btn-outline-primary" to="/keys">Get a Friend Key</NuxtLink>
       </div>
   
