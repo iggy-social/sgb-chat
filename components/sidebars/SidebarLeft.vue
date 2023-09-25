@@ -89,6 +89,13 @@
             </NuxtLink>
           </li>
 
+          <!-- Send tokens -->
+          <li class="nav-item p-1" @click="closeLeftSidebar">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/send-tokens') ? 'active' : ''" aria-current="page" to="/send-tokens">
+              <i class="bi bi-send"></i> Send tokens
+            </NuxtLink>
+          </li>
+
           <!-- Swap -->
           <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.swapRouterAddress">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/swap') ? 'active' : ''" aria-current="page" to="/swap">

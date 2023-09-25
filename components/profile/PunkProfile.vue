@@ -22,7 +22,7 @@
               {{ balanceEth }} {{ $config.tokenSymbol }}
             </p>
 
-            <p class="me-4">
+            <p class="me-4" v-if="$config.chatTokenAddress">
               <i class="bi bi-wallet me-1"></i>
               {{ balanceChatToken }} {{ $config.chatTokenSymbol }}
             </p>
@@ -73,6 +73,13 @@
             </button>
           </div>
           <!-- END Buttons -->
+
+          <!-- Send tokens to user -->
+          <NuxtLink v-if="domain && !isCurrentUser" class="btn btn-primary mt-2" :to="'/send-tokens/?to='+domain">
+            <i class="bi bi-send"></i>
+            Send tokens to {{ domain }}
+          </NuxtLink>
+          <!-- END Send tokens to user -->
 
         </div>
       </div>
