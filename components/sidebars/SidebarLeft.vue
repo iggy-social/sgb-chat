@@ -15,8 +15,8 @@
             />
           </NuxtLink>
 
-          <h6 class="mt-3">
-            {{ userStore.getDefaultDomain }}
+          <h6 class="mt-3" v-if="userStore.getDefaultDomain">
+            {{ getTextWithoutBlankCharacters(userStore.getDefaultDomain) }}
           </h6>
 
           <!--
@@ -203,6 +203,7 @@ import { useChatStore } from '~/store/chat';
 import { useSidebarStore } from '~/store/sidebars';
 import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: "SidebarLeft",

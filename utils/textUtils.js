@@ -1,4 +1,4 @@
-import { isBlank, zeroWidthCharacters } from 'printable-characters';
+//import { isBlank, zeroWidthCharacters } from 'printable-characters';
 
 export function findFirstCollectionUrl(text) {
   // if there is an NFT collection url (from our website) in the text, return it as address string
@@ -83,7 +83,8 @@ export function getImageFromText(text) {
 }
 
 export function getTextWithoutBlankCharacters(text) {
-  let cleanText = String(text).replace(zeroWidthCharacters, "⚠");
+  //let cleanText = String(text).replace(zeroWidthCharacters, "⚠");
+  let cleanText = String(text);
 
   if (cleanText.includes("‎")) {
     cleanText = cleanText.replace("‎", "⚠");
@@ -93,9 +94,11 @@ export function getTextWithoutBlankCharacters(text) {
 }
 
 export function hasTextBlankCharacters(text) {
+  /*
   if (isBlank(text)) {
     return true;
   }
+  */
 
   if (text.includes("‎")) {
     return true;
