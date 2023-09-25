@@ -236,10 +236,10 @@ export default {
   },
 
   mounted() {
-    this.tokenList = this.tokens.tokens;
+    this.tokenList = this.getFilteredTokens(this.tokens.tokens);
 
-    this.selectInputToken(this.tokens.tokens[0]);
-    this.selectOutputToken(this.tokens.tokens[1]);
+    this.selectInputToken(this.tokenList[0]);
+    this.selectOutputToken(this.tokenList[1]);
 
     if (this.outputPlaceholder) {
       this.outputText = this.outputPlaceholder;
@@ -370,6 +370,11 @@ export default {
 
     changeInputTokenAllowance(newAllowance) {
       this.inputTokenAllowance = Number(newAllowance);
+    },
+
+    getFilteredTokens(tokens) {
+      // only include tokens that have swap: true
+      return tokens.filter(token => token.swap);
     },
 
     // custom
