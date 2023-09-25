@@ -1,7 +1,22 @@
 <template>
   <div>
 
-    <input v-model="inputReceiver" class="form-control mt-2" placeholder="Enter recipient's domain name or address" />
+    <div class="mb-3">
+      <div class="input-group">
+        <span v-if="hasBlankCharacter" class="input-group-text" id="basic-addon3"><i class="bi bi-exclamation-triangle-fill"></i></span>
+        <input 
+          v-model="inputReceiver" 
+          type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4" 
+          placeholder="Enter recipient's domain name or address"
+          @keyup="findBlankCharacter"
+        />
+      </div>
+
+      <div class="form-text" id="basic-addon4" v-if="hasBlankCharacter">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        This domain name contains a blank character: {{ encodeURIComponent(inputReceiver) }}. Proceed with caution.
+      </div>
+    </div>
 
     <!-- Input token -->
     <div class="input-group mb-1 mt-3">
@@ -102,6 +117,7 @@ import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
 import { useToast } from "vue-toastification/dist/index.mjs";
 import { getTokenBalance } from '~/utils/balanceUtils';
+import { hasTextBlankCharacters } from '~/utils/textUtils';
 import WaitingToast from "~/components/WaitingToast";
 import ConnectWalletButton from '~/components/ConnectWalletButton.vue';
 import Erc20Abi from "~/assets/abi/Erc20Abi.json";
@@ -113,6 +129,7 @@ export default {
   data() {
     return {
       filterTextInput: '',
+      hasBlankCharacter: false,
       inputReceiver: null,
       inputToken: null,
       inputTokenAmount: null,
@@ -130,6 +147,8 @@ export default {
   mounted() {
     this.inputReceiver = this.recipient;
     this.processRecipient(this.recipient);
+
+    this.findBlankCharacter();
 
     this.tokenList = this.tokens.tokens;
     this.selectInputToken(this.tokenList[0]);
@@ -175,7 +194,13 @@ export default {
   },
 
   methods: {
-    getTokenBalance, // imported from utils
+    getTokenBalance, // imported from balance utils
+    hasTextBlankCharacters, // imported from text utils
+
+    findBlankCharacter() {
+      this.hasBlankCharacter = false;
+      this.hasBlankCharacter = hasTextBlankCharacters(this.inputReceiver);
+    },
 
     async processRecipient(recipient) {
       if (recipient) {

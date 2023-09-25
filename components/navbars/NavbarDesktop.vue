@@ -57,6 +57,7 @@ import { useUserStore } from '~/store/user';
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import SwitchChainButton from "~/components/SwitchChainButton.vue";
 import { addTokenToMetaMask } from '~/utils/tokenUtils';
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: "Navbar",
@@ -69,7 +70,7 @@ export default {
   computed: {
     showDomainOrAddress() {
       if (this.userStore.getDefaultDomain) {
-        return this.userStore.getDefaultDomain;
+        return getTextWithoutBlankCharacters(this.userStore.getDefaultDomain);
       } else if (this.address) {
         return this.shortenAddress(this.address);
       }

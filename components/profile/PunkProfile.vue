@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-md-9 mt-3">
-          <h3 class="mb-3">{{ domain }}</h3>
+          <h3 v-if="domain" class="mb-3">{{ getTextWithoutBlankCharacters(domain) }}</h3>
 
           <!-- Data -->
           <div class="mt-4 muted-text" style="font-size: 14px;">
@@ -247,6 +247,7 @@ import ResolverAbi from "~/assets/abi/ResolverAbi.json";
 import resolvers from "~/assets/data/resolvers.json";
 import ChatFeed from '../chat/ChatFeed.vue';
 import { fetchUsername, storeUsername } from '~/utils/storageUtils';
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: "PunkProfile",

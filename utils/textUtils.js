@@ -1,3 +1,5 @@
+import { isBlank, zeroWidthCharacters } from 'printable-characters';
+
 export function findFirstCollectionUrl(text) {
   // if there is an NFT collection url (from our website) in the text, return it as address string
   // example: 
@@ -78,6 +80,28 @@ export function getImageFromText(text) {
   if (!imageLinks) { return "" };
 
   return imageLinks[0];
+}
+
+export function getTextWithoutBlankCharacters(text) {
+  let cleanText = String(text).replace(zeroWidthCharacters, "⚠");
+
+  if (cleanText.includes("‎")) {
+    cleanText = cleanText.replace("‎", "⚠");
+  }
+
+  return cleanText;
+}
+
+export function hasTextBlankCharacters(text) {
+  if (isBlank(text)) {
+    return true;
+  }
+
+  if (text.includes("‎")) {
+    return true;
+  }
+
+  return false;
 }
 
 export function imgParsing(text) {

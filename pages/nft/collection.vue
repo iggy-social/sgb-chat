@@ -235,6 +235,7 @@ import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import WaitingToast from "~/components/WaitingToast";
 import { getDomainName } from '~/utils/domainUtils';
 import { fetchCollection, fetchUsername, storeCollection, storeUsername } from '~/utils/storageUtils';
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: 'NftCollection',
@@ -286,11 +287,8 @@ export default {
     getUsernameOrShortAddress() {
       if (this.cAuthorAddress) {
         if (this.cAuthorDomain) {
-          if (this.cAuthorDomain.endsWith(this.$config.tldName)) {
-            return this.cAuthorDomain
-          } else {
-            return this.cAuthorDomain + this.$config.tldName;
-          }
+          let cleanName = String(this.cAuthorDomain).replace(this.$config.tldName, "");
+          return getTextWithoutBlankCharacters(cleanName) + this.$config.tldName;
         } else {
           return shortenAddress(this.cAuthorAddress);
         }
