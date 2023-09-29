@@ -11,6 +11,7 @@ exports.handler = async function (event, context) {
 
   // check if URL is an NFT marketplace
   if (url.startsWith("https://sparklesnft.com/item/songbird/")) {
+    // SPARKLES
     const cleanUrl = url.split("?")[0];
     const addrTokenId = cleanUrl.split("https://sparklesnft.com/item/songbird/")[1].replace("/", "");
     const addr = addrTokenId.split("_")[0];
@@ -74,6 +75,7 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({ data: finalMetadata }),
     };
   } else if (url.startsWith("https://opensea.io/assets/base/")) {
+    // OPEN SEA
     const cleanUrl = url.split("?")[0];
     const addrTokenId = cleanUrl.split("opensea.io/assets/base/")[1];
     const addr = addrTokenId.split("/")[0];
@@ -138,6 +140,7 @@ exports.handler = async function (event, context) {
     };
   } 
 
+  // ALL OTHER LINKS
   try {
     const response = await fetch(url); 
     const html = await response.text();
