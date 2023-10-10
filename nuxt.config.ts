@@ -72,7 +72,7 @@ export default defineNuxtConfig({
       marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgb-chat-posts/",
       marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387_", // url (append nft id to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
-      newsletterLink: "https://zcmp.eu/Onz",
+      newsletterLink: "https://paragraph.xyz/@iggy?modal=subscribe",
       nftDefaultRatio: 6969, // default ratio for the NFT price bonding curve
       nftLaunchpadBondingAddress: "0xF48D3812ceD80bC78C8553d7C3b702b0F0d63903", // NFT launchpad with bonding curve contract address
       nftLaunchpadLatestItems: 12, // number of latest NFTs to show in the NFT launchpad
@@ -106,7 +106,7 @@ export default defineNuxtConfig({
       projectDescription: "SGB Chat is the first decentralized social network on Songbird. Brought to you by Songbird Domains.",
       projectTwitter: "https://twitter.com/SongbirdDomains",
       projectUrl: "https://sgb.chat", // without trailing slash!
-      punkMinterAddress: "0xcE6BFf80F9f79f9d471b365F527c36592C2c15E5", // punk domain minter contract address
+      punkMinterAddress: "0xf63B682e308ea0C603ae23eBb617E7998b8C92DF", // punk domain minter contract address
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
       punkTldAddress: "0xBDACF94dDCAB51c39c2dD50BffEe60Bb8021949a", // punk domain TLD address
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
