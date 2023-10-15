@@ -26,23 +26,19 @@
         <NuxtLink class="btn btn-outline-primary btn-sm" to="/nft/create">
           <i class="bi bi-plus-circle"></i> Create
         </NuxtLink>
-        <button class="btn btn-outline-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#searchModal">
+        <button class="btn btn-outline-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#searchNftModal">
           <i class="bi bi-search"></i> Find
         </button>
       </div>
     </h3>
 
-    <!--
+    <!-- NFT competition alert 
     <div class="alert alert-primary mb-3 text-center" role="alert">
-      <NuxtLink to="/post/?id=kjzl6cwe1jw14a6xp8a5eqyosbt7jevgzow5s528gd20zf81d5b9l5cwfi42xzi">
-        Create your NFT and win a 1000 {{ $config.tokenSymbol }} prize! Hurry up, the competition ends on Thursday, 21 September!
+      <NuxtLink to="/post/?id=kjzl6cwe1jw149z0ddpcygc1nhgjdppg1zpr8r4s0j8siaq0bod6u0v5dyaqr2c">
+        Create your NFT and win a 2000 {{ $config.tokenSymbol }} prize! Hurry up, the competition ends on Friday, 29 September!
       </NuxtLink>
     </div>
     -->
-
-    <div class="d-flex justify-content-center mb-3" v-if="waitingData">
-      <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
-    </div>
 
     <h4 class="mb-3" v-if="featuredNfts.length > 0">Featured</h4>
 
@@ -72,44 +68,28 @@
       </NuxtLink>
     </div>
 
+    <div class="d-flex justify-content-center mb-3" v-if="waitingData">
+      <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+    </div>
+
+    <div v-if="showLoadMoreButton" class="d-grid gap-2">
+      <button class="btn btn-primary" @click="fetchLastNfts" :disabled="waitingData">
+        <span v-if="waitingData" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Load more
+      </button>
+    </div>
+
   </div>
 </div>
 
 <!-- Search Modal -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="searchModalLabel">Find NFT collection</h1>
-        <button id="closeSearchModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body">
-
-        <div class="mb-3">
-          <label for="searchInputField" class="form-label">Enter NFT collection address or unique ID:</label>
-          <input v-model="searchText" type="text" class="form-control" id="searchInputField" />
-        </div>
-
-        <p v-if="findError">Error: Collection not found...</p>
-
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button @click="findNft" type="button" class="btn btn-primary" :disabled="waitingFind">
-          <span v-if="waitingFind" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          Find
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+<SearchNftModal />
 </template>
 
 <script>
 import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
+import SearchNftModal from '~/components/nft/SearchNftModal.vue';
 import { fetchCollection, storeCollection } from '~/utils/storageUtils';
 
 export default {
@@ -118,23 +98,34 @@ export default {
 
   data() {
     return {
+      allNftsArrayLength: 0,
+      allNftsIndexStart: 0,
+      allNftsIndexEnd: 0,
       featuredNfts: [],
-      findError: false,
       lastNfts: [],
-      searchText: null,
-      waitingData: false,
-      waitingFind: false
+      waitingData: false
     }
+  },
+
+  components: {
+    SearchNftModal
   },
 
   mounted() {
     if (this.$config.nftLaunchpadBondingAddress) {
-      this.fetchData();
+      this.fetchFeaturedNfts();
+      this.fetchLastNfts();
+    }
+  },
+
+  computed: {
+    showLoadMoreButton() {
+      return this.allNftsIndexEnd > 0;
     }
   },
 
   methods: {
-    async fetchData() {
+    async fetchFeaturedNfts() {
       this.waitingData = true;
 
       // fetch provider from hardcoded RPCs
@@ -147,8 +138,7 @@ export default {
 
       // create launchpad contract object
       const launchpadInterface = new ethers.utils.Interface([
-        "function getFeaturedNftContracts(uint256 amount) external view returns(address[] memory)",
-        "function getLastNftContracts(uint256 amount) external view returns(address[] memory)"
+        "function getFeaturedNftContracts(uint256 amount) external view returns(address[] memory)"
       ]);
 
       const launchpadContract = new ethers.Contract(
@@ -161,63 +151,71 @@ export default {
       const fNfts = await launchpadContract.getFeaturedNftContracts(4);
 
       await this.parseNftsArray(fNfts, this.featuredNfts, provider);
-
-      // get last NFTs
-      const lNfts = await launchpadContract.getLastNftContracts(this.$config.nftLaunchpadLatestItems);
-      const lNftsWritable = [...lNfts]; // copy the lNfts array to make it writable (for reverse() method)
-
-      // reverse the lNftsWritable array (to show the latest NFTs first)
-      lNftsWritable.reverse();
-
-      await this.parseNftsArray(lNftsWritable, this.lastNfts, provider);
-
-      this.waitingData = false;
     },
 
-    async findNft() {
-      this.waitingFind = true;
-      this.findError = false;
+    async fetchLastNfts() {
+      this.waitingData = true;
 
-      if (this.searchText) {
-        if (String(this.searchText).toLowerCase().startsWith("0x")) {
-          document.getElementById("closeSearchModal").click();
-          this.$router.push({ path: '/nft/collection/', query: { id: this.searchText } });
-          this.searchText = null;
-          return this.waitingFind = false;
-        } else {
-          // search by unique ID
-          const launchpadInterface = new ethers.utils.Interface([
-            "function getNftContractAddress(string calldata _uniqueId) external view returns(address)"
-          ]);
+      // fetch provider from hardcoded RPCs
+      let provider = this.$getFallbackProvider(this.$config.supportedChainId);
 
-          // fetch provider from hardcoded RPCs
-          let provider = this.$getFallbackProvider(this.$config.supportedChainId);
+      if (this.isActivated && this.chainId === this.$config.supportedChainId) {
+        // fetch provider from user's MetaMask
+        provider = this.signer;
+      }
 
-          if (this.isActivated && this.chainId === this.$config.supportedChainId) {
-            // fetch provider from user's MetaMask
-            provider = this.signer;
-          }
+      // create launchpad contract object
+      const launchpadInterface = new ethers.utils.Interface([
+        "function getNftContracts(uint256 fromIndex, uint256 toIndex) external view returns(address[] memory)",
+        "function getNftContractsArrayLength() external view returns(uint256)"
+      ]);
 
-          const launchpadContract = new ethers.Contract(
-            this.$config.nftLaunchpadBondingAddress,
-            launchpadInterface,
-            provider
-          );
+      const launchpadContract = new ethers.Contract(
+        this.$config.nftLaunchpadBondingAddress,
+        launchpadInterface,
+        provider
+      );
 
-          const nftAddress = await launchpadContract.getNftContractAddress(this.searchText);
+      // get all NFTs array length
+      if (this.allNftsArrayLength === 0) {
+        this.allNftsArrayLength = await launchpadContract.getNftContractsArrayLength();
+      }
 
-          if (nftAddress !== ethers.constants.AddressZero) {
-            document.getElementById("closeSearchModal").click();
-            this.$router.push({ path: '/nft/collection/', query: { id: nftAddress } });
-            this.searchText = null;
-            return this.waitingFind = false;
+      if (this.allNftsArrayLength > 0) {
+        // set the start and end index, if end index is 0
+        if (this.allNftsIndexEnd === 0) {
+          this.allNftsIndexEnd = this.allNftsArrayLength - 1;
+
+          if (this.allNftsArrayLength < this.$config.nftLaunchpadLatestItems) {
+            this.allNftsIndexStart = 0;
+          } else {
+            this.allNftsIndexStart = this.allNftsArrayLength - this.$config.nftLaunchpadLatestItems;
           }
         }
 
-        this.findError = true;
+        // get last NFTs
+        const lNfts = await launchpadContract.getNftContracts(this.allNftsIndexStart, this.allNftsIndexEnd);
+        const lNftsWritable = [...lNfts]; // copy the lNfts array to make it writable (for reverse() method)
 
-        return this.waitingFind = false;
+        // reverse the lNftsWritable array (to show the latest NFTs first)
+        lNftsWritable.reverse();
+
+        await this.parseNftsArray(lNftsWritable, this.lastNfts, provider);
+
+        if (this.allNftsIndexEnd > this.$config.nftLaunchpadLatestItems) {
+          this.allNftsIndexEnd = this.allNftsIndexEnd - this.$config.nftLaunchpadLatestItems;
+        } else {
+          this.allNftsIndexEnd = 0;
+        }
+
+        if (this.allNftsIndexStart > this.$config.nftLaunchpadLatestItems) {
+          this.allNftsIndexStart = this.allNftsIndexStart - this.$config.nftLaunchpadLatestItems;
+        } else {
+          this.allNftsIndexStart = 0;
+        }
       }
+
+      this.waitingData = false;
     },
 
     formatPrice(priceWei) {
@@ -308,6 +306,6 @@ export default {
     const { address, chainId, isActivated, signer } = useEthers();
 
     return { address, chainId, isActivated, signer }
-  },
+  }
 }
 </script>
