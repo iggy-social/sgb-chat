@@ -69,8 +69,9 @@ export default defineNuxtConfig({
       linkPreviews: "netlify", // "netlify" or "microlink" (or leave empty for no link previews)
       lpTokenAddress: "0xdE533DE5e9A73934B380c70f3611B116b8DF7D0d", // liquidity pool token (token to stake in the staking contract)
       lpTokenSymbol: "LP tokens", // LP token symbol
-      marketplaceCollectionUrl: "https://sparklesnft.com/collection/songbird/sgb-chat-posts/",
-      marketplaceNftItemUrl: "https://sparklesnft.com/item/songbird/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387_", // url (append nft id to it)
+      marketplaceCollectionUrl: "https://marketplace.flareocean.io/collection/19/0xe33f27496a9ce75313f6d1fa2ba95657fc904387",
+      marketplaceNftItemUrl: "https://marketplace.flareocean.io/asset/19/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387/", // url (append nft id to it)
+      marketplaceNftCollectionBaseUrl: "https://marketplace.flareocean.io/asset/19/", // url (append nft address to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
       newsletterLink: "https://paragraph.xyz/@iggy?modal=subscribe",
       nftDefaultRatio: 6969, // default ratio for the NFT price bonding curve
