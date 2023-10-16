@@ -71,7 +71,7 @@ export default defineNuxtConfig({
       lpTokenSymbol: "LP tokens", // LP token symbol
       marketplaceCollectionUrl: "https://marketplace.flareocean.io/collection/19/0xe33f27496a9ce75313f6d1fa2ba95657fc904387",
       marketplaceNftItemUrl: "https://marketplace.flareocean.io/asset/19/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387/", // url (append nft id to it)
-      marketplaceNftCollectionBaseUrl: "https://marketplace.flareocean.io/asset/19/", // url (append nft address to it)
+      marketplaceNftCollectionBaseUrl: "https://marketplace.flareocean.io/collection/19/", // url (append nft address to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
       newsletterLink: "https://paragraph.xyz/@iggy?modal=subscribe",
       nftDefaultRatio: 6969, // default ratio for the NFT price bonding curve
