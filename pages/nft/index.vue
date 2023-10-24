@@ -32,14 +32,14 @@
       </div>
     </h3>
 
-    <!-- NFT competition alert -->
+    <!-- NFT competition alert 
     <div class="alert alert-primary mb-3 text-center" role="alert">
       <NuxtLink to="/post/?id=kjzl6cwe1jw1497vo0lfznf4yuds28lokeq7xlthc398xby2oe528oomobg1vfn">
         Create your NFT and win a prize in the 2000 {{ $config.tokenSymbol }} reward pool! 
         Hurry up, the competition takes place from 16 October to 20 October 2023!
       </NuxtLink>
     </div>
-    
+    -->
 
     <h4 class="mb-3" v-if="featuredNfts.length > 0">Featured</h4>
 
