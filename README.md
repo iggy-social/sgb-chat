@@ -4,14 +4,11 @@ SGB Chat is a Web3 Social frontend website based on the Iggy Social template. It
 
 Link: https://sgb.chat
 
-What's included:
+## Delete mirror.yml in the .github folder
 
-- [Orbis SDK](https://github.com/OrbisWeb3/orbis-sdk)
-- [Nuxt 3](https://v3.nuxtjs.org/)
-- [Vue Dapp](https://vue-dapp-docs.netlify.app/)
-- [Ethers 5](https://ethers.org/)
-- [Pinia](https://pinia.vuejs.org/)
-- [Vue Toastification](https://github.com/Maronato/vue-toastification/tree/next)
+The mirror.yml file is just for the purpose of mirroring this repo to other git servers (for backup reasons). You don't need this in your cloned project.
+
+Build.yml is optional, it builds the projects, and stores the built code on the `build` branch. You can then use this branch for cheap deployment on 4everland (for example) - see instructions below.
 
 ## .env
 
@@ -27,17 +24,49 @@ Make sure to use the the `npm run generate` command instead of `npm run build` f
 
 If you want to use optional features such as GIFs and image upload, make sure to enter proper environment variables (see `.env.example`).
 
+Make sure to also select the proper serverless functions services in your environment variables, for example:
+
+```bash
+FILE_UPLOAD_SERVICE=netlify
+LINK_PREVIEW_SERVICE=netlify
+```
+
+You can also set these in the Nuxt config file (`nuxt.config.ts`).
+
+### 4everland
+
+[4everland](https://4everland.org/) is a decentralized hosting provider which stores your website on IPFS.
+
+If you have your code on GitHub, the `build.yml` script will build your app via GitHub Actions and create a `build` branch.
+
+Make sure you add all the necessary env vars (tenor etc.) to the organization variables for actions on GitHub.
+
+Also make sure you have Workflow permissions on the organization level on GitHub set to read & write.
+
+Then, when you create a project on 4everland, make sure you select the `build` branch. 
+
+And in the build section delete the command and set build folder to empty (or `./`). The preset can be set to `Other`. No install command is needed either.
+
+![](https://bafkreid6mzglrk5hklraua267sker6gqsfpy2ezmjj7yc2oqmx2arbynru.ipfs.w3s.link)
+
 ## GIFs (Tenor)
 
 If you want to have GIF search implemented, create your own Tenor API Key on Google Cloud Console. Follow the instructions here: https://developers.google.com/tenor/guides/quickstart. 
 
 Then enter the key in environment variables (`TENOR_KEY`).
 
-## Image upload (Web3 Storage)
+## Image upload (Spheron/IPFS)
 
-To support image uploads on IPFS please create an API key on Web3 Storage: https://web3.storage/ 
+To support image uploads on IPFS please create a key/token on Spheron Storage: https://app.spheron.network/#/storage 
 
-Then enter the key in environment variables (`WEB3_STORAGE_KEY`).
+Then add this key (and your bucket ID/name) to your environment variables:
+
+```bash
+SPHERON_BUCKET_NAME=
+SPHERON_STORAGE_TOKEN=
+```
+
+Image uploads via Spheron work only if you have Netlify/Vercel background functions enabled (see `netlify/functions/imageUploader.js`).
 
 ## Customize
 
@@ -66,6 +95,12 @@ Start the development server on http://localhost:3000
 
 ```bash
 npm run dev
+```
+
+Or run Netlify dev server on http://localhost:8888 (to get link previews):
+
+```bash
+netlify dev
 ```
 
 ## Production

@@ -60,19 +60,21 @@ export default defineNuxtConfig({
       expiryCollections: 1000 * 60 * 60 * 24 * 7, // must be in milliseconds (0 means no expiration)
       expiryUsernames: 1000 * 60 * 60 * 24 * 7, // must be in milliseconds (0 means no expiration)
       favicon: "/img/favicon.png",
+      fileUploadEnabled: true, // enable/disable file uploads (enable only if external file storage is used, e.g. IPFS via Spheron)
+      fileUploadSizeLimit: 1 * 1024 * 1024, // max file upload size in bytes (1 * 1024 * 1024 = 1 MB)
+      fileUploadTokenService: process.env.FILE_UPLOAD_SERVICE || "netlify", // "netlify" or "vercel" (or leave empty for no file uploads)
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
       iggyPostAddress: "0xE33F27496A9cE75313f6d1FA2BA95657Fc904387",
       iggyPostMinterAddress: "0x9e9905FA405A5FC7Ee2DEB94CbAc089B4FE6f0Ef",
       iggyPostEnumerationAddress: "0xE2AfE33f16519e31c6FFE5eEb333A0887a44D2BC",
       keysAddress: "0xEdE68a694E4730F997dcA54A9C9f817D86605FF5", // PunkKey contract address 
       keysContext: "kjzl6cwe1jw14aizx9mc4mnwpfa16b05ibzpc4pbie57podvb3dgvy9vay8muf4",
-      linkPreviews: "netlify", // "netlify" or "microlink" (or leave empty for no link previews)
+      linkPreviews: process.env.LINK_PREVIEW_SERVICE || "netlify", // "netlify", "vercel", or "microlink" (or leave empty for no link previews)
       lpTokenAddress: "0xdE533DE5e9A73934B380c70f3611B116b8DF7D0d", // liquidity pool token (token to stake in the staking contract)
       lpTokenSymbol: "LP tokens", // LP token symbol
       marketplaceCollectionUrl: "https://marketplace.flareocean.io/collection/19/0xe33f27496a9ce75313f6d1fa2ba95657fc904387",
       marketplaceNftItemUrl: "https://marketplace.flareocean.io/asset/19/0xE33F27496A9cE75313f6d1FA2BA95657Fc904387/", // url (append nft id to it)
       marketplaceNftCollectionBaseUrl: "https://marketplace.flareocean.io/collection/19/", // url (append nft address to it)
-      maxImageUploadSizeMb: 1, // max image upload size in MB
       newsletterLink: "https://paragraph.xyz/@iggy?modal=subscribe",
       nftDefaultRatio: 6969, // default ratio for the NFT price bonding curve
       nftLaunchpadBondingAddress: "0x2bb3407bc184B8fF52EEaA2777c51686640d5860", // NFT launchpad with bonding curve contract address
@@ -122,8 +124,7 @@ export default defineNuxtConfig({
       tldName: ".sgb",
       tokenAddress: null, // leave null if it's a native token of the chain
       tokenDecimals: 18,
-      tokenSymbol: "SGB",
-      web3storageKey: process.env.WEB3_STORAGE_KEY || ""
+      tokenSymbol: "SGB"
     }
   },
   vite: {

@@ -49,60 +49,74 @@
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/metamask.png" class="card-img-top card-img-wallet" alt="MetaMask">
+              <small class="text-center mb-3 text-muted">MetaMask</small>
             </div>
-
+            
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/bifrost.png" class="card-img-top card-img-wallet" alt="Bifrost">
+              <small class="text-center mb-3 text-muted">Bifrost</small>
+            </div> 
+
+            <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
+              <img src="@/assets/img/wallets/rabby.png" class="card-img-top card-img-wallet" alt="Rabby">
+              <small class="text-center mb-3 text-muted">Rabby</small>
             </div> 
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/zerion.png" class="card-img-top card-img-wallet" alt="Zerion">
+              <small class="text-center mb-3 text-muted">Zerion</small>
             </div> 
 
             <!--
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectWalletConnect">
               <img src="@/assets/img/wallets/wc.png" class="card-img-top card-img-wallet" alt="Wallet Connect">
+              <small class="text-center mb-3 text-muted">Rabby</small>
             </div>
             -->
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectCoinbase">
               <img src="@/assets/img/wallets/coinbase.png" class="card-img-top card-img-wallet" alt="Coinbase">
+              <small class="text-center mb-3 text-muted">Coinbase</small>
             </div>
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
-              <img src="@/assets/img/wallets/rabby.png" class="card-img-top card-img-wallet" alt="Rabby">
-            </div> 
-
-            <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/brave.png" class="card-img-top card-img-wallet" alt="Brave">
+              <small class="text-center mb-3 text-muted">Brave</small>
             </div>
 
             <!--
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectWalletConnect">
               <img src="@/assets/img/wallets/minerva.png" class="card-img-top card-img-wallet" alt="Minerva">
+              <small class="text-center mb-3 text-muted">Minerva</small>
             </div>
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectWalletConnect">
               <img src="@/assets/img/wallets/argent.png" class="card-img-top card-img-wallet" alt="Argent">
+              <small class="text-center mb-3 text-muted">Argent</small>
             </div>
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectWalletConnect">
               <img src="@/assets/img/wallets/1inch.png" class="card-img-top card-img-wallet" alt="1inch">
+              <small class="text-center mb-3 text-muted">1inch</small>
             </div>
             -->
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/trust.png" class="card-img-top card-img-wallet" alt="Trust Wallet">
+              <small class="text-center mb-3 text-muted">Trust Wallet</small>
             </div>
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/imtoken.png" class="card-img-top card-img-wallet" alt="imToken">
+              <small class="text-center mb-3 text-muted">imToken</small>
             </div>
           </div>
         </div>
       </div>
     </div>
     <!-- END Connect Wallet modal -->
+
+    <VerifyAccountOwnership />
 
     <ChatSettingsModal />
 
@@ -127,8 +141,10 @@ import NavbarMobile from "~/components/navbars/NavbarMobile.vue";
 import SidebarLeft from "~/components/sidebars/SidebarLeft.vue";
 import SidebarRight from "~/components/sidebars/SidebarRight.vue";
 import ChatSettingsModal from "~/components/ChatSettingsModal.vue";
+import { getActivityPoints } from '~/utils/balanceUtils';
 import { getDomainName } from '~/utils/domainUtils';
-import { fetchUsername, storeUsername } from '~/utils/storageUtils';
+import { storeUsername } from '~/utils/storageUtils';
+import VerifyAccountOwnership from '~/components/VerifyAccountOwnership.vue';
 
 export default {
   data() {
@@ -146,7 +162,8 @@ export default {
     NavbarDesktop,
     NavbarMobile,
     SidebarLeft,
-    SidebarRight
+    SidebarRight,
+    VerifyAccountOwnership
   },
 
   mounted() {
@@ -189,6 +206,9 @@ export default {
     new bootstrap.Popover(document.body, {
       selector: "[data-bs-toggle='popover']",
     })
+
+    // check if file upload is enabled
+    this.siteStore.setFileUploadEnabled(this.$config.fileUploadEnabled);
   },
 
   unmounted() {
@@ -218,6 +238,7 @@ export default {
   },
 
   methods: {
+    getActivityPoints,
     getDomainName, // imported function from utils/domainUtils.js
 
     async connectCoinbase() {
@@ -238,12 +259,12 @@ export default {
 			document.getElementById('closeConnectModal').click();
 		},
 
-    async orbisLogout() {
-      await this.$orbis.logout();
-      this.userStore.setIsConnectedToOrbis(false);
-      this.userStore.setDid(null);
-      this.userStore.setDidParent(null);
-      this.userStore.setOrbisImage(null);
+    async fetchActivityPoints() {
+      if (this.$config.activityPointsAddress) {
+        const activityPoints = await this.getActivityPoints(this.address, this.signer);
+
+        this.userStore.setCurrentUserActivityPoints(activityPoints);
+      }
     },
 
     async fetchChatTokenBalance() {
@@ -321,7 +342,12 @@ export default {
     },
 
     async fetchUserDomain() {
-      if (this.chainId === this.$config.supportedChainId) {
+      if (
+        this.chainId === this.$config.supportedChainId &&
+        this.address != this.userStore.getCurrentUserAddress
+      ) {
+        this.userStore.setCurrentUserAddress(this.address);
+        
         let userDomain;
 
         if (this.signer) {
@@ -330,6 +356,8 @@ export default {
           userDomain = await this.getDomainName(this.address);
         }
 
+        
+
         if (userDomain) {
           this.userStore.setDefaultDomain(userDomain+this.$config.tldName);
           storeUsername(window, this.address, userDomain+this.$config.tldName);
@@ -337,6 +365,7 @@ export default {
           this.userStore.setDefaultDomain(null);
         }
 
+        this.fetchActivityPoints();
         this.fetchChatTokenBalance();
       }
     },
@@ -353,7 +382,15 @@ export default {
     
     onWidthChange() {
       this.width = window.innerWidth;
-    }
+    },
+
+    async orbisLogout() {
+      await this.$orbis.logout();
+      this.userStore.setIsConnectedToOrbis(false);
+      this.userStore.setDid(null);
+      this.userStore.setDidParent(null);
+      this.userStore.setOrbisImage(null);
+    },
   },
 
   setup() {
