@@ -7,7 +7,7 @@
     <SimpleSwap 
       class="mt-3"
       :routerAddress="routerAddress" 
-      swapId="SidebarRight1" 
+      :swapId="swapId" 
       :tokens="tokens" 
       :poweredBy="poweredBy"
     />
@@ -21,7 +21,7 @@ import SimpleSwap from '~/components/swap/SimpleSwap.vue';
 
 export default {
   name: "SimpleSwapWidget",
-  props: ["poweredBy", "routerAddress", "title", "tokens"],
+  props: ["poweredBy", "routerAddress", "swapId", "title", "tokens"],
 
   components: { SimpleSwap }
 }

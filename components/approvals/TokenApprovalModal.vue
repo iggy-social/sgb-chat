@@ -151,6 +151,8 @@ export default {
         }
 
       } catch (e) {
+        console.log("TokenApprovalModal");
+        console.log(e);
         this.toast.error("Something went wrong while approving the token");
         this.waiting = false;
         return;

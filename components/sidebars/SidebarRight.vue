@@ -23,8 +23,17 @@
       <SimpleSwapWidget 
         v-if="$config.swapRouterAddress" 
         :routerAddress="$config.swapRouterAddress" 
+        swapId="sidebarSwapOracle"
         :tokens="tokens" 
-        title="Swap tokens" />
+        title="Swap tokens (OracleSwap)" />
+
+      <!-- Swap tokens -->
+      <SimpleSwapWidget 
+        v-if="$config.swapRouterAddress" 
+        routerAddress="0x12c8B86FAB056323dC69b0aeA436d29A072f6364" 
+        swapId="sidebarSwapFeather"
+        :tokens="tokensFeather" 
+        title="Swap tokens (FeatherSwap)" />
 
       <!-- Random minted post(s) -->
       <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
@@ -47,6 +56,7 @@
 
 <script>
 import tokens from '~/assets/data/tokens.json';
+import tokensFeather from '~/assets/data/tokensFeather.json';
 import { useSidebarStore } from '~/store/sidebars';
 import MintedPostsWidget from '~/components/minted-posts/MintedPostsWidget.vue';
 import NameMintWidget from '~/components/names/NameMintWidget.vue';
@@ -76,7 +86,7 @@ export default {
 
     setup() {
         const sidebarStore = useSidebarStore();
-        return { sidebarStore, tokens };
+        return { sidebarStore, tokens, tokensFeather };
     }
 }
 </script>

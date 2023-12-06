@@ -169,6 +169,8 @@ export default {
         }
 
       } catch (e) {
+        console.log("SwapTokensModal");
+        console.log(e);
         this.toast.error("Something went wrong while swapping tokens");
         this.waiting = false;
         return;

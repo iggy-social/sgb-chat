@@ -1,0 +1,52 @@
+{
+  "tokens": [
+    {
+      "chainId": 19,
+      "address": "0x0000000000000000000000000000000000000000",
+      "decimals": 18,
+      "name": "Songbird",
+      "symbol": "SGB",
+      "swap": true
+    },
+    {
+      "chainId": 19,
+      "address": "0x81aDd7359f2B95276F8542f2a0acD7ECD2Ae9349",
+      "decimals": 18,
+      "name": "CHIRP by SGB Chat",
+      "symbol": "CHIRP",
+      "swap": true
+    },
+    {
+      "chainId": 19,
+      "address": "0x19ea65e3f8fc8f61743d137b5107172f849d8eb3",
+      "decimals": 18,
+      "name": "Feather",
+      "symbol": "FTHR",
+      "swap": true
+    },
+    {
+      "chainId": 19,
+      "address": "0x7afde1497da4aedecfaf6cc32fb0d83572c10426",
+      "decimals": 18,
+      "name": "Songbird Phoenix",
+      "symbol": "sPHX",
+      "swap": true
+    },
+    {
+      "chainId": 19,
+      "address": "0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED",
+      "decimals": 18,
+      "name": "Wrapped Songbird",
+      "symbol": "WSGB",
+      "swap": true
+    },
+    {
+      "chainId": 19,
+      "address": "0x29d3dfb4bd040f04bd0e01c28a4cb9de14b47e13",
+      "decimals": 18,
+      "name": "BlueBirdX",
+      "symbol": "BBX",
+      "swap": true
+    }
+  ]
+}
