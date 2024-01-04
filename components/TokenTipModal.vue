@@ -70,6 +70,7 @@ export default {
 
   mounted() {
     this.amount = this.tokenAmount;
+    console.log("Replied post ID: " + this.repliedPostId);
   },
 
   computed: {
@@ -85,9 +86,15 @@ export default {
   methods: {
     async makeOrbisPost() {
       if (this.userStore.getIsConnectedToOrbis) {
+        let masterId = this.masterPostId;
+
+        if (!this.masterId) {
+          masterId = this.repliedPostId;
+        }
+
         try {
           const options = {
-            master: this.masterPostId, // the main post in the thread
+            master: masterId, // the main post in the thread
             reply_to: this.repliedPostId, // important: reply_to needs to be filled out even if the reply is directly to the master post
             body: "I have tipped you " + this.amount + " " + this.tokenSymbol + "!", 
             context: this.$config.orbisContext,
