@@ -70,7 +70,6 @@ export default {
 
   mounted() {
     this.amount = this.tokenAmount;
-    console.log("Replied post ID: " + this.repliedPostId);
   },
 
   computed: {
