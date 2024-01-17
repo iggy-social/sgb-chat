@@ -1,9 +1,14 @@
 <template>
+  <Head>
+    <Title>Memes & NFTs | {{ $config.projectMetadataTitle }}</Title>
+    <Meta property="og:title" :content="'Memes & NFTs | ' + $config.projectMetadataTitle" />
+  </Head>
+
   <ChatFeed 
     class="mt-1" 
-    :allPosts="true" 
     :showQuotedPost="$config.showRepliesOnHomepage" 
-    :orbisContext="getOrbisContext" 
+    :allPosts="true" 
+    orbisContext="kjzl6cwe1jw148ef2skvy8u4jbmsaskc6nvvhqkmpdane0988y1ghe7ng2y1fep" 
   />
 </template>
 
@@ -12,7 +17,7 @@ import { useEthers } from 'vue-dapp'
 import ChatFeed from "../components/chat/ChatFeed.vue"
 
 export default {
-  name: "index",
+  name: "memesnfts",
 
   components: {
     ChatFeed

@@ -1,9 +1,14 @@
 <template>
+  <Head>
+    <Title>Shill and discuss projects | {{ $config.projectMetadataTitle }}</Title>
+    <Meta property="og:title" :content="'Shill and discuss projects | ' + $config.projectMetadataTitle" />
+  </Head>
+
   <ChatFeed 
     class="mt-1" 
-    :allPosts="true" 
     :showQuotedPost="$config.showRepliesOnHomepage" 
-    :orbisContext="getOrbisContext" 
+    :allPosts="true" 
+    orbisContext="kjzl6cwe1jw149pjasgzq81imyvkdu5gv3k4o060qyvja6anxzkx98fsci05r3g" 
   />
 </template>
 
@@ -12,7 +17,7 @@ import { useEthers } from 'vue-dapp'
 import ChatFeed from "../components/chat/ChatFeed.vue"
 
 export default {
-  name: "index",
+  name: "shill",
 
   components: {
     ChatFeed
