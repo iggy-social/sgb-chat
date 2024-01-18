@@ -65,6 +65,19 @@
             </NuxtLink>
           </ul>
 
+          <!--
+          <ul class="list-group">
+            <NuxtLink 
+              to="/tip-alerts"
+              class="list-group-item cursor-pointer hover-color bg-light border-0" 
+              :class="$route.path.startsWith('/tip-alerts') ? 'active' : ''" 
+              @click="closeLeftSidebar" 
+            >
+              Tipping notifications
+            </NuxtLink>
+          </ul>
+          -->
+
           <hr />
 
           <!-- Home 

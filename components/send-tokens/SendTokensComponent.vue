@@ -121,6 +121,7 @@ import { hasTextBlankCharacters } from '~/utils/textUtils';
 import WaitingToast from "~/components/WaitingToast";
 import ConnectWalletButton from '~/components/ConnectWalletButton.vue';
 import Erc20Abi from "~/assets/abi/Erc20Abi.json";
+import { useUserStore } from '~/store/user';
 
 export default {
   name: 'SendTokensComponent',
@@ -200,6 +201,22 @@ export default {
     findBlankCharacter() {
       this.hasBlankCharacter = false;
       this.hasBlankCharacter = hasTextBlankCharacters(this.inputReceiver);
+    },
+
+    async makeOrbisPost() {
+      if (this.userStore.getIsConnectedToOrbis) {
+        try {
+          const options = {
+            body: "I have tipped " + this.inputReceiver + " " + String(this.inputTokenAmount) + " " + this.inputToken.symbol + "!", 
+            context: "kjzl6cwe1jw1493qasw7loj0hnijraw3n5sruvcxm3eero75xvfd880r0dn7k0r"
+          }
+
+          // post on Orbis (shoot and forget)
+          await this.$orbis.createPost(options);
+        } catch (e) {
+          console.log(e);
+        }
+      } 
     },
 
     async processRecipient(recipient) {
@@ -296,6 +313,7 @@ export default {
           });
 
           this.subtractInputTokenBalance();
+          this.makeOrbisPost();
 
           this.waiting = false;
         } else {
@@ -361,6 +379,7 @@ export default {
           });
 
           this.subtractInputTokenBalance();
+          this.makeOrbisPost();
 
           this.waiting = false;
         } else {
@@ -405,8 +424,9 @@ export default {
   setup() {
     const { address, chainId, isActivated, signer } = useEthers();
     const toast = useToast();
+    const userStore = useUserStore();
 
-    return { address, chainId, isActivated, signer, toast };
+    return { address, chainId, isActivated, signer, toast, userStore };
   },
 
   watch: {
