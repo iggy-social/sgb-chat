@@ -7,6 +7,7 @@
       </button>
 
       <NuxtLink class="navbar-brand mx-auto" to="/">
+        <img src="/img/logo-transparent.png" alt="Chat logo" height="24">
         {{$config.projectName}}
       </NuxtLink>
 

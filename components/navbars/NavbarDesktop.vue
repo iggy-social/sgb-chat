@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-bg-custom">
     <div class="container-fluid mx-3">
       <NuxtLink class="navbar-brand" to="/">
-        <!--<img src="/img/sgb-chat-logo-2.png" alt="Chat logo" height="24">-->
+        <img src="/img/logo-transparent.png" alt="Chat logo" height="24">
         {{$config.projectName}}
       </NuxtLink>
 
