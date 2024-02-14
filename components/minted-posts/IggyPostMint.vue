@@ -57,7 +57,6 @@ import WaitingToast from "~/components/WaitingToast";
 import sanitizeHtml from 'sanitize-html';
 import { useUserStore } from '~/store/user';
 import { getImageFromText, textLengthWithoutBlankCharacters } from '~/utils/textUtils';
-import { fetchReferrer } from '~/utils/storageUtils';
 
 export default {
   name: "IggyPostMint",
