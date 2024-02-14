@@ -92,9 +92,20 @@
         ({{ siteStore.getSlippage }}% slippage).
       </em>
     </small>
+  
+    <!-- Wrong Network button -->
+    <div class="d-flex justify-content-center mt-4" v-if="!isSupportedChain">
+      <button
+        disabled="true"
+        class="btn btn-primary" 
+        type="button"
+      >
+        Wrong network
+      </button>
+    </div>
 
     <!-- BUTTONS -->
-    <div class="d-flex justify-content-center mt-4">
+    <div class="d-flex justify-content-center mt-4" v-if="isSupportedChain">
 
       <!-- Connect Wallet button -->
       <ConnectWalletButton v-if="!isActivated" class="btn btn-outline-primary" btnText="Connect wallet" />
@@ -294,8 +305,14 @@ export default {
           return 0;
         } else if (this.inputTokenBalance > 100) {
           return Number(this.inputTokenBalance).toFixed(2);
-        } else {
+        } else if (this.inputTokenBalance > 1) {
           return Number(this.inputTokenBalance).toFixed(4);
+        } else if (this.inputTokenBalance > 0.01) {
+          return Number(this.inputTokenBalance).toFixed(6);
+        } else if (this.inputTokenBalance > 0.0001) {
+          return Number(this.inputTokenBalance).toFixed(8);
+        } else {
+          return Number(this.inputTokenBalance).toFixed(10);
         }
       }
 
@@ -322,6 +339,14 @@ export default {
       }
     },
 
+    isSupportedChain() {
+      if (this.chainId === this.$config.supportedChainId) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     outputIsNativeCoin() {
       if (String(this.outputToken?.address).toLowerCase() == String(ethers.constants.AddressZero).toLowerCase()) {
         return true;
@@ -338,8 +363,14 @@ export default {
           return 0;
         } else if (amount > 100) {
           return Number(amount).toFixed(2);
-        } else {
+        } else if (amount > 1) {
           return Number(amount).toFixed(4);
+        } else if (amount > 0.01) {
+          return Number(amount).toFixed(6);
+        } else if (amount > 0.0001) {
+          return Number(amount).toFixed(8);
+        } else {
+          return Number(amount).toFixed(10);
         }
       }
 
@@ -372,9 +403,9 @@ export default {
       this.inputTokenAllowance = Number(newAllowance);
     },
 
-    getFilteredTokens(tokens) {
+    getFilteredTokens(tokensArray) {
       // only include tokens that have swap: true
-      return tokens.filter(token => token.swap);
+      return tokensArray.filter(token => token.swap);
     },
 
     // custom
@@ -457,10 +488,10 @@ export default {
   },
 
   setup() {
-    const { address, isActivated, signer } = useEthers();
+    const { address, chainId, isActivated, signer } = useEthers();
     const siteStore = useSiteStore();
 
-    return { address, isActivated, signer, siteStore };
+    return { address, chainId, isActivated, signer, siteStore };
   },
 
   watch: {
