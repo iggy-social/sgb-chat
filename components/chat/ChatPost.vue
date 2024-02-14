@@ -94,11 +94,10 @@
 
         <IggyPostMint :post="post" :parsedText="parsedText" v-if="isActivated" />
 
-        <!-- Spark Tipping 
+        <!-- Spark Tipping -->
         <span v-if="isActivated" class="cursor-pointer hover-color ms-2" data-bs-toggle="modal" :data-bs-target="'#sendTipModal'+$.uid">
           <i class="bi bi-stars" /> Spark
         </span>
-        -->
 
         <span v-if="post.master" class="cursor-pointer hover-color ms-2" data-bs-toggle="modal" :data-bs-target="'#replyModal'+post.stream_id">
           <i class="bi bi-reply" /> Reply

@@ -65,7 +65,7 @@
             </NuxtLink>
           </ul>
 
-          <!--
+          <!-- Tip alerts -->
           <ul class="list-group">
             <NuxtLink 
               to="/tip-alerts"
@@ -76,7 +76,6 @@
               Tipping notifications
             </NuxtLink>
           </ul>
-          -->
 
           <hr />
 
@@ -110,6 +109,13 @@
             </NuxtLink>
           </li>
 
+          <!-- Tipping -->
+          <li class="nav-item p-1" @click="closeLeftSidebar">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/tip') ? 'active' : ''" aria-current="page" to="/tip">
+              <i class="bi bi-coin"></i> Send a tip
+            </NuxtLink>
+          </li>
+
           <!-- NFT Launchpad -->
           <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.nftLaunchpadBondingAddress">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/nft') ? 'active' : ''" aria-current="page" to="/nft">
@@ -121,13 +127,6 @@
           <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.stakingContractAddress">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/stake') ? 'active' : ''" aria-current="page" to="/stake">
               <i class="bi bi-cash-stack"></i> Stake & Earn
-            </NuxtLink>
-          </li>
-
-          <!-- Send tokens -->
-          <li class="nav-item p-1" @click="closeLeftSidebar">
-            <NuxtLink class="nav-link" :class="$route.path.startsWith('/send-tokens') ? 'active' : ''" aria-current="page" to="/send-tokens">
-              <i class="bi bi-send"></i> Send tokens
             </NuxtLink>
           </li>
 

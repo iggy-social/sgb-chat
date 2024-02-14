@@ -88,7 +88,6 @@
                 >
                   <i class="bi bi-gear-fill"></i> Other settings
                 </span>
-
                 
               </div>
             </div>
@@ -96,7 +95,7 @@
           <!-- END Buttons -->
 
           <!-- Send tokens to user -->
-          <NuxtLink v-if="domain && !isCurrentUser" class="btn btn-primary mt-2" :to="'/send-tokens/?to='+domain">
+          <NuxtLink v-if="domain && !isCurrentUser" class="btn btn-primary mt-2" :to="'/tip/?to='+domain">
             <i class="bi bi-send"></i>
             Send tokens to {{ domain }}
           </NuxtLink>

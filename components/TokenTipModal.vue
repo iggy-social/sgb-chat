@@ -4,7 +4,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" :id="'sendTipModalLabel'+componentId">Send a tip</h1>
+        <h1 class="modal-title fs-5" :id="'sendTipModalLabel'+componentId">Send a $SPRK tip</h1>
         <button :id="'closeSendTipModal'+componentId" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 

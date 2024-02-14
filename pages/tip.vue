@@ -1,7 +1,7 @@
 <template>
   <Head>
-    <Title>Send tokens | {{ $config.projectMetadataTitle }}</Title>
-    <Meta property="og:title" :content="'Send tokens | ' + $config.projectMetadataTitle" />
+    <Title>Tipping | {{ $config.projectMetadataTitle }}</Title>
+    <Meta property="og:title" :content="'Tipping | ' + $config.projectMetadataTitle" />
   </Head>
 
   <div class="scroll-500">
@@ -11,7 +11,8 @@
           <i class="bi bi-arrow-left-circle cursor-pointer" @click="$router.back()"></i>
         </p>
 
-        <h3 class="mt-3">Send tokens</h3>
+        <h3 class="mt-3">Send a tip to someone</h3>
+        <p class="mt-3"><em>Powered by Spark.</em></p>
         
         <div class="d-flex justify-content-center mt-5">
           <div class="col-12 col-lg-8">
@@ -29,15 +30,10 @@ import tokens from '~/assets/data/tokens.json';
 import SendTokensComponent from '~~/components/send-tokens/SendTokensComponent.vue';
 
 export default {
-  name: 'SendTokens',
+  name: 'Tip',
 
   components: {
     SendTokensComponent,
-  },
-
-  mounted() {
-    // redirect to /tip
-    this.$router.push('/tip');
   },
 
   computed: {
