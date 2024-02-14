@@ -34,10 +34,13 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" @click="mintPost" :disabled="!isActivated || waitingMint">
+        <button v-if="isSupportedChain" type="button" class="btn btn-primary" @click="mintPost" :disabled="!isActivated || waitingMint">
           <span v-if="waitingMint" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
           Mint post for {{ postPrice }} {{ $config.tokenSymbol }}
         </button>
+
+        <!-- Switch Chain button -->
+        <SwitchChainButton v-if="isActivated && !isSupportedChain" :navbar="false" :dropdown="false" />
       </div>
     </div>
   </div>
@@ -49,10 +52,12 @@
 import { useEthers } from 'vue-dapp';
 import { ethers } from 'ethers';
 import { useToast } from "vue-toastification/dist/index.mjs";
+import SwitchChainButton from "~/components/SwitchChainButton.vue";
 import WaitingToast from "~/components/WaitingToast";
 import sanitizeHtml from 'sanitize-html';
 import { useUserStore } from '~/store/user';
 import { getImageFromText, textLengthWithoutBlankCharacters } from '~/utils/textUtils';
+import { fetchReferrer } from '~/utils/storageUtils';
 
 export default {
   name: "IggyPostMint",
@@ -67,6 +72,10 @@ export default {
       textPreview: null,
       waitingMint: false
     }
+  },
+
+  components: {
+    SwitchChainButton
   },
 
   created() {
@@ -88,7 +97,15 @@ export default {
       } else {
         return this.$config.orbisContext;
       }
-    }
+    },
+
+    isSupportedChain() {
+      if (this.chainId === this.$config.supportedChainId) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
 
   methods: {
@@ -99,11 +116,14 @@ export default {
       });
 
       if (sanitizedText.length > 183) {
-        this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "").substring(0, 180) + "...";
+        this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "").substring(0, 180) + "..."; // uncomment if you want to remove non-ascii characters (e.g. emojis)
+        //this.textPreview = sanitizedText.substring(0, 180) + "...";
+        //console.log(this.textPreview);
       } else if (sanitizedText.length === 0) {
         this.textPreview = "";
       } else {
-        this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "");
+        this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, ""); // uncomment if you want to remove non-ascii characters (e.g. emojis)
+        //this.textPreview = sanitizedText;
       }
 
       if (textLengthWithoutBlankCharacters(sanitizedText) === 0) {
@@ -196,13 +216,13 @@ export default {
 
             // make a post about the minting
             if (this.makePost && this.userStore.getIsConnectedToOrbis) {
-              const iggyEnumInterface = new ethers.utils.Interface([
+              const iggyStatsInterface = new ethers.utils.Interface([
                 "function getMintedPostIdsArray(address) external view returns (uint256[] memory)"
               ]);
 
-              const iggyEnumContract = new ethers.Contract(this.$config.iggyPostEnumerationAddress, iggyEnumInterface, this.signer);
+              const iggyStatsContract = new ethers.Contract(this.$config.iggyPostEnumerationAddress, iggyStatsInterface, this.signer);
 
-              const mintedIds = await iggyEnumContract.getMintedPostIdsArray(this.address);
+              const mintedIds = await iggyStatsContract.getMintedPostIdsArray(this.address);
               const lastMintedId = mintedIds[mintedIds.length - 1];
 
               const options = {
@@ -215,11 +235,6 @@ export default {
                 options["master"] = this.post.master;
               } else {
                 options["master"] = this.post.stream_id;
-              }
-
-              // if post has tags, add them to the options
-              if (this.post?.content?.tags) {
-                options["tags"] = this.post.content.tags;
               }
 
               options["data"] = {
@@ -254,12 +269,12 @@ export default {
   },
 
   setup() {
-    const { address, isActivated, signer } = useEthers();
+    const { address, chainId, isActivated, signer } = useEthers();
     const toast = useToast();
     const userStore = useUserStore();
 
     return {
-      address, isActivated, signer, toast, userStore
+      address, chainId, isActivated, signer, toast, userStore
     }
   }
 }
