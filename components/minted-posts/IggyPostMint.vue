@@ -280,6 +280,14 @@ export default {
     return {
       address, chainId, isActivated, signer, toast, userStore
     }
+  },
+
+  watch: {
+    chainId() {
+      if (this.isSupportedChain) {
+        this.fetchMintData();
+      }
+    }
   }
 }
 </script>
