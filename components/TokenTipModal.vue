@@ -83,6 +83,22 @@ export default {
   },
 
   methods: {
+    async makeOrbisTipNotification() {
+      if (this.userStore.getIsConnectedToOrbis) { 
+        try {
+          const options = {
+            body: "I have tipped " + this.recipientName + " " + String(this.amount) + " " + this.tokenSymbol + "!", 
+            context: "kjzl6cwe1jw1493qasw7loj0hnijraw3n5sruvcxm3eero75xvfd880r0dn7k0r"
+          }
+
+          // post on Orbis (shoot and forget)
+          await this.$orbis.createPost(options);
+        } catch (e) {
+          console.log(e);
+        }
+      } 
+    },
+
     async makeOrbisPost() {
       if (this.userStore.getIsConnectedToOrbis) {
         let masterId = this.masterPostId;
@@ -143,6 +159,7 @@ export default {
           });
       
           this.makeOrbisPost();
+          this.makeOrbisTipNotification();
 
           this.waiting = false;
           document.getElementById('closeSendTipModal'+this.componentId).click();
