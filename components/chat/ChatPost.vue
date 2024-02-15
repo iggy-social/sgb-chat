@@ -117,7 +117,6 @@
     :recipientDomain="authorDomain" 
     :recipientAddress="authorAddress" 
     :repliedPostId="post.stream_id" 
-    :repliedPostTags="post.content.tags" 
     tokenAddress="0xfd2a0fD402828fDB86F9a9D5a760242AD7526cC0" 
     tokenName="Spark" 
     tokenSymbol="SPRK" 
@@ -643,9 +642,11 @@ export default {
         }
 
         // if post has tags, add them to the options
+        /*
         if (this.post?.content?.tags) {
           options["tags"] = this.post.content.tags;
         }
+        */
 
         // post on Orbis & Ceramic
         let res = await this.$orbis.createPost(options);

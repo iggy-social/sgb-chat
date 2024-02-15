@@ -237,9 +237,11 @@ export default {
               }
 
               // if post has tags, add them to the options
+              /*
               if (this.post?.content?.tags) {
                 options["tags"] = this.post.content.tags;
               }
+              */
 
               options["data"] = {
                 type: "mintedPost",

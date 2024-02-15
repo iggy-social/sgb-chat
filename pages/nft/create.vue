@@ -395,7 +395,6 @@ export default {
           const options = {
             body: "I have launched a new NFT collection: " + this.cName + " <br /><br />Check it out here 👇", 
             context: this.$config.orbisContext,
-            tags: [{ "slug": "nfts", "title": "Memes & NFTs" }],
             data: {
               type: "nftCollectionCreated",
               authorAddress: String(this.address),

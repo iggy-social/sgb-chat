@@ -1,7 +1,7 @@
 <template>
   <div class="scroll-500">
 
-    <!-- Categories / Tags Big Button -->
+    <!-- Categories / Tags Big Button 
     <div v-if="!id && !allPosts" class="d-grid gap-2 mb-2">
       <div class="btn-group dropdown-center">
         <button class="btn btn-primary btn-block dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -17,6 +17,7 @@
         </ul>
       </div>
     </div>
+    -->
 
     <!-- Post/Comment Input Box -->
     <div class="card mb-2 border" v-if="!hideCommentBox">
@@ -346,11 +347,13 @@ export default {
         }
 
         // if post has tags, add them to the options
+        /*
         if (this.masterPost?.content?.tags) {
           options["tags"] = this.masterPost.content.tags;
         } else {
           options["tags"] = [{ "slug": "general", "title": "General discussion" }]; // default to "General" tag
         }
+        */
 
       } else {
         options = {
@@ -359,12 +362,14 @@ export default {
         }
 
         // add tags
+        /*
         if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.filteredCategories.length) {
           options["tags"] = [this.filteredCategories[this.chatStore.getSelectedTagIndex]];
         } else {
           this.changeTag(0); // change tag selection to 0 (tag may be out of bounds)
           options["tags"] = [{ "slug": "general", "title": "General discussion" }]; // default to "General" tag
         }
+        */
       }
 
       // post on Orbis & Ceramic
@@ -414,7 +419,7 @@ export default {
         options = {
           master: this.id, // master is the post ID
           context: this.getOrbisContext, // context is the group ID
-          tag: this.masterPost.content.tags[0].slug, // tag is the tag of the master post
+          //tag: this.masterPost.content.tags[0].slug, // tag is the tag of the master post
           only_master: false // only get master posts (not replies), or all posts
         }
       } else {
@@ -426,6 +431,7 @@ export default {
         }
 
         // search by tag/category (except on the Profile page where comment box is hidden)
+        /*
         if (!this.allPosts) {
 
           if (this.chatStore.getSelectedTagIndex > 0 && this.chatStore.getSelectedTagIndex < this.filteredCategories.length) {
@@ -438,6 +444,7 @@ export default {
             }
           }
         }
+        */
       }
 
       if (this.byDid) {

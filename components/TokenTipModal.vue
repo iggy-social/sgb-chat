@@ -113,7 +113,7 @@ export default {
             reply_to: this.repliedPostId, // important: reply_to needs to be filled out even if the reply is directly to the master post
             body: "I have tipped you " + this.amount + " " + this.tokenSymbol + "!", 
             context: this.$config.orbisContext,
-            tags: this.repliedPostTags
+            //tags: this.repliedPostTags
           }
 
           // post on Orbis (shoot and forget)
