@@ -111,7 +111,7 @@
 
           <!-- Tipping -->
           <li class="nav-item p-1" @click="closeLeftSidebar">
-            <NuxtLink class="nav-link" :class="$route.path.startsWith('/tip') ? 'active' : ''" aria-current="page" to="/tip">
+            <NuxtLink class="nav-link" :class="$route.path === '/tip' ? 'active' : ''" aria-current="page" to="/tip">
               <i class="bi bi-coin"></i> Send a tip
             </NuxtLink>
           </li>
