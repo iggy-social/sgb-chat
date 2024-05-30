@@ -155,7 +155,10 @@ export default {
 
     async uploadFile() {
       this.waitingUpload = true;
+
+      await this.fallbackUpload();
       
+      /*
       try {
         // get session token
         await this.fetchUploadToken();
@@ -175,6 +178,7 @@ export default {
         console.log("Error uploading file. Switching to fallback upload method.");
         await this.fallbackUpload();
       }
+      */
 
       this.waitingUpload = false;
     }
