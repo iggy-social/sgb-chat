@@ -27,6 +27,12 @@ export default {
       this.imgPath = this.image;
       sessionStorage.setItem(String(this.address).toLowerCase()+"-img", this.image);
     }
+
+    if (this.imgPath.startsWith("ipfs://")) {
+      this.imgPath = this.imgPath.replace("ipfs://", "https://ipfs.io/ipfs/");
+    } else if (this.imgPath.startsWith("ar://")) {
+      this.imgPath = this.imgPath.replace("ar://", "https://arweave.net/");
+    }
   },
 
   watch: {
