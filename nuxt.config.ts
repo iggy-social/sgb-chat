@@ -52,6 +52,9 @@ export default defineNuxtConfig({
     public: {
       airdropClaimDomainsAddress: "0x742d7A1d08c20d9f85c41f8562Ed29aFc64d3c4a", // chat token claim for domain holders contract address
       airdropPostMintersAddress: "0x8A6d7926Db502Bb5b9Ffbcc2FF195623f52040C8", // chat token claim for post minters contract address
+      arweaveAddress: process.env.ARWEAVE_ADDRESS,
+      arweaveGateway: 'https://arweave.net/',
+      arweaveMinBalance: 0.02, // minimum AR balance to upload files
       blockExplorerBaseUrl: "https://songbird-explorer.flare.network",
       chatTokenAddress: "0x81aDd7359f2B95276F8542f2a0acD7ECD2Ae9349", // chat token address
       chatTokenImage: "https://bafybeig2a6e7oe5rjajcrfmvi5vsnhbrh6dnqfll2edm2og3efcrrueup4.ipfs.w3s.link/chirp.png", // chat token image
@@ -60,8 +63,9 @@ export default defineNuxtConfig({
       expiryCollections: 1000 * 60 * 60 * 24 * 7, // must be in milliseconds (0 means no expiration)
       expiryUsernames: 1000 * 60 * 60 * 24 * 7, // must be in milliseconds (0 means no expiration)
       favicon: "/img/favicon.png",
-      fileUploadEnabled: true, // enable/disable file uploads (enable only if external file storage is used, e.g. IPFS via Spheron)
+      fileUploadEnabled: true, // enable/disable file uploads (enable only if external file storage is used, e.g. Arweave)
       fileUploadSizeLimit: 1 * 1024 * 1024, // max file upload size in bytes (1 * 1024 * 1024 = 1 MB)
+      fileUploadStorageType: "arweave", // "arweave" or "imagekit"
       fileUploadTokenService: process.env.FILE_UPLOAD_SERVICE || "netlify", // "netlify" or "vercel" (or leave empty for no file uploads)
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
       iggyPostAddress: "0xE33F27496A9cE75313f6d1FA2BA95657Fc904387",

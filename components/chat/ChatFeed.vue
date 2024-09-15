@@ -45,6 +45,7 @@
               title="Upload image"
               infoText="Upload an image."
               :componentId="$.uid"
+              :storageType="$config.fileUploadStorageType"
               :maxFileSize="$config.fileUploadSizeLimit"
             />
             <!-- END Upload Image Modal -->

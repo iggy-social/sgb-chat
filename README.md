@@ -55,22 +55,37 @@ If you want to have GIF search implemented, create your own Tenor API Key on Goo
 
 Then enter the key in environment variables (`TENOR_KEY`).
 
-## Image upload (Spheron/IPFS)
+## Image upload (Arweave)
 
-To support image uploads on IPFS please create a key/token on Spheron Storage: https://app.spheron.network/#/storage 
+To support image uploads, create an Arweave Wallet (e.g. here: https://arweave.app/) and send some AR to it.
 
-Then add this key (and your bucket ID/name) to your environment variables:
+Then go to the wallet settings and download Backup Keyfile.
+
+In this file you'll find 10 different variables, enter these into your .env file:
 
 ```bash
-SPHERON_BUCKET_NAME=
-SPHERON_STORAGE_TOKEN=
+ARWEAVE_KTY=
+ARWEAVE_N=
+ARWEAVE_E=
+ARWEAVE_D=
+ARWEAVE_P=
+ARWEAVE_Q=
+ARWEAVE_DP=
+ARWEAVE_DQ=
+ARWEAVE_QI=
 ```
 
-Image uploads via Spheron work only if you have Netlify/Vercel background functions enabled (see `netlify/functions/imageUploader.js`).
+And add the arweave address too:
 
-## Image upload fallback
+```bash
+ARWEAVE_ADDRESS=
+```
 
-It is recommended to use ImageKit as the fallback option, in case Spheron has technical issues.
+Also make sure these variables are set on your hosting provider (Netlify, Vercel, etc).
+
+## ImageKit upload
+
+It is recommended to use ImageKit as the fallback option, in case Arweave has technical issues.
 
 For this to work, create an account at [ImageKit.io](https://imagekit.io/) and add these environment variables to your project:
 
@@ -79,6 +94,8 @@ IMAGEKIT_ENDPOINT=
 IMAGEKIT_PUBLIC_KEY=
 IMAGEKIT_PRIVATE_KEY=
 ```
+
+You can also use ImageKit as your main image upload, if you set the `fileUploadStorageType` variable in nuxt config to "imagekit".
 
 ## Customize
 
