@@ -16,51 +16,77 @@
         <span v-if="sidebarStore.showRightSidebar" class="bi bi-x-lg"></span>
       </button>
     </div>
-    </nav>
+  </nav>
+
+  <div v-if="!isSupportedChain || !isActivated" class="card border m-3">
+    <div class="card-body d-flex justify-content-center">
+      <ConnectWalletButton v-if="!isActivated" class="btn btn-primary" btnText="Connect wallet" />
+      <SwitchChainButton v-if="isActivated && !isSupportedChain" />
+    </div>
+  </div>
 </template>
 
 <script>
-import { useSidebarStore } from '~/store/sidebars';
+import { useEthers } from '~/store/ethers'
+import { useSidebarStore } from '~/store/sidebars'
+import ConnectWalletButton from '~/components/ConnectWalletButton.vue'
+import SwitchChainButton from '~/components/SwitchChainButton.vue'
 
 export default {
-  name: "NavbarMobile",
-  props: ["lSidebar", "rSidebar"],
+  name: 'NavbarMobile',
+  props: ['lSidebar', 'rSidebar'],
+
+  components: {
+    ConnectWalletButton,
+    SwitchChainButton,
+  },
+
+  computed: {
+    isSupportedChain() {
+      if (this.chainId === this.$config.supportedChainId) {
+        return true
+      } else {
+        return false
+      }
+    },
+  },
 
   methods: {
     toggleLeftSidebar() {
-      this.sidebarStore.setRightSidebar(false);
+      this.sidebarStore.setRightSidebar(false)
       //this.rSidebar.hide();
 
       if (this.sidebarStore.showLeftSidebar) {
-        this.sidebarStore.setLeftSidebar(false);
-        this.lSidebar.hide();
-        this.sidebarStore.setMainContent(true);
+        this.sidebarStore.setLeftSidebar(false)
+        this.lSidebar.hide()
+        this.sidebarStore.setMainContent(true)
       } else {
-        this.sidebarStore.setLeftSidebar(true);
-        this.lSidebar.show();
-        this.sidebarStore.setMainContent(false);
+        this.sidebarStore.setLeftSidebar(true)
+        this.lSidebar.show()
+        this.sidebarStore.setMainContent(false)
       }
     },
 
     toggleRightSidebar() {
-      this.lSidebar.hide();
-      this.sidebarStore.setLeftSidebar(false);
+      this.lSidebar.hide()
+      this.sidebarStore.setLeftSidebar(false)
 
       if (this.sidebarStore.showRightSidebar) {
-        this.sidebarStore.setRightSidebar(false);
+        this.sidebarStore.setRightSidebar(false)
         //this.rSidebar.hide();
-        this.sidebarStore.setMainContent(true);
+        this.sidebarStore.setMainContent(true)
       } else {
-        this.sidebarStore.setRightSidebar(true);
+        this.sidebarStore.setRightSidebar(true)
         //this.rSidebar.show();
-        this.sidebarStore.setMainContent(false);
+        this.sidebarStore.setMainContent(false)
       }
-    }
+    },
   },
 
   setup() {
-    const sidebarStore = useSidebarStore();
-    return { sidebarStore }
+    const { chainId, isActivated } = useEthers()
+    const sidebarStore = useSidebarStore()
+    return { chainId, isActivated, sidebarStore }
   },
 }
 </script>

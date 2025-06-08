@@ -10,5 +10,5 @@ export async function addTokenToMetaMask(ethereum, tokenAddress, tokenSymbol, to
         image: tokenImage, // A string URL of the token logo.
       },
     },
-  });
+  })
 }

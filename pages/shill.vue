@@ -4,39 +4,17 @@
     <Meta property="og:title" :content="'Shill and discuss projects | ' + $config.projectMetadataTitle" />
   </Head>
 
-  <ChatFeed 
-    class="mt-1" 
-    :showQuotedPost="$config.showRepliesOnHomepage" 
-    :allPosts="true" 
-    orbisContext="kjzl6cwe1jw149pjasgzq81imyvkdu5gv3k4o060qyvja6anxzkx98fsci05r3g" 
-  />
+  <ChatFeed class="mt-1" :chatContext="$config.chat.contexts.shill" />
 </template>
 
 <script>
-import { useEthers } from 'vue-dapp'
-import ChatFeed from "../components/chat/ChatFeed.vue"
+import ChatFeed from '../components/chat/ChatFeed.vue'
 
 export default {
-  name: "shill",
+  name: 'shill',
 
   components: {
-    ChatFeed
+    ChatFeed,
   },
-
-  computed: {
-    getOrbisContext() {
-      if (this.$config.orbisTest) {
-        return this.$config.orbisTestContext;
-      } else {
-        return this.$config.orbisContext;
-      }
-    }
-  },
-
-  setup() {
-    const { address, chainId } = useEthers()
-
-    return { address, chainId }
-  }
 }
 </script>

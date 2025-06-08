@@ -87,8 +87,8 @@
   --bs-tertiary-color-rgb: 116, 117, 121;
   --bs-tertiary-bg: #f5f5f6;
   --bs-tertiary-bg-rgb: 245, 245, 246;
-  --bs-body-bg: #fff;
-  --bs-body-bg-rgb: 255, 255, 255;
+  --bs-body-bg: #f5f5f6;
+  --bs-body-bg-rgb: 245, 245, 246;
   --bs-heading-color: var(--bs-gray-900);
   --bs-link-decoration: none;
   --bs-link-hover-color-rgb: 65, 54, 174;
@@ -121,6 +121,43 @@
   --bs-white-black-toggle: #000;
 }
 
+[data-bs-theme=light] body {
+  background-color: #f5f5f6;
+}
+
 [data-bs-theme=light] .bg-mode {
   background-color: var(--bs-mode) !important;
+}
+
+[data-bs-theme=light] .col-10.col-md-11 p a {
+  font-weight: 500;
+}
+
+[data-bs-theme=light] div.card.m-2.bg-light {
+  border: 1px ridge white;
+}
+
+[data-bs-theme=light] p.card-subtitle.mb-2.text-muted a {
+  color: #555;
+}
+
+[data-bs-theme=light] p.card-subtitle.mb-2.text-muted span a {
+  font-weight: normal;
+}
+
+[data-bs-theme=light] p.card-subtitle.mb-2.text-muted a:hover {
+  color: var(--bs-primary);
+}
+
+[data-bs-theme=light] .post-text-color {
+  color: #2f2f2f !important;
+}
+
+[data-bs-theme=light] .preview-card-body.bg-body {
+  background-color: #f5f5f6 !important;
+}
+
+[data-bs-theme=light] section.emoji-mart,.emoji-mart-static .emoji-mart-category-label{
+  background: #f5f5f6 !important;
+  color: #555 !important;
 }

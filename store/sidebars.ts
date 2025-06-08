@@ -7,7 +7,7 @@ export const useSidebarStore = defineStore({
     return {
       leftSidebar: false,
       mainContent: true,
-      rightSidebar: false
+      rightSidebar: false,
     }
   },
 
@@ -19,15 +19,15 @@ export const useSidebarStore = defineStore({
 
   actions: {
     setLeftSidebar(status: boolean) {
-      this.leftSidebar = status;
+      this.leftSidebar = status
     },
 
     setMainContent(status: boolean) {
-      this.mainContent = status;
+      this.mainContent = status
     },
 
     setRightSidebar(status: boolean) {
-      this.rightSidebar = status;
-    }
-  }
+      this.rightSidebar = status
+    },
+  },
 })

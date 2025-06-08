@@ -24,7 +24,7 @@ export function getIpfsUrl(url) {
   } else if (url.startsWith("https://ipfs.filebase.io/ipfs/")) {
     cid = url.replace("https://ipfs.filebase.io/ipfs/", "");
   } else if (url.includes("pinata.cloud/ipfs/")) {
-    cid = url.split(".pinata.cloud/ipfs/")[1];
+    cid = url.split("pinata.cloud/ipfs/")[1];
     cid = cid.replace("http://", "");
     cid = cid.replace("https://", "");
   } else if (url.includes(".ipfs.sphn.link/")) {
@@ -41,6 +41,7 @@ export function getIpfsUrl(url) {
 }
 
 export async function getWorkingUrl(url) {
+  const config = useRuntimeConfig();
   let ipfsUrl = url
 
   if (url.startsWith("http")) {
@@ -66,8 +67,6 @@ export async function getWorkingUrl(url) {
     'https://ipfs.filebase.io/ipfs/',
     //'https://cloudflare-ipfs.com/ipfs/',
     'https://gateway.pinata.cloud/ipfs/',
-    'https://ipfs.itslit.org/ipfs/',
-    'https://ipfs.dylmusic.com/ipfs/',
   ]
 
   if (ipfsUrl.startsWith("ipfs://")) {
@@ -87,7 +86,7 @@ export async function getWorkingUrl(url) {
       }
     }
   } else if (url.startsWith("ar://")) {
-    const arweaveUrl = url.replace("ar://", this.$config.arweaveGateway)
+    const arweaveUrl = url.replace("ar://", config.arweaveGateway)
     
     try {
       const response = await axios.head(arweaveUrl, { signal: AbortSignal.timeout(abortTimeout) })

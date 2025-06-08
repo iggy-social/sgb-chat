@@ -74,7 +74,7 @@
 
       <ul>
         <li>$CHIRP is a valueless souvenir token.</li>
-        <li>Anyone who mints a post on Sgb.Chat will receive $CHIRP tokens (this campaign will take place for 1 year).</li>
+        <li>Some actions on SGB Chat will reward $CHIRP tokens.</li>
       </ul>
 
       <p>
@@ -82,9 +82,8 @@
       </p>
 
       <ul>
-        <li>Eligible participants for the airdrop include both .sgb domain holders and active Sgb.Chat users.</li>
+        <li>Eligible participants for the airdrop include both .sgb domain holders and active SGB Chat users.</li>
         <li>If you own multiple .sgb domains, you can claim the airdrop for each domain you have.</li>
-        <li>Users who have minted a post as an NFT on Sgb.Chat will receive an additional $CHIRP airdrop.</li>
         <li>To claim the airdrop, go to the Airdrop page in the left sidebar of SGB Chat.</li>
       </ul>
 
@@ -98,14 +97,6 @@
         <a target="_blank" href="https://discord.gg/8dSrwrAQeu">our Discord</a> 
         and share your thoughts there.
       </p>
-
-      <div class="d-flex justify-content-around flex-wrap">
-        <img class="img-fluid tech-stack mt-3" src="/img/tech/orbis.png" />
-
-        <img class="img-fluid tech-stack mt-3" src="/img/tech/ceramic.png" />
-
-        <img class="img-fluid tech-stack mt-3" src="/img/tech/punk.png" />
-      </div>
     </div>
   </div>
 </template>

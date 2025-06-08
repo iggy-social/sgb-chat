@@ -10,31 +10,27 @@ const arweave = Arweave.init({
 })
 
 export async function getActivityPoints(userAddress, signer) {
-  const config = useRuntimeConfig();
-  
-  let provider = signer;
+  const config = useRuntimeConfig()
 
-  if (!signer) {
-    provider = this.$getFallbackProvider(config.supportedChainId);
-  }
+  let provider = signer
 
   const activityPointsInterface = new ethers.utils.Interface([
-    "function getTotalWeiSpent(address) view returns (uint256)",
-  ]);
+    'function getPoints(address user_) external view returns (uint256)',
+  ])
 
-  const activityPointsContract = new ethers.Contract(config.activityPointsAddress, activityPointsInterface, provider);
+  const activityPointsContract = new ethers.Contract(config.activityPointsAddress, activityPointsInterface, provider)
 
-  const weiSpent = await activityPointsContract.getTotalWeiSpent(userAddress);
-  const ethSpent = ethers.utils.formatEther(weiSpent);
-  let activityPoints = Number(ethSpent) * config.activityPointsRatio;
+  const pointsWei = await activityPointsContract.getPoints(userAddress)
+
+  let activityPoints = Number(ethers.utils.formatEther(pointsWei))
 
   if (activityPoints < 1) {
-    activityPoints = activityPoints.toFixed(2);
+    activityPoints = activityPoints.toFixed(2)
   } else {
-    activityPoints = Math.round(activityPoints);
+    activityPoints = Number.parseFloat(activityPoints)
   }
 
-  return activityPoints;
+  return activityPoints
 }
 
 export async function getArweaveBalance(arweaveAddress) {
@@ -43,41 +39,29 @@ export async function getArweaveBalance(arweaveAddress) {
 }
 
 export async function getTokenAllowance(token, userAddress, beneficiary, signer) {
-  const config = useRuntimeConfig();
-  
-  let provider = signer;
+  let provider = signer
 
-  if (!provider) {
-    provider = this.$getFallbackProvider(config.supportedChainId);
-  }
+  const contract = new ethers.Contract(token.address, Erc20Abi, provider)
+  const allowanceWei = await contract.allowance(userAddress, beneficiary)
 
-  const contract = new ethers.Contract(token.address, Erc20Abi, provider);
-  const allowanceWei = await contract.allowance(userAddress, beneficiary);
-
-  return ethers.utils.formatUnits(allowanceWei, token.decimals);
+  return ethers.utils.formatUnits(allowanceWei, token.decimals)
 }
 
 export async function getTokenBalance(token, userAddress, signer) {
-  const config = useRuntimeConfig();
-  
-  let provider = signer;
+  let provider = signer
 
-  if (!provider) {
-    provider = this.$getFallbackProvider(config.supportedChainId);
-  }
-
-  let balanceWei;
+  let balanceWei
 
   if (token.address === ethers.constants.AddressZero) {
     if (!signer) {
-      balanceWei = await provider.getBalance(userAddress);
+      balanceWei = await provider.getBalance(userAddress)
     } else {
-      balanceWei = await signer.getBalance();
+      balanceWei = await signer.getBalance()
     }
   } else {
-    const contract = new ethers.Contract(token.address, Erc20Abi, provider);
-    balanceWei = await contract.balanceOf(userAddress);
+    const contract = new ethers.Contract(token.address, Erc20Abi, provider)
+    balanceWei = await contract.balanceOf(userAddress)
   }
 
-  return ethers.utils.formatUnits(balanceWei, token.decimals);
+  return ethers.utils.formatUnits(balanceWei, token.decimals)
 }
