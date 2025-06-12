@@ -563,6 +563,8 @@ export default {
 
         if (this.lastFetchedIndex === 0) {
           this.showLoadMore = false;
+        } else {
+          this.showLoadMore = true;
         }
 
         //console.log(this.messages);
