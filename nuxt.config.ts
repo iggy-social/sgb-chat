@@ -54,7 +54,7 @@ export default defineNuxtConfig({
       arweaveAddress: process.env.ARWEAVE_ADDRESS,
       arweaveGateway: 'https://arweave.net/',
       arweaveMinBalance: 0.02, // minimum AR balance to upload files
-      blockExplorerBaseUrl: 'https://songbird-explorer.flare.network',
+      blockExplorerBaseUrl: 'https://songbird.flarescan.com',
       chat: {
         contexts: {
           general: '0x330aad871a98325B47442cdEe3595f8c6bFA8f2a', // general discussion channel
