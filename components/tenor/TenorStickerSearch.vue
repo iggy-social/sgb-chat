@@ -68,7 +68,7 @@ export default {
       this.stickerArray = []
 
       const searchUrl =
-        'https://tenor.googleapis.com/v2/search?q=' +
+        'https://api.klipy.com/v2/search?q=' +
         this.searchTerm +
         '&key=' +
         this.$config.tenorApiKey +
